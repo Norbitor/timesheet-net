@@ -1,0 +1,40 @@
+﻿@if (Session["UserLogin"] != null)
+{
+    using (Html.BeginForm("Index", "Home", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+    {
+        //pozniej zmienic ^Account/Logout
+        @Html.AntiForgeryToken()
+
+        <nav class="nav navbar-nav navbar-right" style="padding-left:3px">
+            <div class="container-fluid">
+                <ul class="nav navbar-nav">
+                    <li class="dropdown" style="width:105px; text-align:center" >
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Pracuj<span class="caret"></span></a>
+                        <ul class="dropdown-menu" style="width:105px">
+                            <li>@Html.ActionLink("Timesheet", "Index", "Home")</li>
+                            <li>@Html.ActionLink("Zadania", "Index", "Home")</li>
+                            <li>@Html.ActionLink("Projekty", "Index", "Home")</li>
+                            <li>@Html.ActionLink("Raporty", "Index", "Home")</li>
+                        </ul>
+                    </li>
+                    <li class="dropdown" style="width:125px">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-user"></span> Twój profil<span class="caret"></span></a>
+                        <ul class="dropdown-menu" style="width:125px">
+                            <li>@Html.ActionLink("Edytuj", "Index", "Home")</li>
+                            <li>@Html.ActionLink("Zmień hasło", "Index", "Home")</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="javascript:document.getElementById('logoutForm').submit()"><span class="glyphicon glyphicon-log-out"></span> Wyloguj</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    }
+}
+else
+{
+    <ul class="nav navbar-nav navbar-right">
+        <li>@Html.ActionLink("Zaloguj się", "Index", "Home", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+    </ul>
+}
