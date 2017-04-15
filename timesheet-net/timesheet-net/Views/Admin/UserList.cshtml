@@ -1,2 +1,111 @@
 ﻿<h2>Lista użytkowników</h2>
+<p>Z poziomu tego widoku możesz zarządzać użytkownikami w systemie.</p>
 
+<table class="table">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Użytkownik</th>
+            <th>E-mail</th>
+            <th>Telefon</th>
+            <th>Pozycja</th>
+            <th>Operacje</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><input type="checkbox" /></td>
+            <td>Jan Kowalski</td>
+            <td>jan.kowalski@example.com</td>
+            <td>773 112 322</td>
+            <td>Pracownik</td>
+            <td>
+                <input type="button" class="btn btn-primary" value="Edytuj" />
+                <div class="dropdown">
+                    <button class="btn btn-danger dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                        Operacje
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                        <li><a href="#">Deaktywuj</a></li>
+                        <li><a href="#">Urlop</a></li>
+                        <li><a href="#">Usuń</a></li>
+                    </ul>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td><input type="checkbox" /></td>
+            <td>Anna Elżbieta Nowak</td>
+            <td>anowak@company.co.uk</td>
+            <td>686 323 124</td>
+            <td>Księgowość</td>
+            <td>
+                <input type="button" class="btn btn-primary" value="Edytuj" />
+                <div class="dropdown">
+                    <button class="btn btn-danger dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                        Operacje
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                        <li><a href="#">Deaktywuj</a></li>
+                        <li><a href="#">Urlop</a></li>
+                        <li><a href="#">Usuń</a></li>
+                    </ul>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td><input type="checkbox" /></td>
+            <td>Karol Szary</td>
+            <td>jan.kowalski@example.com</td>
+            <td>889 344 333</td>
+            <td>Administrator</td>
+            <td>
+                <input type="button" class="btn btn-primary" value="Edytuj" />
+                <div class="dropdown">
+                    <button class="btn btn-danger dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                        Operacje
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                        <li><a href="#">Deaktywuj</a></li>
+                        <li><a href="#">Urlop</a></li>
+                        <li><a href="#">Usuń</a></li>
+                    </ul>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td><input type="checkbox" /></td>
+            <td>John Boo</td>
+            <td>jobo@example.com</td>
+            <td>667 333 266</td>
+            <td>Human Resources</td>
+            <td>
+                <input type="button" class="btn btn-primary" value="Edytuj" />
+                <div class="dropdown">
+                    <button class="btn btn-danger dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                        Operacje
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                        <li><a href="#">Deaktywuj</a></li>
+                        <li><a href="#">Urlop</a></li>
+                        <li><a href="#">Usuń</a></li>
+                    </ul>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<div>
+    <select class="form-control">
+        <option disabled selected>Operacja grupowa</option>
+        <option>Deaktywuj</option>
+        <option>Urlop</option>
+        <option>Usuń</option>
+    </select>
+    <input type="button" class="btn btn-success" value="Dodaj użytkownika" />
+</div>
