@@ -1,5 +1,10 @@
-﻿<h2>Lista użytkowników</h2>
-<p>Z poziomu tego widoku możesz zarządzać użytkownikami w systemie.</p>
+﻿@{ 
+    ViewBag.Title = "Lista użytkowników";
+}
+<h2>Lista użytkowników</h2>
+<p>Z poziomu tego widoku możesz zarządzać użytkownikami w systemie. Użytkownicy przebywający na urlopie
+    oznaczeni są kolorem szarym. Nieaktywni &ndash; oznaczeni są poprzez przekreślenie, wyszarzenie oraz
+    znajdują się zawsze na końcu listy.</p>
 
 <table class="table">
     <thead>
@@ -21,12 +26,12 @@
             <td>Pracownik</td>
             <td>
                 <input type="button" class="btn btn-primary" value="Edytuj" />
-                <div class="dropdown">
+                <div class="dropdown dropdown-ib">
                     <button class="btn btn-danger dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                         Operacje
                         <span class="caret"></span>
                     </button>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                    <ul class="dropdown-menu dropdown-white" aria-labelledby="dropdownMenu1">
                         <li><a href="#">Deaktywuj</a></li>
                         <li><a href="#">Urlop</a></li>
                         <li><a href="#">Usuń</a></li>
@@ -34,7 +39,7 @@
                 </div>
             </td>
         </tr>
-        <tr>
+        <tr style="color: #bbb;">
             <td><input type="checkbox" /></td>
             <td>Anna Elżbieta Nowak</td>
             <td>anowak@company.co.uk</td>
@@ -42,12 +47,12 @@
             <td>Księgowość</td>
             <td>
                 <input type="button" class="btn btn-primary" value="Edytuj" />
-                <div class="dropdown">
+                <div class="dropdown dropdown-ib">
                     <button class="btn btn-danger dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                         Operacje
                         <span class="caret"></span>
                     </button>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                    <ul class="dropdown-menu dropdown-white" aria-labelledby="dropdownMenu1">
                         <li><a href="#">Deaktywuj</a></li>
                         <li><a href="#">Urlop</a></li>
                         <li><a href="#">Usuń</a></li>
@@ -63,12 +68,12 @@
             <td>Administrator</td>
             <td>
                 <input type="button" class="btn btn-primary" value="Edytuj" />
-                <div class="dropdown">
+                <div class="dropdown dropdown-ib">
                     <button class="btn btn-danger dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                         Operacje
                         <span class="caret"></span>
                     </button>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                    <ul class="dropdown-menu dropdown-white" aria-labelledby="dropdownMenu1">
                         <li><a href="#">Deaktywuj</a></li>
                         <li><a href="#">Urlop</a></li>
                         <li><a href="#">Usuń</a></li>
@@ -76,7 +81,7 @@
                 </div>
             </td>
         </tr>
-        <tr>
+        <tr style="text-decoration: line-through; color: #bbb;">
             <td><input type="checkbox" /></td>
             <td>John Boo</td>
             <td>jobo@example.com</td>
@@ -84,12 +89,12 @@
             <td>Human Resources</td>
             <td>
                 <input type="button" class="btn btn-primary" value="Edytuj" />
-                <div class="dropdown">
+                <div class="dropdown dropdown-ib">
                     <button class="btn btn-danger dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                         Operacje
                         <span class="caret"></span>
                     </button>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                    <ul class="dropdown-menu dropdown-white" aria-labelledby="dropdownMenu1">
                         <li><a href="#">Deaktywuj</a></li>
                         <li><a href="#">Urlop</a></li>
                         <li><a href="#">Usuń</a></li>
@@ -101,11 +106,16 @@
 </table>
 
 <div>
-    <select class="form-control">
-        <option disabled selected>Operacja grupowa</option>
-        <option>Deaktywuj</option>
-        <option>Urlop</option>
-        <option>Usuń</option>
-    </select>
-    <input type="button" class="btn btn-success" value="Dodaj użytkownika" />
+    <div class="dropdown dropdown-ib">
+        <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+            Operacja grupowa
+            <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu dropdown-white" aria-labelledby="dropdownMenu1" style="width: 151.9px;">
+            <li><a href="#">Deaktywuj</a></li>
+            <li><a href="#">Urlop</a></li>
+            <li><a href="#">Usuń</a></li>
+        </ul>
+    </div>
+    <input type="button" class="btn btn-default" style="background-color: #3c0425; color: #fff;" value="Dodaj użytkownika" />
 </div>
