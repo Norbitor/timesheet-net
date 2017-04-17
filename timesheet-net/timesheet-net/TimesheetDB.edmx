@@ -1,0 +1,923 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="TimesheetDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Employees">
+          <Key>
+            <PropertyRef Name="EmployeeID" />
+          </Key>
+          <Property Name="EmployeeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EMail" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Password" Type="char" MaxLength="64" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Surname" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Telephone" Type="varchar" MaxLength="15" Nullable="false" />
+          <Property Name="JobPositionID" Type="int" Nullable="false" />
+          <Property Name="LastLogin" Type="datetime" />
+          <Property Name="EmployeeState" Type="tinyint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="EmployeeState">
+          <Key>
+            <PropertyRef Name="EmployeeStateID" />
+          </Key>
+          <Property Name="EmployeeStateID" Type="tinyint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EmployeeStateName" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="JobPositions">
+          <Key>
+            <PropertyRef Name="JobPositionID" />
+          </Key>
+          <Property Name="JobPositionID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="JobPositionName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="HourlyWage" Type="smallmoney" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ProjectMembers">
+          <Key>
+            <PropertyRef Name="ProjectMemberID" />
+          </Key>
+          <Property Name="ProjectMemberID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProjectID" Type="int" Nullable="false" />
+          <Property Name="EmployeeID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Projects">
+          <Key>
+            <PropertyRef Name="ProjectID" />
+          </Key>
+          <Property Name="ProjectID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Start" Type="date" Nullable="false" />
+          <Property Name="Finish" Type="date" />
+          <Property Name="ProjectState" Type="int" Nullable="false" />
+          <Property Name="SuperiorID" Type="int" Nullable="false" />
+          <Property Name="LastEditedBy" Type="int" />
+          <Property Name="LastEditDate" Type="datetime" />
+          <Property Name="CreatedBy" Type="int" Nullable="false" />
+          <Property Name="CreationDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ProjectStates">
+          <Key>
+            <PropertyRef Name="ProjectStateID" />
+          </Key>
+          <Property Name="ProjectStateID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProjectStateName" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="Tasks">
+          <Key>
+            <PropertyRef Name="TaskID" />
+          </Key>
+          <Property Name="TaskID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TimesheetID" Type="int" Nullable="false" />
+          <Property Name="TaskName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="MondayHours" Type="decimal" Precision="2" Scale="2" Nullable="false" />
+          <Property Name="TuesdayHours" Type="decimal" Precision="2" Scale="2" Nullable="false" />
+          <Property Name="WednesdayHours" Type="decimal" Precision="2" Scale="2" Nullable="false" />
+          <Property Name="ThursdayHours" Type="decimal" Precision="2" Scale="2" Nullable="false" />
+          <Property Name="FridayHours" Type="decimal" Precision="2" Scale="2" Nullable="false" />
+          <Property Name="SaturdayHours" Type="decimal" Precision="2" Scale="2" Nullable="false" />
+          <Property Name="SundayHours" Type="decimal" Precision="2" Scale="2" Nullable="false" />
+          <Property Name="Comment" Type="varchar(max)" />
+          <Property Name="LastEditedBy" Type="int" />
+          <Property Name="LastEditDate" Type="datetime" />
+          <Property Name="CreatedBy" Type="int" Nullable="false" />
+          <Property Name="CreationDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Timesheets">
+          <Key>
+            <PropertyRef Name="TimesheetID" />
+          </Key>
+          <Property Name="TimesheetID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Start" Type="date" Nullable="false" />
+          <Property Name="Finish" Type="date" Nullable="false" />
+          <Property Name="ProjectMemberID" Type="int" Nullable="false" />
+          <Property Name="TimesheetState" Type="int" Nullable="false" />
+          <Property Name="LastEditedBy" Type="int" />
+          <Property Name="LastEditDate" Type="datetime" />
+          <Property Name="Comment" Type="varchar(max)" />
+          <Property Name="CreatedBy" Type="int" Nullable="false" />
+          <Property Name="CreationDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TimesheetStates">
+          <Key>
+            <PropertyRef Name="TimesheetStateID" />
+          </Key>
+          <Property Name="TimesheetStateID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TimesheetStateName" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Employees_EmployeeState">
+          <End Role="EmployeeState" Type="Self.EmployeeState" Multiplicity="1" />
+          <End Role="Employees" Type="Self.Employees" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EmployeeState">
+              <PropertyRef Name="EmployeeStateID" />
+            </Principal>
+            <Dependent Role="Employees">
+              <PropertyRef Name="EmployeeState" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Employees_JobPositions">
+          <End Role="JobPositions" Type="Self.JobPositions" Multiplicity="1" />
+          <End Role="Employees" Type="Self.Employees" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="JobPositions">
+              <PropertyRef Name="JobPositionID" />
+            </Principal>
+            <Dependent Role="Employees">
+              <PropertyRef Name="JobPositionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Project_ProjectState">
+          <End Role="ProjectStates" Type="Self.ProjectStates" Multiplicity="1" />
+          <End Role="Projects" Type="Self.Projects" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProjectStates">
+              <PropertyRef Name="ProjectStateID" />
+            </Principal>
+            <Dependent Role="Projects">
+              <PropertyRef Name="ProjectState" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProjectMember_Project">
+          <End Role="Projects" Type="Self.Projects" Multiplicity="1" />
+          <End Role="ProjectMembers" Type="Self.ProjectMembers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Projects">
+              <PropertyRef Name="ProjectID" />
+            </Principal>
+            <Dependent Role="ProjectMembers">
+              <PropertyRef Name="ProjectID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProjectMembers_Employees">
+          <End Role="Employees" Type="Self.Employees" Multiplicity="1" />
+          <End Role="ProjectMembers" Type="Self.ProjectMembers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employees">
+              <PropertyRef Name="EmployeeID" />
+            </Principal>
+            <Dependent Role="ProjectMembers">
+              <PropertyRef Name="EmployeeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Projects_Employees">
+          <End Role="Employees" Type="Self.Employees" Multiplicity="1" />
+          <End Role="Projects" Type="Self.Projects" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employees">
+              <PropertyRef Name="EmployeeID" />
+            </Principal>
+            <Dependent Role="Projects">
+              <PropertyRef Name="SuperiorID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Projects_Employees1">
+          <End Role="Employees" Type="Self.Employees" Multiplicity="0..1" />
+          <End Role="Projects" Type="Self.Projects" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employees">
+              <PropertyRef Name="EmployeeID" />
+            </Principal>
+            <Dependent Role="Projects">
+              <PropertyRef Name="LastEditedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Projects_Employees2">
+          <End Role="Employees" Type="Self.Employees" Multiplicity="1" />
+          <End Role="Projects" Type="Self.Projects" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employees">
+              <PropertyRef Name="EmployeeID" />
+            </Principal>
+            <Dependent Role="Projects">
+              <PropertyRef Name="CreatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tasks_Employees">
+          <End Role="Employees" Type="Self.Employees" Multiplicity="0..1" />
+          <End Role="Tasks" Type="Self.Tasks" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employees">
+              <PropertyRef Name="EmployeeID" />
+            </Principal>
+            <Dependent Role="Tasks">
+              <PropertyRef Name="LastEditedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tasks_Employees1">
+          <End Role="Employees" Type="Self.Employees" Multiplicity="1" />
+          <End Role="Tasks" Type="Self.Tasks" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employees">
+              <PropertyRef Name="EmployeeID" />
+            </Principal>
+            <Dependent Role="Tasks">
+              <PropertyRef Name="CreatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tasks_Timesheets">
+          <End Role="Timesheets" Type="Self.Timesheets" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Tasks" Type="Self.Tasks" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Timesheets">
+              <PropertyRef Name="TimesheetID" />
+            </Principal>
+            <Dependent Role="Tasks">
+              <PropertyRef Name="TimesheetID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Timesheet_ProjectMember">
+          <End Role="ProjectMembers" Type="Self.ProjectMembers" Multiplicity="1" />
+          <End Role="Timesheets" Type="Self.Timesheets" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProjectMembers">
+              <PropertyRef Name="ProjectMemberID" />
+            </Principal>
+            <Dependent Role="Timesheets">
+              <PropertyRef Name="ProjectMemberID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Timesheet_TimesheetState">
+          <End Role="TimesheetStates" Type="Self.TimesheetStates" Multiplicity="1" />
+          <End Role="Timesheets" Type="Self.Timesheets" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TimesheetStates">
+              <PropertyRef Name="TimesheetStateID" />
+            </Principal>
+            <Dependent Role="Timesheets">
+              <PropertyRef Name="TimesheetState" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Timesheets_Employees">
+          <End Role="Employees" Type="Self.Employees" Multiplicity="0..1" />
+          <End Role="Timesheets" Type="Self.Timesheets" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employees">
+              <PropertyRef Name="EmployeeID" />
+            </Principal>
+            <Dependent Role="Timesheets">
+              <PropertyRef Name="LastEditedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Timesheets_Employees1">
+          <End Role="Employees" Type="Self.Employees" Multiplicity="1" />
+          <End Role="Timesheets" Type="Self.Timesheets" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employees">
+              <PropertyRef Name="EmployeeID" />
+            </Principal>
+            <Dependent Role="Timesheets">
+              <PropertyRef Name="CreatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="TimesheetDBModelStoreContainer">
+          <EntitySet Name="Employees" EntityType="Self.Employees" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EmployeeState" EntityType="Self.EmployeeState" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="JobPositions" EntityType="Self.JobPositions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProjectMembers" EntityType="Self.ProjectMembers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Projects" EntityType="Self.Projects" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProjectStates" EntityType="Self.ProjectStates" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tasks" EntityType="Self.Tasks" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Timesheets" EntityType="Self.Timesheets" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TimesheetStates" EntityType="Self.TimesheetStates" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Employees_EmployeeState" Association="Self.FK_Employees_EmployeeState">
+            <End Role="EmployeeState" EntitySet="EmployeeState" />
+            <End Role="Employees" EntitySet="Employees" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Employees_JobPositions" Association="Self.FK_Employees_JobPositions">
+            <End Role="JobPositions" EntitySet="JobPositions" />
+            <End Role="Employees" EntitySet="Employees" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Project_ProjectState" Association="Self.FK_Project_ProjectState">
+            <End Role="ProjectStates" EntitySet="ProjectStates" />
+            <End Role="Projects" EntitySet="Projects" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProjectMember_Project" Association="Self.FK_ProjectMember_Project">
+            <End Role="Projects" EntitySet="Projects" />
+            <End Role="ProjectMembers" EntitySet="ProjectMembers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProjectMembers_Employees" Association="Self.FK_ProjectMembers_Employees">
+            <End Role="Employees" EntitySet="Employees" />
+            <End Role="ProjectMembers" EntitySet="ProjectMembers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Projects_Employees" Association="Self.FK_Projects_Employees">
+            <End Role="Employees" EntitySet="Employees" />
+            <End Role="Projects" EntitySet="Projects" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Projects_Employees1" Association="Self.FK_Projects_Employees1">
+            <End Role="Employees" EntitySet="Employees" />
+            <End Role="Projects" EntitySet="Projects" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Projects_Employees2" Association="Self.FK_Projects_Employees2">
+            <End Role="Employees" EntitySet="Employees" />
+            <End Role="Projects" EntitySet="Projects" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tasks_Employees" Association="Self.FK_Tasks_Employees">
+            <End Role="Employees" EntitySet="Employees" />
+            <End Role="Tasks" EntitySet="Tasks" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tasks_Employees1" Association="Self.FK_Tasks_Employees1">
+            <End Role="Employees" EntitySet="Employees" />
+            <End Role="Tasks" EntitySet="Tasks" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tasks_Timesheets" Association="Self.FK_Tasks_Timesheets">
+            <End Role="Timesheets" EntitySet="Timesheets" />
+            <End Role="Tasks" EntitySet="Tasks" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Timesheet_ProjectMember" Association="Self.FK_Timesheet_ProjectMember">
+            <End Role="ProjectMembers" EntitySet="ProjectMembers" />
+            <End Role="Timesheets" EntitySet="Timesheets" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Timesheet_TimesheetState" Association="Self.FK_Timesheet_TimesheetState">
+            <End Role="TimesheetStates" EntitySet="TimesheetStates" />
+            <End Role="Timesheets" EntitySet="Timesheets" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Timesheets_Employees" Association="Self.FK_Timesheets_Employees">
+            <End Role="Employees" EntitySet="Employees" />
+            <End Role="Timesheets" EntitySet="Timesheets" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Timesheets_Employees1" Association="Self.FK_Timesheets_Employees1">
+            <End Role="Employees" EntitySet="Employees" />
+            <End Role="Timesheets" EntitySet="Timesheets" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="TimesheetDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Employees">
+          <Key>
+            <PropertyRef Name="EmployeeID" />
+          </Key>
+          <Property Name="EmployeeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EMail" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="64" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Surname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Telephone" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="JobPositionID" Type="Int32" Nullable="false" />
+          <Property Name="LastLogin" Type="DateTime" Precision="3" />
+          <Property Name="EmployeeState" Type="Byte" Nullable="false" />
+          <NavigationProperty Name="EmployeeState1" Relationship="Self.FK_Employees_EmployeeState" FromRole="Employees" ToRole="EmployeeState" />
+          <NavigationProperty Name="JobPositions" Relationship="Self.FK_Employees_JobPositions" FromRole="Employees" ToRole="JobPositions" />
+          <NavigationProperty Name="ProjectMembers" Relationship="Self.FK_ProjectMembers_Employees" FromRole="Employees" ToRole="ProjectMembers" />
+          <NavigationProperty Name="Projects" Relationship="Self.FK_Projects_Employees" FromRole="Employees" ToRole="Projects" />
+          <NavigationProperty Name="Projects1" Relationship="Self.FK_Projects_Employees1" FromRole="Employees" ToRole="Projects" />
+          <NavigationProperty Name="Projects2" Relationship="Self.FK_Projects_Employees2" FromRole="Employees" ToRole="Projects" />
+          <NavigationProperty Name="Tasks" Relationship="Self.FK_Tasks_Employees" FromRole="Employees" ToRole="Tasks" />
+          <NavigationProperty Name="Tasks1" Relationship="Self.FK_Tasks_Employees1" FromRole="Employees" ToRole="Tasks" />
+          <NavigationProperty Name="Timesheets" Relationship="Self.FK_Timesheets_Employees" FromRole="Employees" ToRole="Timesheets" />
+          <NavigationProperty Name="Timesheets1" Relationship="Self.FK_Timesheets_Employees1" FromRole="Employees" ToRole="Timesheets" />
+        </EntityType>
+        <EntityType Name="EmployeeState">
+          <Key>
+            <PropertyRef Name="EmployeeStateID" />
+          </Key>
+          <Property Name="EmployeeStateID" Type="Byte" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EmployeeStateName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Employees" Relationship="Self.FK_Employees_EmployeeState" FromRole="EmployeeState" ToRole="Employees" />
+        </EntityType>
+        <EntityType Name="JobPositions">
+          <Key>
+            <PropertyRef Name="JobPositionID" />
+          </Key>
+          <Property Name="JobPositionID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="JobPositionName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="HourlyWage" Type="Decimal" Precision="10" Scale="4" Nullable="false" />
+          <NavigationProperty Name="Employees" Relationship="Self.FK_Employees_JobPositions" FromRole="JobPositions" ToRole="Employees" />
+        </EntityType>
+        <EntityType Name="ProjectMembers">
+          <Key>
+            <PropertyRef Name="ProjectMemberID" />
+          </Key>
+          <Property Name="ProjectMemberID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProjectID" Type="Int32" Nullable="false" />
+          <Property Name="EmployeeID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Employees" Relationship="Self.FK_ProjectMembers_Employees" FromRole="ProjectMembers" ToRole="Employees" />
+          <NavigationProperty Name="Projects" Relationship="Self.FK_ProjectMember_Project" FromRole="ProjectMembers" ToRole="Projects" />
+          <NavigationProperty Name="Timesheets" Relationship="Self.FK_Timesheet_ProjectMember" FromRole="ProjectMembers" ToRole="Timesheets" />
+        </EntityType>
+        <EntityType Name="Projects">
+          <Key>
+            <PropertyRef Name="ProjectID" />
+          </Key>
+          <Property Name="ProjectID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Start" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Finish" Type="DateTime" Precision="0" />
+          <Property Name="ProjectState" Type="Int32" Nullable="false" />
+          <Property Name="SuperiorID" Type="Int32" Nullable="false" />
+          <Property Name="LastEditedBy" Type="Int32" />
+          <Property Name="LastEditDate" Type="DateTime" Precision="3" />
+          <Property Name="CreatedBy" Type="Int32" Nullable="false" />
+          <Property Name="CreationDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Employees" Relationship="Self.FK_Projects_Employees" FromRole="Projects" ToRole="Employees" />
+          <NavigationProperty Name="Employees1" Relationship="Self.FK_Projects_Employees1" FromRole="Projects" ToRole="Employees" />
+          <NavigationProperty Name="Employees2" Relationship="Self.FK_Projects_Employees2" FromRole="Projects" ToRole="Employees" />
+          <NavigationProperty Name="ProjectMembers" Relationship="Self.FK_ProjectMember_Project" FromRole="Projects" ToRole="ProjectMembers" />
+          <NavigationProperty Name="ProjectStates" Relationship="Self.FK_Project_ProjectState" FromRole="Projects" ToRole="ProjectStates" />
+        </EntityType>
+        <EntityType Name="ProjectStates">
+          <Key>
+            <PropertyRef Name="ProjectStateID" />
+          </Key>
+          <Property Name="ProjectStateID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProjectStateName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Projects" Relationship="Self.FK_Project_ProjectState" FromRole="ProjectStates" ToRole="Projects" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="Tasks">
+          <Key>
+            <PropertyRef Name="TaskID" />
+          </Key>
+          <Property Name="TaskID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TimesheetID" Type="Int32" Nullable="false" />
+          <Property Name="TaskName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="MondayHours" Type="Decimal" Precision="2" Scale="2" Nullable="false" />
+          <Property Name="TuesdayHours" Type="Decimal" Precision="2" Scale="2" Nullable="false" />
+          <Property Name="WednesdayHours" Type="Decimal" Precision="2" Scale="2" Nullable="false" />
+          <Property Name="ThursdayHours" Type="Decimal" Precision="2" Scale="2" Nullable="false" />
+          <Property Name="FridayHours" Type="Decimal" Precision="2" Scale="2" Nullable="false" />
+          <Property Name="SaturdayHours" Type="Decimal" Precision="2" Scale="2" Nullable="false" />
+          <Property Name="SundayHours" Type="Decimal" Precision="2" Scale="2" Nullable="false" />
+          <Property Name="Comment" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="LastEditedBy" Type="Int32" />
+          <Property Name="LastEditDate" Type="DateTime" Precision="3" />
+          <Property Name="CreatedBy" Type="Int32" Nullable="false" />
+          <Property Name="CreationDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Employees" Relationship="Self.FK_Tasks_Employees" FromRole="Tasks" ToRole="Employees" />
+          <NavigationProperty Name="Employees1" Relationship="Self.FK_Tasks_Employees1" FromRole="Tasks" ToRole="Employees" />
+          <NavigationProperty Name="Timesheets" Relationship="Self.FK_Tasks_Timesheets" FromRole="Tasks" ToRole="Timesheets" />
+        </EntityType>
+        <EntityType Name="Timesheets">
+          <Key>
+            <PropertyRef Name="TimesheetID" />
+          </Key>
+          <Property Name="TimesheetID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Start" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Finish" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="ProjectMemberID" Type="Int32" Nullable="false" />
+          <Property Name="TimesheetState" Type="Int32" Nullable="false" />
+          <Property Name="LastEditedBy" Type="Int32" />
+          <Property Name="LastEditDate" Type="DateTime" Precision="3" />
+          <Property Name="Comment" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedBy" Type="Int32" Nullable="false" />
+          <Property Name="CreationDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Employees" Relationship="Self.FK_Timesheets_Employees" FromRole="Timesheets" ToRole="Employees" />
+          <NavigationProperty Name="Employees1" Relationship="Self.FK_Timesheets_Employees1" FromRole="Timesheets" ToRole="Employees" />
+          <NavigationProperty Name="ProjectMembers" Relationship="Self.FK_Timesheet_ProjectMember" FromRole="Timesheets" ToRole="ProjectMembers" />
+          <NavigationProperty Name="Tasks" Relationship="Self.FK_Tasks_Timesheets" FromRole="Timesheets" ToRole="Tasks" />
+          <NavigationProperty Name="TimesheetStates" Relationship="Self.FK_Timesheet_TimesheetState" FromRole="Timesheets" ToRole="TimesheetStates" />
+        </EntityType>
+        <EntityType Name="TimesheetStates">
+          <Key>
+            <PropertyRef Name="TimesheetStateID" />
+          </Key>
+          <Property Name="TimesheetStateID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TimesheetStateName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Timesheets" Relationship="Self.FK_Timesheet_TimesheetState" FromRole="TimesheetStates" ToRole="Timesheets" />
+        </EntityType>
+        <Association Name="FK_Employees_EmployeeState">
+          <End Role="EmployeeState" Type="Self.EmployeeState" Multiplicity="1" />
+          <End Role="Employees" Type="Self.Employees" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EmployeeState">
+              <PropertyRef Name="EmployeeStateID" />
+            </Principal>
+            <Dependent Role="Employees">
+              <PropertyRef Name="EmployeeState" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Employees_JobPositions">
+          <End Role="JobPositions" Type="Self.JobPositions" Multiplicity="1" />
+          <End Role="Employees" Type="Self.Employees" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="JobPositions">
+              <PropertyRef Name="JobPositionID" />
+            </Principal>
+            <Dependent Role="Employees">
+              <PropertyRef Name="JobPositionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProjectMembers_Employees">
+          <End Role="Employees" Type="Self.Employees" Multiplicity="1" />
+          <End Role="ProjectMembers" Type="Self.ProjectMembers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employees">
+              <PropertyRef Name="EmployeeID" />
+            </Principal>
+            <Dependent Role="ProjectMembers">
+              <PropertyRef Name="EmployeeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Projects_Employees">
+          <End Role="Employees" Type="Self.Employees" Multiplicity="1" />
+          <End Role="Projects" Type="Self.Projects" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employees">
+              <PropertyRef Name="EmployeeID" />
+            </Principal>
+            <Dependent Role="Projects">
+              <PropertyRef Name="SuperiorID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Projects_Employees1">
+          <End Role="Employees" Type="Self.Employees" Multiplicity="0..1" />
+          <End Role="Projects" Type="Self.Projects" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employees">
+              <PropertyRef Name="EmployeeID" />
+            </Principal>
+            <Dependent Role="Projects">
+              <PropertyRef Name="LastEditedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Projects_Employees2">
+          <End Role="Employees" Type="Self.Employees" Multiplicity="1" />
+          <End Role="Projects" Type="Self.Projects" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employees">
+              <PropertyRef Name="EmployeeID" />
+            </Principal>
+            <Dependent Role="Projects">
+              <PropertyRef Name="CreatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tasks_Employees">
+          <End Role="Employees" Type="Self.Employees" Multiplicity="0..1" />
+          <End Role="Tasks" Type="Self.Tasks" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employees">
+              <PropertyRef Name="EmployeeID" />
+            </Principal>
+            <Dependent Role="Tasks">
+              <PropertyRef Name="LastEditedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tasks_Employees1">
+          <End Role="Employees" Type="Self.Employees" Multiplicity="1" />
+          <End Role="Tasks" Type="Self.Tasks" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employees">
+              <PropertyRef Name="EmployeeID" />
+            </Principal>
+            <Dependent Role="Tasks">
+              <PropertyRef Name="CreatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Timesheets_Employees">
+          <End Role="Employees" Type="Self.Employees" Multiplicity="0..1" />
+          <End Role="Timesheets" Type="Self.Timesheets" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employees">
+              <PropertyRef Name="EmployeeID" />
+            </Principal>
+            <Dependent Role="Timesheets">
+              <PropertyRef Name="LastEditedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Timesheets_Employees1">
+          <End Role="Employees" Type="Self.Employees" Multiplicity="1" />
+          <End Role="Timesheets" Type="Self.Timesheets" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employees">
+              <PropertyRef Name="EmployeeID" />
+            </Principal>
+            <Dependent Role="Timesheets">
+              <PropertyRef Name="CreatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProjectMember_Project">
+          <End Role="Projects" Type="Self.Projects" Multiplicity="1" />
+          <End Role="ProjectMembers" Type="Self.ProjectMembers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Projects">
+              <PropertyRef Name="ProjectID" />
+            </Principal>
+            <Dependent Role="ProjectMembers">
+              <PropertyRef Name="ProjectID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Timesheet_ProjectMember">
+          <End Role="ProjectMembers" Type="Self.ProjectMembers" Multiplicity="1" />
+          <End Role="Timesheets" Type="Self.Timesheets" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProjectMembers">
+              <PropertyRef Name="ProjectMemberID" />
+            </Principal>
+            <Dependent Role="Timesheets">
+              <PropertyRef Name="ProjectMemberID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Project_ProjectState">
+          <End Role="ProjectStates" Type="Self.ProjectStates" Multiplicity="1" />
+          <End Role="Projects" Type="Self.Projects" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProjectStates">
+              <PropertyRef Name="ProjectStateID" />
+            </Principal>
+            <Dependent Role="Projects">
+              <PropertyRef Name="ProjectState" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tasks_Timesheets">
+          <End Role="Timesheets" Type="Self.Timesheets" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Tasks" Type="Self.Tasks" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Timesheets">
+              <PropertyRef Name="TimesheetID" />
+            </Principal>
+            <Dependent Role="Tasks">
+              <PropertyRef Name="TimesheetID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Timesheet_TimesheetState">
+          <End Role="TimesheetStates" Type="Self.TimesheetStates" Multiplicity="1" />
+          <End Role="Timesheets" Type="Self.Timesheets" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TimesheetStates">
+              <PropertyRef Name="TimesheetStateID" />
+            </Principal>
+            <Dependent Role="Timesheets">
+              <PropertyRef Name="TimesheetState" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="TimesheetDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Employees" EntityType="Self.Employees" />
+          <EntitySet Name="EmployeeState" EntityType="Self.EmployeeState" />
+          <EntitySet Name="JobPositions" EntityType="Self.JobPositions" />
+          <EntitySet Name="ProjectMembers" EntityType="Self.ProjectMembers" />
+          <EntitySet Name="Projects" EntityType="Self.Projects" />
+          <EntitySet Name="ProjectStates" EntityType="Self.ProjectStates" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+          <EntitySet Name="Tasks" EntityType="Self.Tasks" />
+          <EntitySet Name="Timesheets" EntityType="Self.Timesheets" />
+          <EntitySet Name="TimesheetStates" EntityType="Self.TimesheetStates" />
+          <AssociationSet Name="FK_Employees_EmployeeState" Association="Self.FK_Employees_EmployeeState">
+            <End Role="EmployeeState" EntitySet="EmployeeState" />
+            <End Role="Employees" EntitySet="Employees" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Employees_JobPositions" Association="Self.FK_Employees_JobPositions">
+            <End Role="JobPositions" EntitySet="JobPositions" />
+            <End Role="Employees" EntitySet="Employees" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProjectMembers_Employees" Association="Self.FK_ProjectMembers_Employees">
+            <End Role="Employees" EntitySet="Employees" />
+            <End Role="ProjectMembers" EntitySet="ProjectMembers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Projects_Employees" Association="Self.FK_Projects_Employees">
+            <End Role="Employees" EntitySet="Employees" />
+            <End Role="Projects" EntitySet="Projects" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Projects_Employees1" Association="Self.FK_Projects_Employees1">
+            <End Role="Employees" EntitySet="Employees" />
+            <End Role="Projects" EntitySet="Projects" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Projects_Employees2" Association="Self.FK_Projects_Employees2">
+            <End Role="Employees" EntitySet="Employees" />
+            <End Role="Projects" EntitySet="Projects" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tasks_Employees" Association="Self.FK_Tasks_Employees">
+            <End Role="Employees" EntitySet="Employees" />
+            <End Role="Tasks" EntitySet="Tasks" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tasks_Employees1" Association="Self.FK_Tasks_Employees1">
+            <End Role="Employees" EntitySet="Employees" />
+            <End Role="Tasks" EntitySet="Tasks" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Timesheets_Employees" Association="Self.FK_Timesheets_Employees">
+            <End Role="Employees" EntitySet="Employees" />
+            <End Role="Timesheets" EntitySet="Timesheets" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Timesheets_Employees1" Association="Self.FK_Timesheets_Employees1">
+            <End Role="Employees" EntitySet="Employees" />
+            <End Role="Timesheets" EntitySet="Timesheets" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProjectMember_Project" Association="Self.FK_ProjectMember_Project">
+            <End Role="Projects" EntitySet="Projects" />
+            <End Role="ProjectMembers" EntitySet="ProjectMembers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Timesheet_ProjectMember" Association="Self.FK_Timesheet_ProjectMember">
+            <End Role="ProjectMembers" EntitySet="ProjectMembers" />
+            <End Role="Timesheets" EntitySet="Timesheets" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Project_ProjectState" Association="Self.FK_Project_ProjectState">
+            <End Role="ProjectStates" EntitySet="ProjectStates" />
+            <End Role="Projects" EntitySet="Projects" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tasks_Timesheets" Association="Self.FK_Tasks_Timesheets">
+            <End Role="Timesheets" EntitySet="Timesheets" />
+            <End Role="Tasks" EntitySet="Tasks" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Timesheet_TimesheetState" Association="Self.FK_Timesheet_TimesheetState">
+            <End Role="TimesheetStates" EntitySet="TimesheetStates" />
+            <End Role="Timesheets" EntitySet="Timesheets" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="TimesheetDBModelStoreContainer" CdmEntityContainer="TimesheetDBEntities">
+          <EntitySetMapping Name="Employees">
+            <EntityTypeMapping TypeName="TimesheetDBModel.Employees">
+              <MappingFragment StoreEntitySet="Employees">
+                <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
+                <ScalarProperty Name="EMail" ColumnName="EMail" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Surname" ColumnName="Surname" />
+                <ScalarProperty Name="Telephone" ColumnName="Telephone" />
+                <ScalarProperty Name="JobPositionID" ColumnName="JobPositionID" />
+                <ScalarProperty Name="LastLogin" ColumnName="LastLogin" />
+                <ScalarProperty Name="EmployeeState" ColumnName="EmployeeState" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EmployeeState">
+            <EntityTypeMapping TypeName="TimesheetDBModel.EmployeeState">
+              <MappingFragment StoreEntitySet="EmployeeState">
+                <ScalarProperty Name="EmployeeStateID" ColumnName="EmployeeStateID" />
+                <ScalarProperty Name="EmployeeStateName" ColumnName="EmployeeStateName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="JobPositions">
+            <EntityTypeMapping TypeName="TimesheetDBModel.JobPositions">
+              <MappingFragment StoreEntitySet="JobPositions">
+                <ScalarProperty Name="JobPositionID" ColumnName="JobPositionID" />
+                <ScalarProperty Name="JobPositionName" ColumnName="JobPositionName" />
+                <ScalarProperty Name="HourlyWage" ColumnName="HourlyWage" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProjectMembers">
+            <EntityTypeMapping TypeName="TimesheetDBModel.ProjectMembers">
+              <MappingFragment StoreEntitySet="ProjectMembers">
+                <ScalarProperty Name="ProjectMemberID" ColumnName="ProjectMemberID" />
+                <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
+                <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Projects">
+            <EntityTypeMapping TypeName="TimesheetDBModel.Projects">
+              <MappingFragment StoreEntitySet="Projects">
+                <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Start" ColumnName="Start" />
+                <ScalarProperty Name="Finish" ColumnName="Finish" />
+                <ScalarProperty Name="ProjectState" ColumnName="ProjectState" />
+                <ScalarProperty Name="SuperiorID" ColumnName="SuperiorID" />
+                <ScalarProperty Name="LastEditedBy" ColumnName="LastEditedBy" />
+                <ScalarProperty Name="LastEditDate" ColumnName="LastEditDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProjectStates">
+            <EntityTypeMapping TypeName="TimesheetDBModel.ProjectStates">
+              <MappingFragment StoreEntitySet="ProjectStates">
+                <ScalarProperty Name="ProjectStateID" ColumnName="ProjectStateID" />
+                <ScalarProperty Name="ProjectStateName" ColumnName="ProjectStateName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="TimesheetDBModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tasks">
+            <EntityTypeMapping TypeName="TimesheetDBModel.Tasks">
+              <MappingFragment StoreEntitySet="Tasks">
+                <ScalarProperty Name="TaskID" ColumnName="TaskID" />
+                <ScalarProperty Name="TimesheetID" ColumnName="TimesheetID" />
+                <ScalarProperty Name="TaskName" ColumnName="TaskName" />
+                <ScalarProperty Name="MondayHours" ColumnName="MondayHours" />
+                <ScalarProperty Name="TuesdayHours" ColumnName="TuesdayHours" />
+                <ScalarProperty Name="WednesdayHours" ColumnName="WednesdayHours" />
+                <ScalarProperty Name="ThursdayHours" ColumnName="ThursdayHours" />
+                <ScalarProperty Name="FridayHours" ColumnName="FridayHours" />
+                <ScalarProperty Name="SaturdayHours" ColumnName="SaturdayHours" />
+                <ScalarProperty Name="SundayHours" ColumnName="SundayHours" />
+                <ScalarProperty Name="Comment" ColumnName="Comment" />
+                <ScalarProperty Name="LastEditedBy" ColumnName="LastEditedBy" />
+                <ScalarProperty Name="LastEditDate" ColumnName="LastEditDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Timesheets">
+            <EntityTypeMapping TypeName="TimesheetDBModel.Timesheets">
+              <MappingFragment StoreEntitySet="Timesheets">
+                <ScalarProperty Name="TimesheetID" ColumnName="TimesheetID" />
+                <ScalarProperty Name="Start" ColumnName="Start" />
+                <ScalarProperty Name="Finish" ColumnName="Finish" />
+                <ScalarProperty Name="ProjectMemberID" ColumnName="ProjectMemberID" />
+                <ScalarProperty Name="TimesheetState" ColumnName="TimesheetState" />
+                <ScalarProperty Name="LastEditedBy" ColumnName="LastEditedBy" />
+                <ScalarProperty Name="LastEditDate" ColumnName="LastEditDate" />
+                <ScalarProperty Name="Comment" ColumnName="Comment" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TimesheetStates">
+            <EntityTypeMapping TypeName="TimesheetDBModel.TimesheetStates">
+              <MappingFragment StoreEntitySet="TimesheetStates">
+                <ScalarProperty Name="TimesheetStateID" ColumnName="TimesheetStateID" />
+                <ScalarProperty Name="TimesheetStateName" ColumnName="TimesheetStateName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

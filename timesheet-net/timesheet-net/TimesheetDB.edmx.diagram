@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="36bd3cadbd4f4000a620527eb07418cb" Name="Diagram1">
+        <EntityTypeShape EntityType="TimesheetDBModel.Employees" Width="1.5" PointX="3" PointY="3.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="TimesheetDBModel.EmployeeState" Width="1.5" PointX="0.75" PointY="5" IsExpanded="true" />
+        <EntityTypeShape EntityType="TimesheetDBModel.JobPositions" Width="1.5" PointX="0.75" PointY="2" IsExpanded="true" />
+        <EntityTypeShape EntityType="TimesheetDBModel.ProjectMembers" Width="1.5" PointX="5.25" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TimesheetDBModel.Projects" Width="1.5" PointX="8.25" PointY="3.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="TimesheetDBModel.ProjectStates" Width="1.5" PointX="6" PointY="2" IsExpanded="true" />
+        <EntityTypeShape EntityType="TimesheetDBModel.sysdiagrams" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TimesheetDBModel.Tasks" Width="1.5" PointX="12.75" PointY="3.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="TimesheetDBModel.Timesheets" Width="1.5" PointX="10.5" PointY="3.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="TimesheetDBModel.TimesheetStates" Width="1.5" PointX="8.25" PointY="1" IsExpanded="true" />
+        <AssociationConnector Association="TimesheetDBModel.FK_Employees_EmployeeState" ManuallyRouted="false" />
+        <AssociationConnector Association="TimesheetDBModel.FK_Employees_JobPositions" ManuallyRouted="false" />
+        <AssociationConnector Association="TimesheetDBModel.FK_ProjectMembers_Employees" ManuallyRouted="false" />
+        <AssociationConnector Association="TimesheetDBModel.FK_Projects_Employees" ManuallyRouted="false" />
+        <AssociationConnector Association="TimesheetDBModel.FK_Projects_Employees1" ManuallyRouted="false" />
+        <AssociationConnector Association="TimesheetDBModel.FK_Projects_Employees2" ManuallyRouted="false" />
+        <AssociationConnector Association="TimesheetDBModel.FK_Tasks_Employees" ManuallyRouted="false" />
+        <AssociationConnector Association="TimesheetDBModel.FK_Tasks_Employees1" ManuallyRouted="false" />
+        <AssociationConnector Association="TimesheetDBModel.FK_Timesheets_Employees" ManuallyRouted="false" />
+        <AssociationConnector Association="TimesheetDBModel.FK_Timesheets_Employees1" ManuallyRouted="false" />
+        <AssociationConnector Association="TimesheetDBModel.FK_ProjectMember_Project" ManuallyRouted="false" />
+        <AssociationConnector Association="TimesheetDBModel.FK_Timesheet_ProjectMember" ManuallyRouted="false" />
+        <AssociationConnector Association="TimesheetDBModel.FK_Project_ProjectState" ManuallyRouted="false" />
+        <AssociationConnector Association="TimesheetDBModel.FK_Tasks_Timesheets" ManuallyRouted="false" />
+        <AssociationConnector Association="TimesheetDBModel.FK_Timesheet_TimesheetState" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

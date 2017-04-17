@@ -5,20 +5,43 @@
 <div style="width:100%;  float:left; text-align:center">
     <img src="~/Pics/clocktimesheet.png" alt="" style="max-width:100%;">
 </div>
-
-<div class="row">
-    <div class="col-md-4" style="text-align:center">
-        <h2 style="color:#460525"><b> Kontroluj projekty </b></h2>
-        <p>
-            Utwórz projekty.<br>Zarządzaj projektami.<br>Podglądaj szczegóły projektów.
-        </p>
+    <div class="row;">
+        <div class="col-md-4" style="text-align:center">
+            <div class="form-group">
+                <br>
+                @if (Session["EmployeeID"] == null)
+                { <span class="label label-default" style="background:#ad9e63">Timesheet</span> }
+                else
+                {<input type="button" class="btn btn-default" value="Timesheet" style="width:160px" onclick="@("window.location.href='" + @Url.Action("Index", "Home") + "'");" />}
+            </div>            
+            <p>
+                <span class="glyphicon glyphicon-th-list"></span>  Wypełnij bieżący timesheet.       
+                <br> <span class="glyphicon glyphicon-check"></span>  Popraw timesheety odrzucone. 
+            </p>
+        </div>
+        <div class="col-md-4" style="text-align:center">
+            <div class="form-group">
+                <br>
+                @if (Session["EmployeeID"] == null)
+                { <span class="label label-default" style="background:#ad9e63">Projekt</span> }
+                else
+                {<input type = "button" class="btn btn-default" value="Projekt" style="width:160px" onclick="@("window.location.href='" + @Url.Action("Index", "Home") + "'");" />}
+            </div>  
+            <p>
+                <span class="glyphicon glyphicon-tasks"></span>  Wybierz projekt spośród przypisanych.
+            </p>
+        </div>
+        <div class="col-md-4" style="text-align:center">
+            <div class="form-group">
+                <br>
+                @if (Session["EmployeeID"] == null)
+                {<span class="label label-default" style="background:#ad9e63">Dane osobowe</span>}
+                else
+                {<input type = "button" class="btn btn-default" value="Dane osobowe" style="width:160px" onclick="@("window.location.href='" + @Url.Action("Index", "Home") + "'");" />}
+            </div>  
+            <p>
+                <span class="glyphicon glyphicon-user"></span>  Edytuj swoje dane.
+                <br><br><br>
+            </p>
+        </div>
     </div>
-    <div class="col-md-4" style="text-align:center">
-        <h2 style="color:#460525"><b> Zaplanuj zadania </b></h2>
-        <p>Zdefiniuj dowolną liczbę zadań w obrębie projektu.<br> Dodaj liczbę godzin przeznaczonych na zadanie.<br>Komentuj zadania.<br>Składaj tygodniowe raporty.<br>Kontroluj swój czas.</p>
-    </div>
-    <div class="col-md-4" style="text-align:center">
-        <h2 style="color:#460525"><b>Śledź postępy </b></h2>
-        <p>Przeglądaj tygodniowe raporty.<br>Śledź statystyki.<br>Oszacuj koszty.</p>
-    </div>
-</div>
