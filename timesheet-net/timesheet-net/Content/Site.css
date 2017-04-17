@@ -23,6 +23,17 @@ textarea {
     max-width: 280px;
 }
 
+.btn-main {
+     background-color: #3c0425;
+     color: #fff;
+}
+
+.btn-main:hover {
+    background-color: #18020f;
+    color: #fff;
+}
+
+/* Administration panel rules */
 .dropdown-ib {
     display: inline-block;
 }
@@ -32,6 +43,15 @@ textarea {
     margin-top: 0;
 }
 
-.table td {
+.va-middle-table td {
     vertical-align: middle !important;
+}
+
+.employee-ooo {
+    color: #bbb;
+}
+
+.employee-inactive {
+    text-decoration: line-through;
+    color: #bbb;
 }
