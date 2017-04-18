@@ -51,6 +51,10 @@ textarea {
     color: #bbb;
 }
 
+.project-closed {
+    color: #bbb;
+}
+
 .employee-inactive {
     text-decoration: line-through;
     color: #bbb;
