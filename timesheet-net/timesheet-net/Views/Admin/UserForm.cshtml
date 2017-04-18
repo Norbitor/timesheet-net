@@ -1,0 +1,45 @@
+﻿@{
+    ViewBag.Title = "Nowy użytkownik";
+}
+
+<h2>@ViewBag.Title</h2>
+<p>
+    Aby dodać użytkownika wypełnij poniższy formularz. Utworzony użytkownik będzie mógł zalogować się
+    do aplikacji natychmiast po dodaniu. Klikając "Anuluj", użytkownik nie zostanie utworzony,
+    a przeglądarka powróci do widoku "Listy użytkowników"
+</p>
+
+<form>
+    <div class="form-group">
+        <label for="exampleInputEmail1">Adres e-mail</label>
+        <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Adres e-mail">
+    </div>
+    <div class="form-group">
+        <label for="exampleInputPassword1">Hasło</label>
+        <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Hasło">
+    </div>
+    <div class="form-group">
+        <label for="exampleInputPassword1">Imię</label>
+        <input type="text" class="form-control" id="exampleInputPassword1" placeholder="Imię">
+    </div>
+    <div class="form-group">
+        <label for="exampleInputPassword1">Nazwisko</label>
+        <input type="text" class="form-control" id="exampleInputPassword1" placeholder="Nazwisko">
+    </div>
+    <div class="form-group">
+        <label for="exampleInputPassword1">Nr telefonu</label>
+        <input type="tel" class="form-control" id="exampleInputPassword1" placeholder="Nr telefonu">
+    </div>
+    <div class="form-group">
+        <label for="">Stanowisko</label>
+        <select class="form-control">
+            <option>Pracownik</option>
+            <option>Księgowy</option>
+            <option>HR</option>
+            <option>Administrator</option>
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-default">Dodaj</button>
+    <button type="button" class="btn" style="width: 100px; font-weight:700;">Anuluj</button>
+</form>
