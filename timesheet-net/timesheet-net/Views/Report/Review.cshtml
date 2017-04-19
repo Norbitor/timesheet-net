@@ -1,0 +1,71 @@
+﻿
+@{
+    ViewBag.Title = "Raport tygodniowy";
+}
+
+<h2>Raport tygodniowy użytkownika Jan Kowalski za okres 10.04.2017 &ndash; 16.04.2017</h2>
+<div class="alert alert-info" role="alert">Raport został wysłany i czeka na Twoją akceptację.</div>
+<h3>Podsumowanie</h3>
+<table class="table">
+    <tr>
+        <th>Zadanie</th>
+        <th>Pn</th>
+        <th>Wt</th>
+        <th>Śr</th>
+        <th>Cz</th>
+        <th>Pt</th>
+        <th>So</th>
+        <th>Nd</th>
+        <th>Suma</th>
+        <th>Komentarz</th>
+    </tr>
+    <tr class="report-proj-discriminant">
+        <td colspan="10">Projekt 1</td>
+    </tr>
+    <tr>
+        <td>Zadanie 1</td>
+        <td>3</td>
+        <td>2</td>
+        <td></td>
+        <td>4</td>
+        <td>1</td>
+        <td></td>
+        <td></td>
+        <td class="report-proj-sum">10</td>
+        <td>Funkcjonalność skończona</td>
+    </tr>
+    <tr>
+        <td>Zadanie 2</td>
+        <td>2</td>
+        <td></td>
+        <td>3</td>
+        <td>2</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td class="report-proj-sum">7</td>
+        <td>JIRA: PROJ1-123</td>
+    </tr>
+    <tr>
+        <td>Zadanie 3</td>
+        <td></td>
+        <td>4</td>
+        <td>2</td>
+        <td></td>
+        <td>5</td>
+        <td></td>
+        <td></td>
+        <td class="report-proj-sum">11</td>
+        <td></td>
+    </tr>
+</table>
+
+<h3>Recenzja</h3>
+<form>
+    <div class="form-group">
+        <label>Komentarz:</label>
+        <textarea class="form-control" placeholder="Tutaj wpisz komentarz do raportu"></textarea>
+    </div>
+    <input type="submit" class="btn btn-default" value="Zaakceptuj" />
+    <input type="button" class="btn btn-danger" value="Odrzuć" />
+</form>

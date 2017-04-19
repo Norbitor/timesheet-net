@@ -1,0 +1,148 @@
+﻿
+@{
+    ViewBag.Title = "Raport tygodniowy";
+}
+
+<h2>@ViewBag.Title za okres 10.04.2017 &ndash; 16.04.2017</h2>
+<div class="alert alert-info" role="alert">Raport został wysłany i czeka na akceptację szefów poszczególnych projektów.</div>
+<div class="alert alert-success" role="alert">Timesheet został zaakceptowany!</div>
+<div class="alert alert-danger" role="alert">
+    Raport został odrzucony przez: Anna Elżbieta Nowaki, Powód: "Brakuje informacji o wybranej technologii".
+    Proszę poprawić wskazane błędy w arkuszu i wysłać go ponownie do zaakceptowania.
+</div>
+<h3>Podsumowanie</h3>
+<table class="table">
+    <tr>
+        <th>Zadanie</th>
+        <th>Pn</th>
+        <th>Wt</th>
+        <th>Śr</th>
+        <th>Cz</th>
+        <th>Pt</th>
+        <th>So</th>
+        <th>Nd</th>
+        <th>Suma</th>
+        <th>Komentarz</th>
+    </tr>
+    <tr class="report-proj-discriminant">
+        <td colspan="10">Projekt 1</td>
+    </tr>
+    <tr>
+        <td>Zadanie 1</td>
+        <td>3</td>
+        <td>2</td>
+        <td></td>
+        <td>4</td>
+        <td>1</td>
+        <td></td>
+        <td></td>
+        <td class="report-proj-sum">10</td>
+        <td>Funkcjonalność skończona</td>
+    </tr>
+    <tr>
+        <td>Zadanie 2</td>
+        <td>2</td>
+        <td></td>
+        <td>3</td>
+        <td>2</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td class="report-proj-sum">7</td>
+        <td>JIRA: PROJ1-123</td>
+    </tr>
+    <tr>
+        <td>Zadanie 3</td>
+        <td></td>
+        <td>4</td>
+        <td>2</td>
+        <td></td>
+        <td>5</td>
+        <td></td>
+        <td></td>
+        <td class="report-proj-sum">11</td>
+        <td></td>
+    </tr>
+    <tr class="report-proj-discriminant">
+        <td colspan="10">Projekt 2</td>
+    </tr>
+    <tr>
+        <td>Zadanie A</td>
+        <td>3</td>
+        <td></td>
+        <td>1,5</td>
+        <td>2</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td class="report-proj-sum">6,5</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>Zadanie B</td>
+        <td></td>
+        <td></td>
+        <td>1,5</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td class="report-proj-sum">1,5</td>
+        <td>Skonfigurowano serwer DB</td>
+    </tr>
+    <tr class="report-proj-discriminant">
+        <td colspan="10">Projekt 3</td>
+    </tr>
+    <tr>
+        <td>Zadanie I</td>
+        <td></td>
+        <td>2</td>
+        <td></td>
+        <td></td>
+        <td>2</td>
+        <td></td>
+        <td></td>
+        <td class="report-proj-sum">4</td>
+        <td>Zakończony research technologii</td>
+    </tr>
+    <tr class="report-proj-sum">
+        <td>Suma</td>
+        <td>8</td>
+        <td>8</td>
+        <td>8</td>
+        <td>8</td>
+        <td>8</td>
+        <td></td>
+        <td></td>
+        <td>40</td>
+        <td></td>
+    </tr>
+</table>
+
+<h3>Status raportu</h3>
+<table class="table table-striped">
+    <tr>
+        <th>Projekt</th>
+        <th>Szef projektu</th>
+        <th>Status</th>
+        <th>Komentarz</th>
+    </tr>
+    <tr>
+        <td>Projekt 1</td>
+        <td>Jan Kowalski</td>
+        <td>Oczekujący</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>Projekt 2</td>
+        <td>Karol Szary</td>
+        <td class="success">Zaakceptowany</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>Projekt 3</td>
+        <td>Anna Elżbieta Nowak</td>
+        <td class="danger">Odrzucony</td>
+        <td>Brakuje informacji o wybranej technologii</td>
+    </tr>
+</table>

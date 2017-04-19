@@ -20,7 +20,7 @@
 input,
 select,
 textarea {
-    max-width: 280px;
+    max-width: 400px;
 }
 
 .btn-main {
@@ -58,4 +58,14 @@ textarea {
 .employee-inactive {
     text-decoration: line-through;
     color: #bbb;
+}
+
+.report-proj-discriminant {
+    text-align: center;
+    font-weight: 700;
+    background-color: #fafafa;
+}
+
+.report-proj-sum {
+    font-weight: 700;
 }

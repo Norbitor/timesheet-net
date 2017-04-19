@@ -14,6 +14,11 @@ namespace timesheet_net.Controllers
             return View();
         }
 
+        public ActionResult ProjectList()
+        {
+            return View();
+        }
+
         public ActionResult ProjectForm()
         {
             return View();
