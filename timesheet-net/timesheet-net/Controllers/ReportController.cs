@@ -12,5 +12,10 @@ namespace timesheet_net.Controllers
         {
             return View();
         }
+
+        public ActionResult Review()
+        {
+            return View();
+        }
     }
 }
