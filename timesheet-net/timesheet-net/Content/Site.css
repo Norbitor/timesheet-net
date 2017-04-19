@@ -59,3 +59,13 @@ textarea {
     text-decoration: line-through;
     color: #bbb;
 }
+
+.report-proj-discriminant {
+    text-align: center;
+    font-weight: 700;
+    background-color: #fafafa;
+}
+
+.report-proj-sum {
+    font-weight: 700;
+}

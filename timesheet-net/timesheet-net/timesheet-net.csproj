@@ -159,6 +159,7 @@
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ReportController.cs" />
     <Compile Include="Employees.cs">
       <DependentUpon>TimesheetDB.tt</DependentUpon>
     </Compile>
@@ -277,6 +278,7 @@
     <Content Include="Views\Admin\ProjectForm.cshtml" />
     <Content Include="Views\Admin\UserForm.cshtml" />
     <Content Include="Views\Admin\ProjectList.cshtml" />
+    <Content Include="Views\Report\Show.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
