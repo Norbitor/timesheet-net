@@ -1,4 +1,4 @@
-﻿// T4 code generation is enabled for model 'C:\Users\Monika\Documents\GitHub\timesheet-net\timesheet-net\timesheet-net\TimesheetDB.edmx'. 
+﻿// T4 code generation is enabled for model 'C:\Users\Norbert\OneDrive\Studia\Semestr 6\PZ\timesheet-net\timesheet-net\timesheet-net\Models\TimesheetDB.edmx'. 
 // To enable legacy code generation, change the value of the 'Code Generation Strategy' designer
 // property to 'Legacy ObjectContext'. This property is available in the Properties Window when the model
 // is open in the designer.

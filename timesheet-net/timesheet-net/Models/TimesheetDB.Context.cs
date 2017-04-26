@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace timesheet_net
+namespace timesheet_net.Models
 {
     using System;
     using System.Data.Entity;

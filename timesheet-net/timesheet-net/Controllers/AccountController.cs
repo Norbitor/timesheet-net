@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using System.Security.Cryptography;
 using System.Text;
 using System.Data.Entity;
+using timesheet_net.Models;
 
 namespace timesheet_net.Controllers
 {

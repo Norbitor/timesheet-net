@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace timesheet_net
+namespace timesheet_net.Models
 {
     using System;
     using System.Collections.Generic;
@@ -27,7 +27,7 @@ namespace timesheet_net
             this.Timesheets = new HashSet<Timesheets>();
             this.Timesheets1 = new HashSet<Timesheets>();
         }
-    
+
         public int EmployeeID { get; set; }
 
         [Required(ErrorMessage = "To pole jest wymagane!")]
@@ -55,7 +55,7 @@ namespace timesheet_net
 
         [Required(ErrorMessage = "To pole jest wymagane!")]
         public byte EmployeeState { get; set; }
-    
+
         public virtual EmployeeState EmployeeState1 { get; set; }
         public virtual JobPositions JobPositions { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -76,3 +76,4 @@ namespace timesheet_net
         public virtual ICollection<Timesheets> Timesheets1 { get; set; }
     }
 }
+0
