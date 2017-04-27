@@ -11,22 +11,50 @@ namespace timesheet_net.Controllers
         // GET: Admin
         public ActionResult UserList()
         {
-            return View();
+            if (Session["EmployeeID"] != null)
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Login", "Account");
+            }
         }
 
         public ActionResult ProjectList()
         {
-            return View();
+            if (Session["EmployeeID"] != null)
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Login", "Account");
+            }
         }
 
         public ActionResult ProjectForm()
         {
-            return View();
+            if (Session["EmployeeID"] != null)
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Login", "Account");
+            }
         }
 
         public ActionResult UserForm()
         {
-            return View();
+            if (Session["EmployeeID"] != null)
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Login", "Account");
+            }
         }
     }
 }
