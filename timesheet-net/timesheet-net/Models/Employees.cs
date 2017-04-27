@@ -27,7 +27,7 @@ namespace timesheet_net.Models
             this.Timesheets = new HashSet<Timesheets>();
             this.Timesheets1 = new HashSet<Timesheets>();
         }
-
+    
         public int EmployeeID { get; set; }
 
         [Required(ErrorMessage = "To pole jest wymagane!")]
@@ -53,10 +53,12 @@ namespace timesheet_net.Models
 
         public Nullable<System.DateTime> LastLogin { get; set; }
 
-        [Required(ErrorMessage = "To pole jest wymagane!")]
-        public byte EmployeeState { get; set; }
+        public byte LoginNo { get; set; }
 
-        public virtual EmployeeState EmployeeState1 { get; set; }
+        [Required(ErrorMessage = "To pole jest wymagane!")]
+        public byte EmployeeStateID { get; set; }
+
+        public virtual EmployeeState EmployeeState { get; set; }
         public virtual JobPositions JobPositions { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ProjectMembers> ProjectMembers { get; set; }
@@ -76,4 +78,3 @@ namespace timesheet_net.Models
         public virtual ICollection<Timesheets> Timesheets1 { get; set; }
     }
 }
-0
