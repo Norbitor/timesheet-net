@@ -26,18 +26,18 @@ namespace timesheet_net.Controllers
         }
 
         [HttpPost]
-        public ActionResult Login(Employees employee)
+        public ActionResult Login(string email, string passwd)
         {
             using (TimesheetDBEntities ctx = new TimesheetDBEntities())
             {
-                byte[] pass = Encoding.Default.GetBytes(employee.Password); //employee pass in bytes
+                byte[] pass = Encoding.Default.GetBytes(passwd); //employee pass in bytes
                 using (var sha256 = SHA256.Create())
                 {
                     byte[] hashPass = sha256.ComputeHash(pass); //256-bits employee pass
                     string hashPassHex = BitConverter.ToString(hashPass).Replace("-", string.Empty); //64 chars hash pass
 
                     //get login and pass from DB
-                    var empl = ctx.Employees.Where(e => e.EMail == employee.EMail && e.Password == hashPassHex).FirstOrDefault();
+                    var empl = ctx.Employees.Where(e => e.EMail == email && e.Password == hashPassHex).FirstOrDefault();
 
 
                     if (empl != null) //user typed proper data

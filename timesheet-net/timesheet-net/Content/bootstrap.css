@@ -2000,23 +2000,23 @@ textarea.input-lg {
 }
 
 .btn {
-  display: inline-block;
-  padding: 6px 12px;
-  margin-bottom: 0;
-  font-size: 14px;
-  font-weight: normal;
-  line-height: 1.428571429;
-  text-align: center;
-  white-space: nowrap;
-  vertical-align: middle;
-  cursor: pointer;
-  border: 1px solid transparent;
-  border-radius: 6px;
-  -webkit-user-select: none;
-     -moz-user-select: none;
-      -ms-user-select: none;
-       -o-user-select: none;
-          user-select: none;
+    display: inline-block;
+    padding: 6px 12px;
+    margin-bottom: 0;
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 1.428571429;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    cursor: pointer;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
 }
 
 .btn:focus {
@@ -2051,11 +2051,9 @@ fieldset[disabled] .btn {
 }
 
 .btn-default {
-    color: #eeeeee;
-    background-color: #67002c;
+    color: #333333;
+    background-color: #ffffff;
     border-color: #cccccc;
-    font-weight:bold;
-    width:100px;
 }
 
 .btn-default:hover,
@@ -2063,8 +2061,8 @@ fieldset[disabled] .btn {
 .btn-default:active,
 .btn-default.active,
 .open .dropdown-toggle.btn-default {
-  color: #eeeeee;
-  background-color: #8f023e;
+  color: #333333;
+  background-color: #ebebeb;
   border-color: #adadad;
 }
 
@@ -2089,7 +2087,7 @@ fieldset[disabled] .btn-default:active,
 .btn-default.disabled.active,
 .btn-default[disabled].active,
 fieldset[disabled] .btn-default.active {
-  /*background-color: #ffffff;*/
+  background-color: #ffffff;
   border-color: #cccccc;
 }
 
@@ -4823,19 +4821,16 @@ textarea.input-group-sm > .input-group-btn > .btn {
 
 /*adjusted*/
 .label {
-    display: inline-block;
-    padding: 8px .3em .3em 8px;
-    font-size: 14px;
+    display: inline;
+    padding: .2em .6em .3em;
+    font-size: 75%;
     font-weight: bold;
+    line-height: 1;
     color: #ffffff;
     text-align: center;
     white-space: nowrap;
-    vertical-align: middle;
+    vertical-align: baseline;
     border-radius: .25em;
-    width: 160px;
-    height: 34px;
-    margin-bottom: 0;
-    a
 }
 
 .label[href]:hover,
@@ -4850,7 +4845,7 @@ textarea.input-group-sm > .input-group-btn > .btn {
 }
 
 .label-default {
-    background-color: #67002c;
+    background-color: #999999;
 }
 
 .label-default[href]:hover,

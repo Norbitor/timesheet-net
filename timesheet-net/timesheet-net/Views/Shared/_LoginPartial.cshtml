@@ -8,7 +8,7 @@
         <nav class="nav navbar-nav navbar-right" style="padding-left:3px">
             <div class="container-fluid">
                 <ul class="nav navbar-nav">
-                    <li class="dropdown" style="width:115px; text-align:center" >
+                    <li class="dropdown" style="width:115px; text-align:center">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">Pracuj<span class="caret"></span></a>
                         <ul class="dropdown-menu" style="width:115px;text-align:left">
                             <li class="dropdown-header" style="color: antiquewhite">Timesheety</li>
@@ -23,7 +23,7 @@
                             @if ((int)Session["JobPosition"] == 1)
                             {
                                 <li>@Html.ActionLink("Raporty", "Index", "Home")</li>
-                                <li>@Html.ActionLink("Użytkownicy", "Index", "Home")</li>                               
+                                <li>@Html.ActionLink("Użytkownicy", "Index", "Home")</li>
                             }
                         </ul>
                     </li>
@@ -44,12 +44,63 @@
 }
 else
 {
-    <ul class="nav navbar-nav navbar-right">
+    <!--<div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <a href="#myModal" role="button" class="btn btn-default" data-toggle="modal" data-backdrop="static">Edytuj</a>
+        </div>
+    </div>-->
+
+     <!--<ul class="nav navbar-nav navbar-right">
+         <li>
+             <a href="#LogInModal" data-toggle="modal" data-backdrop="static">Zaloguj<span class="glyphicon glyphicon-log-in"></span></a>
+             <!--<a href="Url.Action("Login", "Account")">
         <li>
-            <a href="@Url.Action("Login", "Account")">
+     </ul>-->
+
+    <!--<ul class="nav navbar-nav navbar-right">
+        <li>
+            <a href="Url.Action("Login", "Account")">
                 Zaloguj się
                 <span class="glyphicon glyphicon-log-in"></span>
             </a>
         </li>
     </ul>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <ul class="nav navbar-nav navbar-right">
+                
+            </ul>
+        </div>
+    </div>
+        -->
+    
+    <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Zaloguj <span class="caret"></span></a>
+            <ul id="login-dp" class="dropdown-menu">
+                <li>
+                    @using (Html.BeginForm("Login", "Account", FormMethod.Post)){
+                    <div class="row">
+                        <div class="col-md-12">
+                            <form class="form" role="form" method="post" action="login" accept-charset="UTF-8" id="login-nav">
+                                <div class="form-group">
+                                    <label class="sr-only" for="exampleInputEmail2">E-Mail</label>
+                                    <input type="email" name="email" class="form-control" id="exampleInputEmail2" placeholder="E-Mail" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="sr-only" for="exampleInputPassword2">Hasło</label>
+                                    <input type="password" name="passwd" class="form-control" id="exampleInputPassword2" placeholder="Hasło" required>
+                                </div>
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-primary btn-block">Zaloguj</button>
+                                </div>                            
+                            </form>
+                            </div>
+                    </div>}
+                </li>
+            </ul>
+        </li>
+    </ul>
 }
+
