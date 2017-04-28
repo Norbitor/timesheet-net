@@ -2,11 +2,19 @@
     ViewBag.Title = "Home Page";
 }
 
-
 <div style="width:100%;  float:left; text-align:center">
     <img src="~/Pics/clocktimesheet.png" alt="" style="max-width:100%; padding-bottom:10px">
 </div>
+@if (Session["Login"] != null)
+{
+        <div class="alert alert-danger alert-dismissable fade in" style="top:10px">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <strong>Uwaga!</strong> Twoje konto zostało zablokowane z powodu zbyt wielu niepoprawnych prób logowania.
+            Proszę skontaktować sią z administratorem systemu.
+        </div>
+}
 <div class="container">
+   
     <div class="row;">
         <!-- first column - Timesheet -->
         <div class="col-md-4" style="text-align:center">

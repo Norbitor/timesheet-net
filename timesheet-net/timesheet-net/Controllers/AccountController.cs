@@ -12,19 +12,6 @@ namespace timesheet_net.Controllers
 {
     public class AccountController : Controller
     {
-        [HttpGet]
-        public ActionResult Login()
-        {
-            if (Session["EmployeeID"] == null)
-            {
-                return View();
-            }
-            else
-            {
-                return RedirectToAction("", "Home");
-            }
-        }
-
         [HttpPost]
         public ActionResult Login(string email, string passwd)
         {
@@ -37,27 +24,46 @@ namespace timesheet_net.Controllers
                     string hashPassHex = BitConverter.ToString(hashPass).Replace("-", string.Empty); //64 chars hash pass
 
                     //get login and pass from DB
-                    var empl = ctx.Employees.Where(e => e.EMail == email && e.Password == hashPassHex).FirstOrDefault();
-
-
-                    if (empl != null) //user typed proper data
+                    var empl = ctx.Employees.Where(e => e.EMail == email).FirstOrDefault();
+                    if (empl != null)
                     {
-                        Session["EmployeeID"] = empl.EmployeeID;
-                        Session["JobPosition"] = empl.JobPositionID;
-                        Session["NameSurname"] = empl.Name.ToString() + " " + empl.Surname.ToString();
-                        empl.LastLogin = DateTime.Now;
+                        if (empl.Password == hashPassHex) //user typed proper data
+                        {
+                            if (empl.LoginNo < 1)
+                            {
+                                Session["EmployeeID"] = empl.EmployeeID;
+                                Session["JobPosition"] = empl.JobPositionID;
+                                Session["NameSurname"] = empl.Name.ToString() + " " + empl.Surname.ToString();
+                                empl.LastLogin = DateTime.Now;
+                                empl.LoginNo = 0;
+                                Session["Login"] = null;
+                            }
+                            else
+                            {
+                                Session["Login"] = "Blocked";
+                                return RedirectToAction("", "Home");
+                            }
+                        }
+                        else //user typed incorrect password
+                        {
+                            if (empl.LoginNo < 1)
+                            {
+                                empl.LoginNo += 1;//add one because of failed login attempt
+                            }
+                            else
+                            {
+                                Session["Login"] = "Blocked";
+                                return RedirectToAction("", "Home");
+                            }
+                        }
                         ctx.Entry(empl).State = EntityState.Modified;
                         ctx.SaveChanges();
-                        return RedirectToAction("", "Home");
-                    }
-                    else
-                    {
-                        ModelState.AddModelError("", "Dane logowania są błędne!");
                     }
                 }
+                
             }
-
-            return View();
+            
+            return RedirectToAction("", "Home");
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
