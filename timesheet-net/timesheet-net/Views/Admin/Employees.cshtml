@@ -1,0 +1,63 @@
+﻿@model IEnumerable<timesheet_net.Models.Employees>
+@{ 
+    ViewBag.Title = "Lista pracowników";
+}
+<h2>@ViewBag.Title</h2>
+<p>Z poziomu tego widoku możesz zarządzać pracownikami w systemie. Pracownicy przebywający na urlopie
+    oznaczeni są kolorem szarym. Nieaktywni &ndash; oznaczeni są poprzez przekreślenie, wyszarzenie oraz
+    znajdują się zawsze na końcu listy.</p>
+
+<table class="table va-middle-table">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Użytkownik</th>
+            <th>E-mail</th>
+            <th>Telefon</th>
+            <th>Pozycja</th>
+            <th>Operacje</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var employee in Model)
+        {
+            <tr>
+                <td><input type="checkbox" /></td>
+                <td>@employee.Name @employee.Surname</td>
+                <td>@employee.EMail</td>
+                <td>@employee.Telephone</td>
+                <td>@employee.JobPositions.JobPositionName</td>
+                <td>
+                    <input type="button" class="btn btn-primary" value="Edytuj" />
+                    <div class="dropdown dropdown-ib">
+                        <button class="btn btn-danger dropdown-toggle" type="button" data-toggle="dropdown">
+                            Operacje
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-white">
+                            <li><a href="#">Deaktywuj</a></li>
+                            <li><a href="#">Urlop</a></li>
+                            <li><a href="#">Usuń</a></li>
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div>
+    <div class="dropdown dropdown-ib">
+        <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"
+                style="width: 152px; color: #000; background-color: #fafafa; font-weight: normal;">
+            Operacja grupowa
+            <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu dropdown-white" style="width: 152px;">
+            <li><a href="#">Deaktywuj/Aktywuj</a></li>
+            <li><a href="#">Urlop</a></li>
+            <li><a href="#">Usuń</a></li>
+        </ul>
+    </div>
+    <input type="button" class="btn btn-main" value="Dodaj użytkownika" />
+</div>
