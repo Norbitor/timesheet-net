@@ -276,7 +276,7 @@
     <Content Include="Views\Account\Edit.cshtml" />
     <Content Include="Views\Account\ChangePassword.cshtml" />
     <Content Include="Views\Admin\ProjectForm.cshtml" />
-    <Content Include="Views\Admin\UserForm.cshtml" />
+    <Content Include="Views\Admin\Employee.cshtml" />
     <Content Include="Views\Admin\ProjectList.cshtml" />
     <Content Include="Views\Report\Show.cshtml" />
     <Content Include="Views\Report\Review.cshtml" />

@@ -3,6 +3,7 @@
     ViewBag.Title = "Lista pracowników";
 }
 <h2>@ViewBag.Title</h2>
+<hr/>
 <p>Z poziomu tego widoku możesz zarządzać pracownikami w systemie. Pracownicy przebywający na urlopie
     oznaczeni są kolorem szarym. Nieaktywni &ndash; oznaczeni są poprzez przekreślenie, wyszarzenie oraz
     znajdują się zawsze na końcu listy.</p>
@@ -59,5 +60,5 @@
             <li><a href="#">Usuń</a></li>
         </ul>
     </div>
-    <input type="button" class="btn btn-main" value="Dodaj użytkownika" />
+    @Html.ActionLink("Dodaj użytkownika", "Employee", "Admin", null, new { @class = "btn btn-default", @style="width: 152px;" })
 </div>
