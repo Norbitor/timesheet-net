@@ -3233,7 +3233,7 @@ input[type="button"].btn-block {
 .dropdown-toggle:focus {
   outline: 0;
 }
-/* Adjusted settings*/
+
 .dropdown-menu {
   position: absolute;
   top: 100%;
@@ -3241,19 +3241,18 @@ input[type="button"].btn-block {
   z-index: 1000;
   display: none;
   float: left;
-  min-width: 100px;
+  min-width: 160px;
   padding: 5px 0;
   margin: 2px 0 0;
   font-size: 14px;
   list-style: none;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: #ffffff;
   border: 1px solid #cccccc;
-  border: 1px solid rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(0, 0, 0, 0.15);
   border-radius: 4px;
   -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
           box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
   background-clip: padding-box;
-  /*width:125px;*/
 }
 
 .dropdown-menu.pull-right {
@@ -3268,26 +3267,23 @@ input[type="button"].btn-block {
   background-color: #e5e5e5;
 }
 
-
 .dropdown-menu > li > a {
   display: block;
   padding: 3px 20px;
   clear: both;
   font-weight: normal;
   line-height: 1.428571429;
-  color: #999;
+  color: #333333;
   white-space: nowrap;
-  opacity: 0.9;
-  text-align:left;
 }
 
 .dropdown-menu > li > a:hover,
 .dropdown-menu > li > a:focus {
   color: #ffffff;
   text-decoration: none;
-  background-color: #3c0425; /*kolor paska po najechaniu*/
+  background-color: #428bca;
 }
-/* End adjusted settings */
+
 .dropdown-menu > .active > a,
 .dropdown-menu > .active > a:hover,
 .dropdown-menu > .active > a:focus {
@@ -3821,21 +3817,17 @@ textarea.input-group-sm > .input-group-btn > .btn {
   display: block;
 }
 
-/* Adjusted menu */
 .nav > li > a {
   position: relative;
   display: block;
-  padding: 1px 15px;
-  color: #999
+  padding: 10px 15px;
 }
 
 .nav > li > a:hover,
 .nav > li > a:focus {
   text-decoration: none;
-  background-color: rgba(0, 0, 0, 0.5);
-  color: #fff /* bright text color in dropdown menu*/
+  background-color: #eeeeee;
 }
-/* End adjusted menu */
 
 .nav > li.disabled > a {
   color: #999999;
@@ -4819,7 +4811,6 @@ textarea.input-group-sm > .input-group-btn > .btn {
   background-color: #ffffff;
 }
 
-/*adjusted*/
 .label {
     display: inline;
     padding: .2em .6em .3em;
