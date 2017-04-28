@@ -159,7 +159,9 @@
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ProjectController.cs" />
     <Compile Include="Controllers\ReportController.cs" />
+    <Compile Include="Controllers\TimesheetController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -280,6 +282,9 @@
     <Content Include="Views\Admin\ProjectList.cshtml" />
     <Content Include="Views\Report\Show.cshtml" />
     <Content Include="Views\Report\Review.cshtml" />
+    <Content Include="Views\Timesheet\Current.cshtml" />
+    <Content Include="Views\Timesheet\Disapproved.cshtml" />
+    <Content Include="Views\Project\Overview.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

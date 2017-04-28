@@ -14,13 +14,13 @@
                         <ul class="dropdown-menu dropdown-menu-main" style="width:115px;text-align:left">
                             <li class="dropdown-header" style="color: antiquewhite">Timesheety</li>
                             <li>
-                                @Html.ActionLink("Aktualne", "Index", "Home")
+                                @Html.ActionLink("Aktualne", "Current", "Timesheet")
                             </li>
                             <li>
-                                @Html.ActionLink("Odrzucone", "Index", "Home")
+                                @Html.ActionLink("Odrzucone", "Disapproved", "Timesheet")
                             </li>
                             <li class="divider"></li>
-                            <li>@Html.ActionLink("Projekty", "Index", "Home")</li>
+                            <li>@Html.ActionLink("Projekty", "Overview", "Project")</li>
                             @if ((int)Session["JobPosition"] == 1)
                             {
                                 <li>@Html.ActionLink("Raporty", "Index", "Home")</li>

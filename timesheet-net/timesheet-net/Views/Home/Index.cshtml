@@ -25,7 +25,7 @@
                 }
                 else
                 {
-                    <input type="button" class="btn btn-default btn-main" value="Timesheet" onclick="@("window.location.href='" + @Url.Action("Index", "Home") + "'");" />
+                    <input type="button" class="btn btn-default btn-main" value="Timesheet" onclick="@("window.location.href='" + @Url.Action("Current", "Timesheet") + "'");" />
                     <p style="padding-top:15px">
                         <span class="glyphicon glyphicon-th-list"></span>  Wypełnij wybrany timesheet
                     </p>
@@ -47,14 +47,14 @@
                 }
                 else
                 {
-                    <input type="button" class="btn btn-default btn-main" value="Projekt" onclick="@("window.location.href='" + @Url.Action("Index", "Home") + "'");" />
+                    <input type="button" class="btn btn-default btn-main" value="Projekt" onclick="@("window.location.href='" + @Url.Action("Overview", "Project") + "'");" />
                     <p style="padding-top:15px">
                         <span class="glyphicon glyphicon-tasks"></span>  Podejrzyj szczegóły projektu
                     </p>
                 }
             </div>
         </div>
-        <!-- thirs column - Personal data edition -->
+        <!-- third column - Personal data edition -->
         <div class="col-md-4" style="text-align:center">
             <div class="form-group">
                 <br>
@@ -68,7 +68,7 @@
                 }
                 else
                 {
-                    <input type="button" class="btn btn-default btn-main" value="Dane osobowe" onclick="@("window.location.href='" + @Url.Action("Index", "Home") + "'");" />
+                    <input type="button" class="btn btn-default btn-main" value="Dane osobowe" onclick="@("window.location.href='" + @Url.Action("Edit", "Account") + "'");" />
                     <p style="padding-top:15px;">
                         <span class="glyphicon glyphicon-user"></span>  Edytuj dane
                     </p>

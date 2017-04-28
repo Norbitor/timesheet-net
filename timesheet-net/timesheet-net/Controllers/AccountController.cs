@@ -165,17 +165,16 @@ namespace timesheet_net.Controllers
                                     foundEmployee.Password = hashNewPassHex;
                                     ctx.Entry(foundEmployee).State = EntityState.Modified;
                                     ctx.SaveChanges();
+                                    ViewData["Message"] = "OK";
                                 }
                                 else
                                 {
                                     ModelState.AddModelError("", "Podane hasła nie zgadzają się!");
-                                    return View();
                                 }
                             }
                             else
                             {
                                 ModelState.AddModelError("", "Podane stare hasło jest nieprawidłowe!");
-                                return View();
                             }
 
                         }
@@ -185,10 +184,9 @@ namespace timesheet_net.Controllers
             else
             {
                 ModelState.AddModelError("", "Przynajmniej jedno z wymaganych pól jest nieuzupełnione!");
-                return View();
+                
             }
-                return RedirectToAction("", "Home");
-            
+            return View();
         }
     }
 }
