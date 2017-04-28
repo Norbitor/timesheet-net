@@ -106,12 +106,16 @@ namespace timesheet_net.Controllers
                     string typedEmail = foundEmpl.EMail;
                     if (typedEmail == ctx.Employees.Where(x => x.EMail == typedEmail && x.EmployeeID!=employeeID).Select(x => x.EMail).FirstOrDefault())
                     {
+                        ModelState.AddModelError("", "Podany e-mail jest już zajęty");
+                    }
+                    else
+                    {
                         foundEmpl.Name = empl.Name;
                         foundEmpl.Surname = empl.Surname;
                         foundEmpl.Telephone = empl.Telephone;
                         ctx.Entry(foundEmpl).State = EntityState.Modified;
                         ctx.SaveChanges();
-                        return RedirectToAction("Index", "Home");
+                        ViewData["Message"] = "OK";
                     }
                 }
             }
