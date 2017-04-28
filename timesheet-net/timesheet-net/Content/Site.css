@@ -28,6 +28,12 @@ textarea {
      color: #fff;
 }
 
+.btn-bold {
+    font-weight: 700;
+    color: black;
+    background-color: ButtonFace;
+}
+
 .btn-main:hover {
     background-color: #18020f;
     color: #fff;
