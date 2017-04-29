@@ -54,7 +54,7 @@ namespace timesheet_net.Models
         public byte LoginNo { get; set; }
         [Required(ErrorMessage = "To pole jest wymagane!")]
         public byte EmployeeStateID { get; set; }
-    
+
         public virtual EmployeeState EmployeeState { get; set; }
         public virtual JobPositions JobPositions { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

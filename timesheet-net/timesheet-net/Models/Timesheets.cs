@@ -28,11 +28,8 @@ namespace timesheet_net.Models
         public Nullable<int> LastEditedBy { get; set; }
         public Nullable<System.DateTime> LastEditDate { get; set; }
         public string Comment { get; set; }
-        public int CreatedBy { get; set; }
-        public System.DateTime CreationDate { get; set; }
     
         public virtual Employees Employees { get; set; }
-        public virtual Employees Employees1 { get; set; }
         public virtual ProjectMembers ProjectMembers { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Tasks> Tasks { get; set; }

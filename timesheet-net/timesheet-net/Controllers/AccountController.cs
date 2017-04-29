@@ -12,6 +12,8 @@ namespace timesheet_net.Controllers
 {
     public class AccountController : Controller
     {
+        int incorrectPasswordNo = 10; //counter of incorrect login attempts
+
         [HttpPost]
         public ActionResult Login(string email, string passwd)
         {
@@ -29,13 +31,13 @@ namespace timesheet_net.Controllers
                     {
                         if (empl.Password == hashPassHex) //user typed proper data
                         {
-                            if (empl.LoginNo < 1)
+                            if (empl.LoginNo < incorrectPasswordNo)
                             {
                                 Session["EmployeeID"] = empl.EmployeeID;
                                 Session["JobPosition"] = empl.JobPositionID;
                                 Session["NameSurname"] = empl.Name.ToString() + " " + empl.Surname.ToString();
                                 empl.LastLogin = DateTime.Now;
-                                empl.LoginNo = 0;
+                                empl.LoginNo = 0; // 0 the counter
                                 Session["Login"] = null;
                             }
                             else
@@ -46,7 +48,7 @@ namespace timesheet_net.Controllers
                         }
                         else //user typed incorrect password
                         {
-                            if (empl.LoginNo < 1)
+                            if (empl.LoginNo < incorrectPasswordNo)
                             {
                                 empl.LoginNo += 1;//add one because of failed login attempt
                             }
