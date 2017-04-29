@@ -1,4 +1,5 @@
-﻿
+﻿@model List<SelectListItem>
+
 @{
     ViewBag.Title = "Current";
 }
@@ -13,14 +14,17 @@
     <strong>Uwaga!</strong> Pamiętaj, by po skończeniu pracy zapisać jej rezultat, w przeciwnym wypadku zmiany zostaną utracone!
 </div>
 
-<div class="row">
-    <div class="col-sm-4">
-        <div class="panel panel-default">
-            <div class="panel-heading">Projekt</div>
-            <div class="panel-body">Projekt1</div>
-        </div>
+
+<div class="panel panel-default" style="width:auto">
+    <div class="panel-heading">Wybierz projekt, a następnie kliknij przejdź, by wyświetlić <b>Timesheet</b></div>
+    <div class="panel-body">
+        @using (Html.BeginForm())
+        {
+            @Html.DropDownList("listOfProjects", Model, htmlAttributes: new { @class = "form-control dropdown", @style = "width:auto; display:inline-table;" })
+            <input type="submit" value="Przejdź" class="btn btn-default btn-main" style="width:80px; margin-left:6px;" />
+        }
     </div>
-    <div class="col-sm-8"></div>
 </div>
+
 
 
