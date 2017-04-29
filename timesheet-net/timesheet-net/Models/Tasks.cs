@@ -17,13 +17,13 @@ namespace timesheet_net.Models
         public int TaskID { get; set; }
         public int TimesheetID { get; set; }
         public string TaskName { get; set; }
-        public decimal MondayHours { get; set; }
-        public decimal TuesdayHours { get; set; }
-        public decimal WednesdayHours { get; set; }
-        public decimal ThursdayHours { get; set; }
-        public decimal FridayHours { get; set; }
-        public decimal SaturdayHours { get; set; }
-        public decimal SundayHours { get; set; }
+        public System.TimeSpan MondayHours { get; set; }
+        public System.TimeSpan TuesdayHours { get; set; }
+        public System.TimeSpan WednesdayHours { get; set; }
+        public System.TimeSpan ThursdayHours { get; set; }
+        public System.TimeSpan FridayHours { get; set; }
+        public System.TimeSpan SaturdayHours { get; set; }
+        public System.TimeSpan SundayHours { get; set; }
         public string Comment { get; set; }
         public Nullable<int> LastEditedBy { get; set; }
         public Nullable<System.DateTime> LastEditDate { get; set; }
