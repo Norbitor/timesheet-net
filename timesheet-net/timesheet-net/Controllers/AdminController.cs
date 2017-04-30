@@ -16,7 +16,7 @@ namespace timesheet_net.Controllers
         {
             if (Session["EmployeeID"] == null)
             {
-                return RedirectToAction("Login", "Account");
+                return RedirectToAction("", "Home");
             }
             CheckUserPermission();
             var entities = new TimesheetDBEntities();
@@ -24,36 +24,67 @@ namespace timesheet_net.Controllers
         }
 
         [HttpGet]
-        public ActionResult Employee()
+        public ActionResult Employee(int? id)
         {
             if (Session["EmployeeID"] == null)
             {
-                return RedirectToAction("Login", "Account");
+                return RedirectToAction("", "Home");
             }
             CheckUserPermission();
-            PopulateJobPositionsList();
-            return View();
+            if (id == null)
+            {
+                PopulateJobPositionsList();
+                return View();
+            }
+            using (TimesheetDBEntities ctx = new TimesheetDBEntities())
+            {
+                var employee = (from empl in ctx.Employees
+                               where empl.EmployeeID == id
+                               select empl).FirstOrDefault();
+                PopulateJobPositionsList(employee.JobPositionID);
+                return View(employee);
+            }
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Employee([Bind(Include = "EMail, Password, Name, Surname, Telephone, JobPositionID")] Employees empl)
+        public ActionResult Employee([Bind(Include = "EmployeeID, EMail, Password, Name, Surname, Telephone, JobPositionID")] Employees empl)
         {
             if (Session["EmployeeID"] == null)
             {
-                return RedirectToAction("Login", "Account");
+                return RedirectToAction("", "Home");
             }
             CheckUserPermission();
+            
             if (empl.EMail != null && empl.Name != null && empl.Surname != null && empl.Telephone != null)
             {
                 using (TimesheetDBEntities ctx = new TimesheetDBEntities())
                 {
-                    SHA256 sha256 = SHA256.Create();
-                    byte[] hashPass = sha256.ComputeHash(Encoding.Default.GetBytes(empl.Password)); //256-bits employee pass
-                    string hashPassHex = BitConverter.ToString(hashPass).Replace("-", string.Empty); //64 chars hash pass
-                    empl.Password = hashPassHex;
-                    empl.EmployeeStateID = 1; // TODO: Eliminate this magic value
-                    ctx.Employees.Add(empl);
+                    if (empl.EmployeeID == 0)
+                    {
+                        SHA256 sha256 = SHA256.Create();
+                        byte[] hashPass = sha256.ComputeHash(Encoding.Default.GetBytes(empl.Password)); //256-bits employee pass
+                        string hashPassHex = BitConverter.ToString(hashPass).Replace("-", string.Empty); //64 chars hash pass
+                        empl.Password = hashPassHex;
+                        empl.EmployeeStateID = 1; // TODO: Eliminate this magic value
+                        ctx.Employees.Add(empl);
+                    } else
+                    {
+                        var r = ctx.Employees.FirstOrDefault(e => e.EmployeeID == empl.EmployeeID);
+                        r.EMail = empl.EMail;
+                        r.Name = empl.Name;
+                        r.Surname = empl.Surname;
+                        r.Telephone = empl.Telephone;
+                        r.JobPositionID = empl.JobPositionID;
+                        if (r.Password != empl.Password)
+                        {
+                            SHA256 sha256 = SHA256.Create();
+                            byte[] hashPass = sha256.ComputeHash(Encoding.Default.GetBytes(empl.Password)); //256-bits employee pass
+                            string hashPassHex = BitConverter.ToString(hashPass).Replace("-", string.Empty); //64 chars hash pass
+                            r.Password = hashPassHex;
+                        }
+                        ctx.Entry(r).State = EntityState.Modified;
+                    }                    
                     ctx.SaveChanges();
                     return RedirectToAction("Employees", "Admin");
                 }
@@ -65,7 +96,7 @@ namespace timesheet_net.Controllers
         {
             if (Session["EmployeeID"] == null)
             {
-                return RedirectToAction("Login", "Account");
+                return RedirectToAction("", "Home");
             }
             CheckUserPermission();
             return View();
@@ -75,7 +106,7 @@ namespace timesheet_net.Controllers
         {
             if (Session["EmployeeID"] == null)
             {
-                return RedirectToAction("Login", "Account");
+                return RedirectToAction("", "Home");
             }
             CheckUserPermission();
             return View();

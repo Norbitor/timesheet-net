@@ -1,20 +1,36 @@
 ﻿@model timesheet_net.Models.Employees
 @{
-    ViewBag.Title = "Nowy pracownik";
+    if(Model == null) {
+        ViewBag.Title = "Nowy pracownik";
+    } else
+    {
+        ViewBag.Title = "Edycja pracownika";
+    }
 }
 
 <h2>@ViewBag.Title</h2>
 <hr/>
-<p>
-    Aby dodać konto pracownika wypełnij poniższy formularz. Dodany pracownik będzie mógł zalogować się
-    do aplikacji natychmiast po dodaniu. Klikając "Anuluj", użytkownik nie zostanie utworzony,
-    a przeglądarka powróci do widoku "Listy pracowników".
-</p>
+@if (Model == null)
+{
+    <p>
+        Aby dodać konto pracownika wypełnij poniższy formularz. Dodany pracownik będzie mógł zalogować się
+        do aplikacji natychmiast po dodaniu. Klikając "Anuluj", użytkownik nie zostanie utworzony,
+        a przeglądarka powróci do widoku "Listy pracowników".
+    </p>
+}
+else
+{
+    <p>
+        Aby zmienić dane konta wybranego pracownika wypełnij poniższy formularz. Zmiany będą odzwierciedlone
+        w systemie natychmiast po przetworzeniu przez serwer. Klikając "Anuluj", rezygnujesz z wprowadzenia
+        zmian, a przeglądarka powróci do widoku "Listy pracowników".
+    </p>
+}
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-
+    @Html.HiddenFor(model => model.EmployeeID)
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     <div class="form-group">
         @Html.LabelFor(model => model.EMail, "Adres E-Mail:")

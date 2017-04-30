@@ -29,7 +29,7 @@
                 <td>@employee.Telephone</td>
                 <td>@employee.JobPositions.JobPositionName</td>
                 <td>
-                    <input type="button" class="btn btn-primary" value="Edytuj" />
+                    @Html.ActionLink("Edytuj", "Employee", "Admin", new { id = @employee.EmployeeID }, new { @class = "btn btn-primary" })
                     <div class="dropdown dropdown-ib">
                         <button class="btn btn-danger dropdown-toggle" type="button" data-toggle="dropdown">
                             Operacje
