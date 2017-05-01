@@ -7,6 +7,7 @@ using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using timesheet_net.Models;
+using timesheet_net.Utils.Security;
 
 namespace timesheet_net.Controllers
 {
@@ -20,7 +21,7 @@ namespace timesheet_net.Controllers
             }
             CheckUserPermission();
             var entities = new TimesheetDBEntities();
-            return View(entities.Employees.ToList());
+            return View(entities.Employees.OrderBy(e => e.EmployeeStateID).ToList());
         }
 
         [HttpGet]
@@ -55,41 +56,50 @@ namespace timesheet_net.Controllers
                 return RedirectToAction("", "Home");
             }
             CheckUserPermission();
-            
             if (empl.EMail != null && empl.Name != null && empl.Surname != null && empl.Telephone != null)
             {
-                using (TimesheetDBEntities ctx = new TimesheetDBEntities())
+                if (empl.EmployeeID == 0)
                 {
-                    if (empl.EmployeeID == 0)
-                    {
-                        SHA256 sha256 = SHA256.Create();
-                        byte[] hashPass = sha256.ComputeHash(Encoding.Default.GetBytes(empl.Password)); //256-bits employee pass
-                        string hashPassHex = BitConverter.ToString(hashPass).Replace("-", string.Empty); //64 chars hash pass
-                        empl.Password = hashPassHex;
-                        empl.EmployeeStateID = 1; // TODO: Eliminate this magic value
-                        ctx.Employees.Add(empl);
-                    } else
-                    {
-                        var r = ctx.Employees.FirstOrDefault(e => e.EmployeeID == empl.EmployeeID);
-                        r.EMail = empl.EMail;
-                        r.Name = empl.Name;
-                        r.Surname = empl.Surname;
-                        r.Telephone = empl.Telephone;
-                        r.JobPositionID = empl.JobPositionID;
-                        if (r.Password != empl.Password)
-                        {
-                            SHA256 sha256 = SHA256.Create();
-                            byte[] hashPass = sha256.ComputeHash(Encoding.Default.GetBytes(empl.Password)); //256-bits employee pass
-                            string hashPassHex = BitConverter.ToString(hashPass).Replace("-", string.Empty); //64 chars hash pass
-                            r.Password = hashPassHex;
-                        }
-                        ctx.Entry(r).State = EntityState.Modified;
-                    }                    
-                    ctx.SaveChanges();
-                    return RedirectToAction("Employees", "Admin");
+                    AddEmployee(empl);
+                } else
+                {
+                    AlterEmployee(empl);
                 }
+                return RedirectToAction("Employees", "Admin");
             }
             return View();
+        }
+
+        private void AddEmployee(Employees empl)
+        {
+            using (TimesheetDBEntities ctx = new TimesheetDBEntities())
+            {
+                var hasher = new Sha256PasswordUtil();
+                empl.Password = hasher.hash(empl.Password);
+                empl.EmployeeStateID = 1;
+                ctx.Employees.Add(empl);
+                ctx.SaveChanges();
+            }
+        }
+
+        private void AlterEmployee(Employees empl)
+        {
+            using (TimesheetDBEntities ctx = new TimesheetDBEntities())
+            {
+                var hasher = new Sha256PasswordUtil();
+                var r = ctx.Employees.FirstOrDefault(e => e.EmployeeID == empl.EmployeeID);
+                r.EMail = empl.EMail;
+                r.Name = empl.Name;
+                r.Surname = empl.Surname;
+                r.Telephone = empl.Telephone;
+                r.JobPositionID = empl.JobPositionID;
+                if (r.Password != empl.Password)
+                {
+                    r.Password = hasher.hash(empl.Password);
+                }
+                ctx.Entry(r).State = EntityState.Modified;
+                ctx.SaveChanges();
+            }
         }
 
         public ActionResult ProjectList()
@@ -114,7 +124,8 @@ namespace timesheet_net.Controllers
 
         private void CheckUserPermission()
         {
-            if ((int)Session["JobPosition"] != 1) // TODO: Replace this magic number with value from DB
+            PermissionUtil perm = new PermissionUtil();
+            if (!perm.IsAdministrator((int)Session["JobPosition"])) // TODO: Replace this magic number with value from DB
             {
                 throw new UnauthorizedAccessException("Nie masz wystarczających uprawnień do oglądania tej witryny.");
             }
