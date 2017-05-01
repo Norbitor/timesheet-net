@@ -31,7 +31,7 @@ textarea {
 .btn-bold {
     font-weight: 700;
     color: black;
-    background-color: ButtonFace;
+    border: 1px solid #ccc;
 }
 
 .btn-main:hover {
@@ -47,6 +47,11 @@ textarea {
 .dropdown-white {
     background-color: white;
     margin-top: 0;
+}
+
+.dropdown-white > li > a:hover,
+.dropdown-white > li > a:focus {
+    background-color: #3c0425;
 }
 
 .va-middle-table td {
