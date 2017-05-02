@@ -111,7 +111,7 @@ namespace timesheet_net.Controllers
                 {
                     int employeeID = (int)Session["EmployeeID"];
                     var foundEmpl = ctx.Employees.Where(x => x.EmployeeID == employeeID).FirstOrDefault();
-                    string typedEmail = foundEmpl.EMail;
+                    string typedEmail = empl.EMail;
                     if (typedEmail == ctx.Employees.Where(x => x.EMail == typedEmail && x.EmployeeID!=employeeID).Select(x => x.EMail).FirstOrDefault())
                     {
                         ModelState.AddModelError("", "Podany e-mail jest już zajęty");
