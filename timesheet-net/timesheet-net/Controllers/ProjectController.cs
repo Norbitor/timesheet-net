@@ -3,15 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using timesheet_net.Models;
 
 namespace timesheet_net.Controllers
 {
     public class ProjectController : Controller
     {
-        // GET: Project
         public ActionResult Overview()
         {
-            return View();
+            if (Session["EmployeeID"] == null)
+            {
+                return RedirectToAction("", "Home");
+            }
+            var entities = new TimesheetDBEntities();
+            return View(entities.Projects.ToList());
         }
     }
 }

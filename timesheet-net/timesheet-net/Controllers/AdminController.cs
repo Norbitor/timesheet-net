@@ -102,30 +102,10 @@ namespace timesheet_net.Controllers
             }
         }
 
-        public ActionResult ProjectList()
-        {
-            if (Session["EmployeeID"] == null)
-            {
-                return RedirectToAction("", "Home");
-            }
-            CheckUserPermission();
-            return View();
-        }
-
-        public ActionResult ProjectForm()
-        {
-            if (Session["EmployeeID"] == null)
-            {
-                return RedirectToAction("", "Home");
-            }
-            CheckUserPermission();
-            return View();
-        }
-
         private void CheckUserPermission()
         {
             PermissionUtil perm = new PermissionUtil();
-            if (!perm.IsAdministrator((int)Session["JobPosition"])) // TODO: Replace this magic number with value from DB
+            if (!perm.IsAdministrator((int)Session["JobPosition"]))
             {
                 throw new UnauthorizedAccessException("Nie masz wystarczających uprawnień do oglądania tej witryny.");
             }

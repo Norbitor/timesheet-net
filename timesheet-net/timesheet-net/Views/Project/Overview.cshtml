@@ -1,7 +1,60 @@
-﻿
+﻿@model IEnumerable<timesheet_net.Models.Projects>
 @{
-    ViewBag.Title = "Overview";
+    ViewBag.Title = "Przegląd projektów";
 }
+<h2>@ViewBag.Title</h2>
+<p>
+    Z poziomu tego widoku możesz zarządzać projektami. Projekty nieaktywne oraz zakończone wyświetlane są zawsze
+    na dole listy.
+</p>
 
-<h2>Overview</h2>
+<table class="table va-middle-table">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Nazwa projektu</th>
+            <th>Szef projektu</th>
+            <th>Status</th>
+            <th>Operacje</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var project in Model)
+        {
+            <tr>
+                <td><input type="checkbox" /></td>
+                <td>@project.Name</td>
+                <td>@project.Employees.Name @project.Employees.Surname</td>
+                <td>@project.ProjectStates.ProjectStateName</td>
+                <td>
+                    <input type="button" class="btn btn-primary" value="Edytuj" />
+                    <div class="dropdown dropdown-ib">
+                        <button class="btn btn-danger dropdown-toggle" type="button" data-toggle="dropdown">
+                            Operacje
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-white">
+                            <li><a href="#">Zakończ</a></li>
+                            <li><a href="#">Usuń</a></li>
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
 
+<div>
+    <div class="dropdown dropdown-ib">
+        <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"
+                style="width: 152px; color: #000; background-color: #fafafa; font-weight: normal;">
+            Operacja grupowa
+            <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu dropdown-white" style="width: 152px;">
+            <li><a href="#">Zakończ/Wznów</a></li>
+            <li><a href="#">Usuń</a></li>
+        </ul>
+    </div>
+    <input type="button" class="btn btn-default" style="width:auto;" value="Dodaj użytkownika" />
+</div>
