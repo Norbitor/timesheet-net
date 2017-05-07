@@ -18,5 +18,24 @@ namespace timesheet_net.Controllers
             var entities = new TimesheetDBEntities();
             return View(entities.Projects.ToList());
         }
+
+        [HttpGet]
+        public ActionResult New()
+        {
+            if (Session["EmployeeID"] == null)
+            {
+                return RedirectToAction("", "Home");
+            }
+            PopulateSuperiorsList();
+            return View();
+        }
+
+        private void PopulateSuperiorsList(object selectedEmployee = null)
+        {
+            var ctx = new TimesheetDBEntities();
+            var employees = from j in ctx.Employees
+                            select j;
+            ViewBag.SuperiorID = new SelectList(employees, "EmployeeID", "Surname", selectedEmployee);
+        }
     }
 }

@@ -1,37 +1,38 @@
-﻿@{
+﻿@model timesheet_net.Models.Projects
+@{
     ViewBag.Title = "Nowy Projekt";
 }
 
 <h2>@ViewBag.Title</h2>
-<form>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger"})
     <div class="form-group">
-        <label for="exampleInputEmail1">Nazwa projektu</label>
-        <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Nazwa projektu">
+        @Html.LabelFor(model => model.Name, "Nazwa projektu:")
+        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
     </div>
     <div class="form-group">
-        <label for="exampleInputEmail1">Szef projektu</label>
-        <div class="dropdown">
-            <input type="text" class="form-control" data-toggle="dropdown" aria-haspopup="true" placeholder="Szef projektu" />
-            <ul class="dropdown-menu dropdown-white" aria-labelledby="dropdownMenu1" style="width: 280px;">
-                <li><a href="#">Jan Kowalski</a></li>
-                <li><a href="#">Karol Szary</a></li>
-            </ul>
-        </div>
+        <label class="control-label" for="JobPositionID">Szef projektu:</label>
+        @Html.DropDownList("SuperiorID", String.Empty)
+        @Html.ValidationMessageFor(model => model.SuperiorID, "", new { @class = "text-danger" })
     </div>
     <div class="form-group">
-        <label for="exampleInputEmail1">Data rozpoczęcia</label>
-        <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Data rozpoczęcia">
+        @Html.LabelFor(model => model.Start, "Data rozpoczęcia:")
+        @Html.EditorFor(model => model.Start, new { htmlAttributes = new { @class = "form-control"} })
+        @Html.ValidationMessageFor(model => model.Start, "", new { @class = "text-danger "})
     </div>
     <div class="form-group">
-        <label for="exampleInputEmail1">Data zakończenia</label>
-        <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Data zakończenia">
+        @Html.LabelFor(model => model.Finish, "Data zakończenia:")
+        @Html.EditorFor(model => model.Finish, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.Finish, "", new { @class= "text-danger"})
     </div>
-    <div class="form-group">
-        <label>Członkowie projektu</label><br />
-        <input type="text" class="form-control" value="Jan Kowalski,Wojciech Nowak,Andrzej Wolski,Karol Szary" data-role="tagsinput" />
-    </div>
-    
-    
-    <button type="submit" class="btn btn-default">Dodaj</button>
-    <button type="button" class="btn" style="width: 100px; font-weight:700;">Anuluj</button>
-</form>
+
+    <button type="submit" class="btn btn-default btn-main">Dodaj</button>
+    @Html.ActionLink("Anuluj", "Overview", "Project", null, new { @class = "btn btn-bold", @style = "width: 100px;" })
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
