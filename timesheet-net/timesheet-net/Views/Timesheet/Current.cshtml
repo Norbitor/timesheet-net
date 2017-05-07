@@ -19,40 +19,90 @@ else
         W tej sekcji masz możliwość edycji swojego timesheetu. Możesz wybrać projekt do którego jesteś przypisany,
         a następnie pracować nad zdefiniowanymi wcześniej zadaniami lub dodać nowe.
     </div>
-
     //timesheet
     //redundant security
-    if (ViewBag.timesheetStart != null && ViewBag.timesheetFinish != null && ViewBag.timesheetStateName != null && ViewBag.projectName != null)
+    if (ViewBag.timesheetStart != null && ViewBag.timesheetFinish != null  && ViewBag.projectName != null)
     {
         //dropdown menu
-    <div class="panel panel-default" style="width:auto">
-     <div class="panel-heading">Wybierz projekt, a następnie kliknij przejdź, by wyświetlić <b>Timesheet</b></div>
-     <div class="panel-body">
+        <div class="panel panel-default" style="width:auto">
+        <div class="panel-heading">Wybierz projekt, a następnie kliknij przejdź, by wyświetlić <b>Timesheet</b></div>
+        <div class="panel-body">
         @using (Html.BeginForm())
         {
             @Html.DropDownList("listOfProjects", Model, htmlAttributes: new { @class = "form-control dropdown", @style = "width:auto; display:inline-table;" })
             <input type="submit" value="Przejdź" class="btn btn-default btn-main" style="width:80px; margin-left:6px;" />
         }
-    </div>
-    </div>
-   
-        <div class="panel panel-primary">
+        </div>
+        </div>
+        <div class="panel panel-primary" width:auto">
             <div class="panel-heading">
                 <div class="col">                     
-                    <div class="row">
-                        <div class="col-sm-10">
+                    <div class="row">                  
+                        <div class="col-sm-10">    
                             <!--name of project-->
-                            <b>@ViewBag.projectName</b><br>
+                            <b style="font-size: 20px">@ViewBag.projectName</b><br>
                             <!-- time -->
                             <b>od:</b> @ViewBag.timesheetStart <b>do:</b> @ViewBag.timesheetFinish
                         </div>
-                        <div class="col-sm-2" style="text-align:center">
-                            <br><b>Stan:</b> @ViewBag.timesheetStateName <br>
-                        </div>
                     </div>
                 </div>                     
-            </div>           
-            <div class="panel-body">Panel Content</div>
+            </div>
+            <!--body of the timesheet-->
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Zadanie</th>
+                                <th>pn.</th>
+                                <th>wt.</th>
+                                <th>śr.</th>
+                                <th>czw.</th>
+                                <th>pt.</th>
+                                <th>sob.</th>
+                                <th>niedz.</th>
+                                <th></th>
+                                <th>Łącznie</th>
+                                <th>Komentarz</th>
+                                <th>Operacja</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!--addition row to add new task-->
+                             <tr>
+                                <td>Zadanie</td>
+                                <td><input type="number" min="0.00" step="0.25" value="0" style="width: 4.5em;"></td>
+                                <td><input type="number" min="0.00" step="0.25" value="0" style="width: 4.5em;"></td>
+                                <td><input type="number" min="0.00" step="0.25" value="0" style="width: 4.5em;"></td>
+                                <td><input type="number" min="0.00" step="0.25" value="0" style="width: 4.5em;"></td>
+                                <td><input type="number" min="0.00" step="0.25" value="0" style="width: 4.5em;"></td>
+                                <td><input type="number" min="0.00" step="0.25" value="0" style="width: 4.5em;"></td>
+                                <td><input type="number" min="0.00" step="0.25" value="0" style="width: 4.5em;"></td>
+                                <td></td>
+                                <td><p class="form-control-static-ts">0</p></td>
+                                <td><input type="submit" value="Zobacz" class="btn btn-default btn-main" style="width:auto;font-size:12px; height:24px; padding-top:3px"/></td>
+                                <td></td>
+                            </tr>
+                                <!--summary row-->
+                            <tr>
+                                <td>Łącznie</td>
+                                <td><p class="form-control-static-ts">0</p></td>
+                                <td><p class="form-control-static-ts">0</p></td>
+                                <td><p class="form-control-static-ts">0</p></td>
+                                <td><p class="form-control-static-ts">0</p></td>
+                                <td><p class="form-control-static-ts">0</p></td>
+                                <td><p class="form-control-static-ts">0</p></td>
+                                <td><p class="form-control-static-ts">0</p></td>
+                                <td></td>
+                                <td><p class="form-control-static-ts">0</p></td>
+                                <td></td>
+                                <td></td>
+                            </tr>                  
+                        </tbody>
+                    </table>
+                    </div>
+                </div>
+            <!--alert and save the work-->
             <div class="panel-footer">
                 <div class="col">
                     <div class="row">
@@ -70,8 +120,6 @@ else
             </div>
         </div>
     }
-    
-
 }
 
 

@@ -15,19 +15,16 @@
     color: #eeeeee;
     background-color: #8f023e;
 }
-
 /* white bold button */
 .btn-bold {
     font-weight: bold;
     color: black;
     border: 1px solid #ccc;
 }
-
 .btn-bold:hover {
     background-color: #18020f;
     color: #fff;
 }
-
 /* beige label */
 .label-main {
     background: #ad9e63;
@@ -47,18 +44,15 @@
     border: 1px solid rgba(0, 0, 0, 0.5);
     /*width:125px;*/
 }
-
 .dropdown-menu-main > li > a {
     color: #000000;
     opacity: 0.9;
     text-align: left;
 }
-
 .dropdown-menu-main > li > a:hover,
 .dropdown-menu-main > li > a:focus {
     background-color: #3c0425; /* Strip color after hovering */
 }
-
 /* login panel */
 #login-dp {
     min-width: 250px;
@@ -83,6 +77,18 @@
     border-top: 0 none;
 }
 }
+
+/* form-control-static */
+.form-control-static-ts {
+    color: #ffffff;
+    background-color: #0094ff;
+    text-align: center;
+    width: 63px;
+    height: 22px;
+    margin-top: 0px;
+    padding-top: 0px
+}
+
 
 /* Administration panel rules */
 .dropdown-ib {
