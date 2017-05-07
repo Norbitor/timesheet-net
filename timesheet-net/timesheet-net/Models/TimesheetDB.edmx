@@ -82,13 +82,13 @@
           <Property Name="TaskID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="TimesheetID" Type="int" Nullable="false" />
           <Property Name="TaskName" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="MondayHours" Type="time" Precision="0" Nullable="false" />
-          <Property Name="TuesdayHours" Type="time" Precision="0" Nullable="false" />
-          <Property Name="WednesdayHours" Type="time" Precision="0" Nullable="false" />
-          <Property Name="ThursdayHours" Type="time" Precision="0" Nullable="false" />
-          <Property Name="FridayHours" Type="time" Precision="0" Nullable="false" />
-          <Property Name="SaturdayHours" Type="time" Precision="0" Nullable="false" />
-          <Property Name="SundayHours" Type="time" Precision="0" Nullable="false" />
+          <Property Name="MondayHours" Type="decimal" Precision="2" Scale="2" Nullable="false" />
+          <Property Name="TuesdayHours" Type="decimal" Precision="2" Scale="2" Nullable="false" />
+          <Property Name="WednesdayHours" Type="decimal" Precision="2" Scale="2" Nullable="false" />
+          <Property Name="ThursdayHours" Type="decimal" Precision="2" Scale="2" Nullable="false" />
+          <Property Name="FridayHours" Type="decimal" Precision="2" Scale="2" Nullable="false" />
+          <Property Name="SaturdayHours" Type="decimal" Precision="2" Scale="2" Nullable="false" />
+          <Property Name="SundayHours" Type="decimal" Precision="2" Scale="2" Nullable="false" />
           <Property Name="Comment" Type="varchar(max)" />
           <Property Name="LastEditedBy" Type="int" />
           <Property Name="LastEditDate" Type="datetime" />
@@ -455,13 +455,13 @@
           <Property Name="TaskID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="TimesheetID" Type="Int32" Nullable="false" />
           <Property Name="TaskName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="MondayHours" Type="Time" Nullable="false" Precision="0" />
-          <Property Name="TuesdayHours" Type="Time" Nullable="false" Precision="0" />
-          <Property Name="WednesdayHours" Type="Time" Nullable="false" Precision="0" />
-          <Property Name="ThursdayHours" Type="Time" Nullable="false" Precision="0" />
-          <Property Name="FridayHours" Type="Time" Nullable="false" Precision="0" />
-          <Property Name="SaturdayHours" Type="Time" Nullable="false" Precision="0" />
-          <Property Name="SundayHours" Type="Time" Nullable="false" Precision="0" />
+          <Property Name="MondayHours" Type="Decimal" Precision="2" Scale="2" Nullable="false" />
+          <Property Name="TuesdayHours" Type="Decimal" Precision="2" Scale="2" Nullable="false" />
+          <Property Name="WednesdayHours" Type="Decimal" Precision="2" Scale="2" Nullable="false" />
+          <Property Name="ThursdayHours" Type="Decimal" Precision="2" Scale="2" Nullable="false" />
+          <Property Name="FridayHours" Type="Decimal" Precision="2" Scale="2" Nullable="false" />
+          <Property Name="SaturdayHours" Type="Decimal" Precision="2" Scale="2" Nullable="false" />
+          <Property Name="SundayHours" Type="Decimal" Precision="2" Scale="2" Nullable="false" />
           <Property Name="Comment" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="LastEditedBy" Type="Int32" />
           <Property Name="LastEditDate" Type="DateTime" Precision="3" />
