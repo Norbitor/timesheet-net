@@ -7,6 +7,25 @@
     font-weight: bold;
     width:160px;
 }
+.btn-redalert {
+    color: #eeeeee;
+    background-color: #e92626;
+    border-radius: 6px;
+    border-color: #cccccc;
+    font-weight: bold;
+    width: auto;
+    margin-left:6px;
+}
+
+.btn-redalert:hover,
+.btn-redalert:focus,
+.btn-redalert:active,
+.btn-redalert.active,
+.open .dropdown-toggle.btn-redalert {
+    color: #eeeeee;
+    background-color: #ff312e;
+}
+
 .btn-main:hover,
 .btn-main:focus,
 .btn-main:active,
@@ -84,9 +103,10 @@
     background-color: #0094ff;
     text-align: center;
     width: 63px;
-    height: 22px;
+    height: 24px;
     margin-top: 0px;
-    padding-top: 0px
+    padding-top: 0px;
+    vertical-align: central;
 }
 
 

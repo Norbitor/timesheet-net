@@ -27,10 +27,10 @@ else
         <div class="panel panel-default" style="width:auto">
         <div class="panel-heading">Wybierz projekt, a następnie kliknij przejdź, by wyświetlić <b>Timesheet</b></div>
         <div class="panel-body">
-        @using (Html.BeginForm())
+        @using (Html.BeginForm("ChangeTimesheet", "Timesheet"))
         {
-            @Html.DropDownList("listOfProjects", Model, htmlAttributes: new { @class = "form-control dropdown", @style = "width:auto; display:inline-table;" })
-            <input type="submit" value="Przejdź" class="btn btn-default btn-main" style="width:80px; margin-left:6px;" />
+            @Html.DropDownList("projectName", Model, htmlAttributes: new { @class = "form-control dropdown", @style = "width:auto; display:inline-table;" })
+            <input type="submit" value="Przejdź" class="btn btn-default btn-redalert" />
         }
         </div>
         </div>
@@ -52,7 +52,7 @@ else
                 <div class="table-responsive">
                     <table class="table table-hover">
                         <thead>
-                            <tr>
+                            <tr style="text-align:center">
                                 <th>Zadanie</th>
                                 <th>pn.</th>
                                 <th>wt.</th>
@@ -69,20 +69,26 @@ else
                         </thead>
                         <tbody>
                             <!--addition row to add new task-->
-                             <tr>
-                                <td>Zadanie</td>
-                                <td><input type="number" min="0.00" step="0.25" value="0" style="width: 4.5em;"></td>
-                                <td><input type="number" min="0.00" step="0.25" value="0" style="width: 4.5em;"></td>
-                                <td><input type="number" min="0.00" step="0.25" value="0" style="width: 4.5em;"></td>
-                                <td><input type="number" min="0.00" step="0.25" value="0" style="width: 4.5em;"></td>
-                                <td><input type="number" min="0.00" step="0.25" value="0" style="width: 4.5em;"></td>
-                                <td><input type="number" min="0.00" step="0.25" value="0" style="width: 4.5em;"></td>
-                                <td><input type="number" min="0.00" step="0.25" value="0" style="width: 4.5em;"></td>
+                            <tr>
+                                @using (Html.BeginForm("AddTask", "Timesheet"))
+                                {
+                                <td>
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" style="height:26px;font-size:12px" name="taskName" placeholder="Nazwa zadania" required>
+                                    </div>
+                                </td>
+                                 for (int i = 0; i < 7; i++)
+                                 {
+                                    <td><input type="number" min="0.00" step="0.25" value="0" style="width: 4.5em;" disabled></td>
+                                 }
                                 <td></td>
-                                <td><p class="form-control-static-ts">0</p></td>
-                                <td><input type="submit" value="Zobacz" class="btn btn-default btn-main" style="width:auto;font-size:12px; height:24px; padding-top:3px"/></td>
-                                <td></td>
-                            </tr>
+                                <td><p class="form-control-static-ts" style="background-color:#bbb6b6">0</p></td>
+                                <td><input type="submit" value="Zobacz" class="btn btn-default btn-main" style="width:auto;font-size:12px; height:25px; padding-top:3px; background-color:#808080" disabled></td>
+                                <td>    
+                                    <input type="submit" value="Dodaj zadanie" class="btn btn-main" style="width:auto; height:26px; padding:4px 12px; font-size:12px";>
+                                </td>
+                                }
+                            </tr> 
                                 <!--summary row-->
                             <tr>
                                 <td>Łącznie</td>
@@ -113,7 +119,7 @@ else
                             </div>
                         </div>
                         <div class="col-sm-2" style="text-align:center; padding: 10px;">
-                            <input type="submit" value="Zapisz zmiany" class="btn btn-default btn-main" style="width:auto;" />
+                            <input type="submit" value="Zapisz zmiany" class="btn btn-default btn-redalert"/>
                         </div>
                     </div>
                 </div>
@@ -121,6 +127,3 @@ else
         </div>
     }
 }
-
-
-

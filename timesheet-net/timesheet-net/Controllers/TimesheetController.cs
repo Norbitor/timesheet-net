@@ -12,7 +12,7 @@ namespace timesheet_net.Controllers
     public class TimesheetController : Controller
     {
 
-        // GET: Timesheet
+        [HttpGet]
         public ActionResult Current(string projectName=null)
         {
             List<SelectListItem> IDNameProject = new List<SelectListItem>();
@@ -22,8 +22,7 @@ namespace timesheet_net.Controllers
                 //person logged in ID
                 int loggedIn = (int)Session["EmployeeID"];
                 //list of project IDs where person is assigned
-                var listOfProjectIDs = ctx.ProjectMembers.Include(x=> x.Projects).Where(x => x.EmployeeID == loggedIn).OrderBy(x => x.ProjectMemberID).Select(x=>x.ProjectID).ToList();
-               
+                var listOfProjectIDs = ctx.ProjectMembers.Include(x => x.Projects).Where(x => x.EmployeeID == loggedIn).OrderBy(x => x.ProjectMemberID).Select(x => x.ProjectID).ToList();
                 if (listOfProjectIDs.Count()!=0) //if user is assigned to somewhere
                 {
                     foreach(var item in listOfProjectIDs)
@@ -75,12 +74,59 @@ namespace timesheet_net.Controllers
 
             return View(IDNameProject);
         }
+        [HttpPost]
+        public ActionResult AddTask(string taskName)
+        {
+            if (Session["EmployeeID"] != null)
+            {
+                //session
+                return RedirectToAction("Current", "Timesheet");
+            }
+            else
+            {
+                return RedirectToAction("Current", "Timesheet");
+            }
+        }
+
+        [HttpPost]
+        public ActionResult ChangeTimesheet(string projectName)
+        {
+            //projectName is the identyfier of the project!
+            //string -> int
+            if (Session["EmployeeID"] != null)
+            {
+                //session
+                return RedirectToAction("Current", "Timesheet");
+            }
+            else
+            {
+                return RedirectToAction("Current", "Timesheet");
+            }
+        }
+
+        [HttpPost]
+        public ActionResult SaveTimesheet(string projectName)
+        {
+            //projectName is the identyfier of the project!
+            //string -> int
+            if (Session["EmployeeID"] != null)
+            {
+                //session
+                return RedirectToAction("Current", "Timesheet");
+            }
+            else
+            {
+                return RedirectToAction("Current", "Timesheet");
+            }
+        }
+
 
         // GET: Timesheet
         public ActionResult Disapproved()
         {
             return View();
         }
+
 
 
     }
