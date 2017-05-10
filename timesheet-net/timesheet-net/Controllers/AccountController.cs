@@ -7,6 +7,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Data.Entity;
 using timesheet_net.Models;
+using System.Text.RegularExpressions;
 
 namespace timesheet_net.Controllers
 {
@@ -103,30 +104,36 @@ namespace timesheet_net.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "EmployeeID, EMail, Password, Name, Surname, Telephone, JobPositionID, LastLogin, EmployeeState")] Employees empl)
+        public ActionResult Edit([Bind(Include = "EMail, Name, Surname, Telephone")] Employees empl)
         {
-            if (empl.EMail!=null && empl.Name != null && empl.Surname != null && empl.Telephone != null)
-            {
-                using (TimesheetDBEntities ctx = new TimesheetDBEntities())
+            Regex regex = new Regex(@"^[a-zA-Z0-9._-]+@[a-zA-Z0-9-]+\.[a-zA-Z]{2,4}");
+            
+                if (empl.EMail != null && empl.Name != null && empl.Surname != null && empl.Telephone != null)
                 {
-                    int employeeID = (int)Session["EmployeeID"];
-                    var foundEmpl = ctx.Employees.Where(x => x.EmployeeID == employeeID).FirstOrDefault();
-                    string typedEmail = empl.EMail;
-                    if (typedEmail == ctx.Employees.Where(x => x.EMail == typedEmail && x.EmployeeID!=employeeID).Select(x => x.EMail).FirstOrDefault())
+                    if (regex.IsMatch(empl.EMail))
                     {
-                        ModelState.AddModelError("", "Podany e-mail jest już zajęty");
-                    }
-                    else
-                    {
-                        foundEmpl.Name = empl.Name;
-                        foundEmpl.Surname = empl.Surname;
-                        foundEmpl.Telephone = empl.Telephone;
-                        ctx.Entry(foundEmpl).State = EntityState.Modified;
-                        ctx.SaveChanges();
-                        ViewData["Message"] = "OK";
+                        using (TimesheetDBEntities ctx = new TimesheetDBEntities())
+                     {
+                            int employeeID = (int)Session["EmployeeID"];
+                            var foundEmpl = ctx.Employees.Where(x => x.EmployeeID == employeeID).FirstOrDefault();
+                            string typedEmail = empl.EMail;
+                            if (typedEmail == ctx.Employees.Where(x => x.EMail == typedEmail && x.EmployeeID != employeeID).Select(x => x.EMail).FirstOrDefault())
+                            {
+                                ModelState.AddModelError("", "Podany e-mail jest już zajęty");
+                            }
+                            else
+                            {
+                                foundEmpl.Name = empl.Name;
+                                foundEmpl.Surname = empl.Surname;
+                                foundEmpl.Telephone = empl.Telephone;
+                                foundEmpl.EMail = typedEmail;
+                                ctx.Entry(foundEmpl).State = EntityState.Modified;
+                                ctx.SaveChanges();
+                                ViewData["Message"] = "OK";
+                            }
+                        }
                     }
                 }
-            }
             return View(empl);
         }
 
