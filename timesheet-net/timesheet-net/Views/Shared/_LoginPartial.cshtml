@@ -24,7 +24,7 @@
                             @if ((int)Session["JobPosition"] == 1)
                             {
                                 <li>@Html.ActionLink("Raporty", "Index", "Home")</li>
-                                <li>@Html.ActionLink("Użytkownicy", "Employees", "Admin")</li>
+                                <li>@Html.ActionLink("Użytkownicy", "Index", "User")</li>
                             }
                         </ul>
                     </li>
@@ -66,7 +66,7 @@ else
                                     <button type="submit" class="btn btn-primary btn-main btn-block" style="width:100%">Zaloguj</button>
                                 </div>                            
                             </form>
-                            </div>
+                        </div>
                     </div>
                 </li>
             </ul>

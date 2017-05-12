@@ -1,12 +1,14 @@
 ﻿@model IEnumerable<timesheet_net.Models.Employees>
 @{ 
-    ViewBag.Title = "Lista pracowników";
+    ViewBag.Title = "Lista użytkowników";
 }
 <h2>@ViewBag.Title</h2>
 <hr/>
-<p>Z poziomu tego widoku możesz zarządzać pracownikami w systemie. Pracownicy przebywający na urlopie
+<p>
+    Z poziomu tego widoku możesz zarządzać pracownikami w systemie. Pracownicy przebywający na urlopie
     oznaczeni są kolorem szarym. Nieaktywni &ndash; oznaczeni są poprzez przekreślenie, wyszarzenie oraz
-    znajdują się zawsze na końcu listy.</p>
+    znajdują się zawsze na końcu listy.
+</p>
 
 <table class="table va-middle-table">
     <thead>
@@ -29,7 +31,7 @@
                 <td>@employee.Telephone</td>
                 <td>@employee.JobPositions.JobPositionName</td>
                 <td>
-                    @Html.ActionLink("Edytuj", "Employee", "Admin", new { id = @employee.EmployeeID }, new { @class = "btn btn-primary" })
+                    @Html.ActionLink("Edytuj", "Edit", "User", new { id = @employee.EmployeeID }, new { @class = "btn btn-primary" })
                     <div class="dropdown dropdown-ib">
                         <button class="btn btn-danger dropdown-toggle" type="button" data-toggle="dropdown">
                             Operacje
@@ -60,5 +62,5 @@
             <li><a href="#">Usuń</a></li>
         </ul>
     </div>
-    @Html.ActionLink("Dodaj użytkownika", "Employee", "Admin", null, new { @class = "btn btn-default btn-main", @style="width: 152px;" })
+    @Html.ActionLink("Dodaj użytkownika", "New", "User", null, new { @class = "btn btn-default btn-main", @style="width: 152px;" })
 </div>

@@ -11,9 +11,9 @@ using timesheet_net.Utils.Security;
 
 namespace timesheet_net.Controllers
 {
-    public class AdminController : Controller
+    public class UserController : Controller
     {
-        public ActionResult Employees()
+        public ActionResult Index()
         {
             if (Session["EmployeeID"] == null)
             {
@@ -25,31 +25,20 @@ namespace timesheet_net.Controllers
         }
 
         [HttpGet]
-        public ActionResult Employee(int? id)
+        public ActionResult New()
         {
             if (Session["EmployeeID"] == null)
             {
                 return RedirectToAction("", "Home");
             }
             CheckUserPermission();
-            if (id == null)
-            {
-                PopulateJobPositionsList();
-                return View();
-            }
-            using (TimesheetDBEntities ctx = new TimesheetDBEntities())
-            {
-                var employee = (from empl in ctx.Employees
-                               where empl.EmployeeID == id
-                               select empl).FirstOrDefault();
-                PopulateJobPositionsList(employee.JobPositionID);
-                return View(employee);
-            }
+            PopulateJobPositionsList();
+            return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Employee([Bind(Include = "EmployeeID, EMail, Password, Name, Surname, Telephone, JobPositionID")] Employees empl)
+        public ActionResult New([Bind(Include = "EMail, Password, Name, Surname, Telephone, JobPositionID")] Employees empl)
         {
             if (Session["EmployeeID"] == null)
             {
@@ -58,14 +47,44 @@ namespace timesheet_net.Controllers
             CheckUserPermission();
             if (empl.EMail != null && empl.Name != null && empl.Surname != null && empl.Telephone != null)
             {
-                if (empl.EmployeeID == 0)
-                {
-                    AddEmployee(empl);
-                } else
-                {
-                    AlterEmployee(empl);
-                }
-                return RedirectToAction("Employees", "Admin");
+                AddEmployee(empl);
+                return RedirectToAction("", "User");
+            }
+            return View();
+        }
+
+        [HttpGet]
+        public ActionResult Edit(int id)
+        {
+            if (Session["EmployeeID"] == null)
+            {
+                return RedirectToAction("", "Home");
+            }
+            CheckUserPermission();
+            using (TimesheetDBEntities ctx = new TimesheetDBEntities())
+            {
+                var employee = (from empl in ctx.Employees
+                               where empl.EmployeeID == id
+                               select empl).FirstOrDefault();
+                PopulateJobPositionsList(employee.JobPositionID);
+                employee.Password = "";
+                return View(employee);
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit([Bind(Include = "EmployeeID, EMail, Password, Name, Surname, Telephone, JobPositionID")] Employees empl)
+        {
+            if (Session["EmployeeID"] == null)
+            {
+                return RedirectToAction("", "Home");
+            }
+            CheckUserPermission();
+            if (empl.EMail != null && empl.Name != null && empl.Surname != null && empl.Telephone != null)
+            {
+                AlterEmployee(empl);
+                return RedirectToAction("", "User");
             }
             return View();
         }
@@ -93,7 +112,7 @@ namespace timesheet_net.Controllers
                 r.Surname = empl.Surname;
                 r.Telephone = empl.Telephone;
                 r.JobPositionID = empl.JobPositionID;
-                if (r.Password != empl.Password)
+                if (empl.Password != null)
                 {
                     r.Password = hasher.hash(empl.Password);
                 }
