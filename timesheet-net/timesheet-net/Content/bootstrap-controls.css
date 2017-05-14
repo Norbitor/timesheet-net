@@ -7,6 +7,15 @@
     font-weight: bold;
     width:160px;
 }
+.btn-main:hover,
+.btn-main:focus,
+.btn-main:active,
+.btn-main.active,
+.open .dropdown-toggle.btn-main {
+    color: #eeeeee;
+    background-color: #8f023e;
+}
+
 .btn-redalert {
     color: #eeeeee;
     background-color: #e92626;
@@ -26,13 +35,48 @@
     background-color: #ff312e;
 }
 
-.btn-main:hover,
-.btn-main:focus,
-.btn-main:active,
-.btn-main.active,
-.open .dropdown-toggle.btn-main {
+.btn-addtask {
     color: #eeeeee;
-    background-color: #8f023e;
+    background-color: #4aa73f;
+    border-radius: 6px;
+    border-color: #cccccc;
+    font-weight: bold;
+    margin-left: 6px;
+    width:auto; 
+    height:26px; 
+    padding:4px 12px; 
+    font-size:12px
+}
+
+.btn-addtask:hover,
+.btn-addtask:focus,
+.btn-addtask:active,
+.btn-addtask.active,
+.open .dropdown-toggle.btn-addtask {
+    color: #eeeeee;
+    background-color: #58c64b;
+}
+
+.btn-deletetask {
+    color: #eeeeee;
+    background-color: #e92626;
+    border-radius: 6px;
+    border-color: #cccccc;
+    font-weight: bold;
+    margin-left: 6px;
+    width: auto;
+    height: 26px;
+    padding: 4px 12px;
+    font-size: 12px
+}
+
+.btn-deletetask:hover,
+.btn-deletetask:focus,
+.btn-deletetask:active,
+.btn-deletetask.active,
+.open .dropdown-toggle.btn-redalert {
+    color: #eeeeee;
+    background-color: #ff312e;
 }
 /* white bold button */
 .btn-bold {
@@ -105,7 +149,7 @@
     width: 63px;
     height: 24px;
     margin-top: 0px;
-    padding-top: 0px;
+    padding-top: 2px;
     vertical-align: central;
 }
 

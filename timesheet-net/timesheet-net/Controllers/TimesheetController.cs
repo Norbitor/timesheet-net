@@ -84,7 +84,35 @@ namespace timesheet_net.Controllers
                             var tasks = ctx.Tasks.Where(x => x.TimesheetID == timesheet.TimesheetID).ToList(); ;
                             if (tasks.Count()!=0)
                             {
-                                Session["tasks"] = tasks;
+                                ViewBag.tasks = tasks;
+                                //general hours summary
+                                decimal MH = 0;
+                                decimal TuH = 0;
+                                decimal WH = 0;
+                                decimal ThH = 0;
+                                decimal FH = 0;
+                                decimal SaH = 0;
+                                decimal SuH = 0;
+                                decimal allH = 0;
+                                foreach (var item in tasks)
+                                {
+                                    MH += item.MondayHours;
+                                    TuH += item.TuesdayHours;
+                                    WH += item.WednesdayHours;
+                                    ThH += item.ThursdayHours;
+                                    FH += item.FridayHours;
+                                    SaH += item.SaturdayHours;
+                                    SuH += item.SundayHours;
+                                }
+                                allH = MH + TuH + WH + ThH + FH + SaH + SuH;
+                                ViewData["0"] = MH.ToString();
+                                ViewData["1"] = TuH.ToString();
+                                ViewData["2"] = WH.ToString();
+                                ViewData["3"] = ThH.ToString();
+                                ViewData["4"] = FH.ToString();
+                                ViewData["5"] = SaH.ToString();
+                                ViewData["6"] = SuH.ToString();
+                                ViewBag.allH = allH.ToString();
                             }
                         }
                     }
@@ -97,6 +125,19 @@ namespace timesheet_net.Controllers
         }
         [HttpPost]
         public ActionResult AddTask(string taskName)
+        {
+            if (Session["EmployeeID"] != null)
+            {
+
+                return RedirectToAction("Current", "Timesheet");
+            }
+            else
+            {
+                return RedirectToAction("Current", "Timesheet");
+            }
+        }
+        [HttpPost]
+        public ActionResult DeleteTask(string taskName)
         {
             if (Session["EmployeeID"] != null)
             {

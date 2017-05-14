@@ -30,7 +30,7 @@ else
         @using (Html.BeginForm("ChangeTimesheet", "Timesheet"))
         {
             @Html.DropDownList("projectID", Model, htmlAttributes: new { @class = "form-control dropdown", @style = "width:auto; display:inline-table;" })
-            <input type="submit" value="Przejdź" class="btn btn-default btn-redalert" style="margin:10px 10px 10px" />
+            <input type="submit" value="Przejdź" class="btn btn-default btn-main" style="margin:10px 10px 10px; width:auto" />
         }
         </div>
         </div>
@@ -68,16 +68,16 @@ else
                         </thead>
                         <tbody>
                             <!-- rows of tasks if person has them -->
-                            @if (Session["tasks"] != null)
+                            @if (ViewBag.tasks != null)
                             {
-                                foreach (var item in (List<timesheet_net.Models.Tasks>)Session["tasks"])
+                                foreach (var item in (List<timesheet_net.Models.Tasks>)ViewBag.tasks)
                                 {
                             <tr>
                                 <!-- TaskName -->
                                 <td colspan="2">
                                     <!--div class="form-group"-->
                                         @Html.Hidden("data", item.TaskID) <!-- id of the task -->
-                                        <input type="text" class="form-control" name="data" value="@item.TaskName" style="height:26px;font-size:12px" placeholder="Nazwa zadania" required>
+                                        <input type="text" class="form-control" name="data" value="@item.TaskName" style="height:26px;font-size:12px; min-width: 80px" placeholder="Nazwa zadania" required>
                                     <!---/div-->
                                 </td>
                                 <!-- [day]Hours --><!-- http://stackoverflow.com/a/13390173 -->
@@ -97,11 +97,14 @@ else
                                 </td>
                                 <!-- Look -->
                                 <td>
-                                    <button data-toggle="collapse" data-target="#@item.TaskID.ToString()" class="btn btn-default btn-main" name="data" style="width:75px;font-size:12px; height:25px; padding-top:3px; background-color:#2e395b"><span class="glyphicon glyphicon-eye-open"></span></button>
+                                    <button data-toggle="collapse" data-target="#@item.TaskID.ToString()" class="btn btn-default btn-main" name="data" style="width:75px;font-size:12px; height:25px; padding-top:3px; background-color:#2e395b"><span class="glyphicon glyphicon-pencil"></span></button>
                                     <!--input type="submit" value="Zobacz" class="btn btn-default btn-main" style="width:auto;font-size:12px; height:25px; padding-top:3px; background-color:#808080" disabled-->
                                 </td>
                                 <td>
-                                    <!--input type="submit" value="Dodaj zadanie" class="btn btn-main" style="width:auto; height:26px; padding:4px 12px; font-size:12px" ;-->
+                                    @using (Html.BeginForm("DeleteTask", "Timesheet"))
+                                    {
+                                        <input type="submit" value="Usuń" class="btn btn-deletetask" >
+                                    }                                  
                                 </td>
                             </tr>
                             <tr>
@@ -121,7 +124,7 @@ else
                                 {
                                 <td colspan="2">
                                     <!---div class="form-group"-->
-                                        <input type="text" class="form-control" style="height:26px;font-size:12px" name="taskName" placeholder="Nazwa zadania" required>
+                                        <input type="text" class="form-control" style="height:26px;font-size:12px; min-width:80px" name="taskName" placeholder="Nazwa zadania" required>
                                     <!--/div-->
                                 </td>
                                     for (int i = 0; i < 7; i++)
@@ -130,11 +133,11 @@ else
                                     }
                                 <td><p class="form-control-static-ts" style="background-color:#bbb6b6; margin:0px">0</p></td>
                                 <td>
-                                    <button data-toggle="collapse" data-target="#comment"class="btn btn-default btn-main" style="width:75px;font-size:12px; height:25px; padding-top:3px; background-color:#808080" disabled ><span class="glyphicon glyphicon-eye-open"></span></button>
+                                    <button data-toggle="collapse" data-target="#comment"class="btn btn-default btn-main" style="width:75px;font-size:12px; height:25px; padding-top:3px; background-color:#808080" disabled ><span class="glyphicon glyphicon-pencil"></span></button>
                                 <!--input type="submit" value="Zobacz" class="btn btn-default btn-main" style="width:auto;font-size:12px; height:25px; padding-top:3px; background-color:#808080" disabled-->
                                 </td>
                                 <td>    
-                                    <input type="submit" value="Dodaj zadanie" class="btn btn-main" style="width:auto; height:26px; padding:4px 12px; font-size:12px";>
+                                    <input type="submit" value="Dodaj" class="btn btn-addtask";>
                                 </td>
                                 }
                             </tr> 
@@ -152,9 +155,14 @@ else
                                 <td colspan="2" style="text-align:right;"><b>Łącznie:</b></td>
                                 @for (int i = 0; i < 7; i++)
                                 {
-                                    <td><p class="form-control-static-ts" style="width:49px; margin:0px">0</p></td>
+                                    <td>
+                                        <p class="form-control-static-ts" style="width:49px; margin:0px">
+                                        @ViewData[i.ToString()]
+                                        </p>
+                                    </td>
                                 }                         
-                                <td><p class="form-control-static-ts" style="margin:0px">0</p></td>
+                                <td><p class="form-control-static-ts" style="margin:0px">@ViewBag.allH</p>
+                                </td>
                                 <td></td>
                                 <td></td>
                             </tr>                  
