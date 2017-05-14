@@ -29,12 +29,12 @@ else
         <div class="panel-body">
         @using (Html.BeginForm("ChangeTimesheet", "Timesheet"))
         {
-            @Html.DropDownList("projectName", Model, htmlAttributes: new { @class = "form-control dropdown", @style = "width:auto; display:inline-table;" })
-            <input type="submit" value="Przejdź" class="btn btn-default btn-redalert" />
+            @Html.DropDownList("projectID", Model, htmlAttributes: new { @class = "form-control dropdown", @style = "width:auto; display:inline-table;" })
+            <input type="submit" value="Przejdź" class="btn btn-default btn-redalert" style="margin:10px 10px 10px" />
         }
         </div>
         </div>
-        <div class="panel panel-primary" width:auto">
+        <div class="panel panel-primary">
             <div class="panel-heading">
                 <div class="col">                     
                     <div class="row">                  
@@ -48,12 +48,12 @@ else
                 </div>                     
             </div>
             <!--body of the timesheet-->
-            <div class="panel-body">
-                <div class="table-responsive">
-                    <table class="table table-hover">
+            <div class="panel-body" style="overflow:auto">
+                <div-- class="table-responsive">
+                    <table class="table table-hover Ttable">
                         <thead>
-                            <tr style="text-align:center">
-                                <th>Zadanie</th>
+                            <tr>
+                                <th colspan="2">Zadanie:</th>
                                 <th>pn.</th>
                                 <th>wt.</th>
                                 <th>śr.</th>
@@ -61,46 +61,100 @@ else
                                 <th>pt.</th>
                                 <th>sob.</th>
                                 <th>niedz.</th>
-                                <th></th>
                                 <th>Łącznie</th>
                                 <th>Komentarz</th>
                                 <th>Operacja</th>
                             </tr>
                         </thead>
                         <tbody>
+                            <!-- rows of tasks if person has them -->
+                            @if (Session["tasks"] != null)
+                            {
+                                foreach (var item in (List<timesheet_net.Models.Tasks>)Session["tasks"])
+                                {
+                            <tr>
+                                <!-- TaskName -->
+                                <td colspan="2">
+                                    <!--div class="form-group"-->
+                                        @Html.Hidden("data", item.TaskID) <!-- id of the task -->
+                                        <input type="text" class="form-control" name="data" value="@item.TaskName" style="height:26px;font-size:12px" placeholder="Nazwa zadania" required>
+                                    <!---/div-->
+                                </td>
+                                <!-- [day]Hours --><!-- http://stackoverflow.com/a/13390173 -->
+                                <td><input type="text" name="data" value="@item.MondayHours.ToString()" pattern="^(0|[1-9]|1[0-9]|2[0-3])(,(25|5|75|0)0*)?$|24" required style="width: 3.5em" /></td>
+                                <td><input type="text" name="data" value="@item.TuesdayHours.ToString()" pattern="^(0|[1-9]|1[0-9]|2[0-3])(,(25|5|75|0)0*)?$|24" required style="width: 3.5em" /></td>
+                                <td><input type="text" name="data" value="@item.WednesdayHours.ToString()" pattern="^(0|[1-9]|1[0-9]|2[0-3])(,(25|5|75|0)0*)?$|24" required style="width: 3.5em" /></td>
+                                <td><input type="text" name="data" value="@item.ThursdayHours.ToString()" pattern="^(0|[1-9]|1[0-9]|2[0-3])(,(25|5|75|0)0*)?$|24" required style="width: 3.5em" /></td>
+                                <td><input type="text" name="data" value="@item.FridayHours.ToString()" pattern="^(0|[1-9]|1[0-9]|2[0-3])(,(25|5|75|0)0*)?$|24" required style="width: 3.5em" /></td>
+                                <td><input type="text" name="data" value="@item.SaturdayHours.ToString()" pattern="^(0|[1-9]|1[0-9]|2[0-3])(,(25|5|75|0)0*)?$|24" required style="width: 3.5em" /></td>
+                                <td><input type="text" name="data" value="@item.SundayHours.ToString()" pattern="^(0|[1-9]|1[0-9]|2[0-3])(,(25|5|75|0)0*)?$|24" required style="width: 3.5em" /></td>                              
+                                <!-- Hours summary -->
+                                <td>
+                                    <p class="form-control-static-ts" style="margin:0px">   
+                                    <!-- http://stackoverflow.com/a/4386890 -->
+                                    @((item.MondayHours+item.ThursdayHours+item.WednesdayHours+item.ThursdayHours+item.FridayHours+item.SaturdayHours+item.SundayHours).ToString())
+                                    </p>
+                                </td>
+                                <!-- Look -->
+                                <td>
+                                    <button data-toggle="collapse" data-target="#@item.TaskID.ToString()" class="btn btn-default btn-main" name="data" style="width:75px;font-size:12px; height:25px; padding-top:3px; background-color:#2e395b"><span class="glyphicon glyphicon-eye-open"></span></button>
+                                    <!--input type="submit" value="Zobacz" class="btn btn-default btn-main" style="width:auto;font-size:12px; height:25px; padding-top:3px; background-color:#808080" disabled-->
+                                </td>
+                                <td>
+                                    <!--input type="submit" value="Dodaj zadanie" class="btn btn-main" style="width:auto; height:26px; padding:4px 12px; font-size:12px" ;-->
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="12">
+                                    <div id="@item.TaskID.ToString()" class="collapse">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" name="data" value="@item.Comment" style="height:26px;max-width:none;font-size:12px;" placeholder="Komentarz">
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                                }
+                            }
                             <!--addition row to add new task-->
                             <tr>
                                 @using (Html.BeginForm("AddTask", "Timesheet"))
                                 {
-                                <td>
-                                    <div class="form-group">
+                                <td colspan="2">
+                                    <!---div class="form-group"-->
                                         <input type="text" class="form-control" style="height:26px;font-size:12px" name="taskName" placeholder="Nazwa zadania" required>
-                                    </div>
+                                    <!--/div-->
                                 </td>
-                                 for (int i = 0; i < 7; i++)
-                                 {
-                                    <td><input type="number" min="0.00" step="0.25" value="0" style="width: 4.5em;" disabled></td>
-                                 }
-                                <td></td>
-                                <td><p class="form-control-static-ts" style="background-color:#bbb6b6">0</p></td>
-                                <td><input type="submit" value="Zobacz" class="btn btn-default btn-main" style="width:auto;font-size:12px; height:25px; padding-top:3px; background-color:#808080" disabled></td>
+                                    for (int i = 0; i < 7; i++)
+                                    {
+                                        <td><input type="text" name="data" value="0,00"style="width: 3.5em" disabled></td>     
+                                    }
+                                <td><p class="form-control-static-ts" style="background-color:#bbb6b6; margin:0px">0</p></td>
+                                <td>
+                                    <button data-toggle="collapse" data-target="#comment"class="btn btn-default btn-main" style="width:75px;font-size:12px; height:25px; padding-top:3px; background-color:#808080" disabled ><span class="glyphicon glyphicon-eye-open"></span></button>
+                                <!--input type="submit" value="Zobacz" class="btn btn-default btn-main" style="width:auto;font-size:12px; height:25px; padding-top:3px; background-color:#808080" disabled-->
+                                </td>
                                 <td>    
                                     <input type="submit" value="Dodaj zadanie" class="btn btn-main" style="width:auto; height:26px; padding:4px 12px; font-size:12px";>
                                 </td>
                                 }
                             </tr> 
+                            <tr>
+                                <td colspan="12">
+                                    <div id="comment" class="collapse">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" style="height:26px;max-width:none;font-size:12px;" name="Comment" placeholder="Komentarz">
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
                                 <!--summary row-->
                             <tr>
-                                <td>Łącznie</td>
-                                <td><p class="form-control-static-ts">0</p></td>
-                                <td><p class="form-control-static-ts">0</p></td>
-                                <td><p class="form-control-static-ts">0</p></td>
-                                <td><p class="form-control-static-ts">0</p></td>
-                                <td><p class="form-control-static-ts">0</p></td>
-                                <td><p class="form-control-static-ts">0</p></td>
-                                <td><p class="form-control-static-ts">0</p></td>
-                                <td></td>
-                                <td><p class="form-control-static-ts">0</p></td>
+                                <td colspan="2" style="text-align:right;"><b>Łącznie:</b></td>
+                                @for (int i = 0; i < 7; i++)
+                                {
+                                    <td><p class="form-control-static-ts" style="width:49px; margin:0px">0</p></td>
+                                }                         
+                                <td><p class="form-control-static-ts" style="margin:0px">0</p></td>
                                 <td></td>
                                 <td></td>
                             </tr>                  
@@ -109,7 +163,7 @@ else
                     </div>
                 </div>
             <!--alert and save the work-->
-            <div class="panel-footer">
+            <div class="panel-footer" style="overflow:auto">
                 <div class="col">
                     <div class="row">
                         <div class="col-sm-10">
@@ -119,7 +173,7 @@ else
                             </div>
                         </div>
                         <div class="col-sm-2" style="text-align:center; padding: 10px;">
-                            <input type="submit" value="Zapisz zmiany" class="btn btn-default btn-redalert"/>
+                            <input type="submit" value="Zapisz zmiany" class="btn btn-default btn-redalert" style="margin-right:10px"/>
                         </div>
                     </div>
                 </div>

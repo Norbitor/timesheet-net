@@ -109,6 +109,14 @@
     vertical-align: central;
 }
 
+.Ttable thead > tr > th, 
+.Ttable tbody > tr > td
+{
+    padding: 8px;
+    line-height: 1.428571429;
+    vertical-align: middle;
+    border-top: 1px solid #dddddd;
+}
 
 /* Administration panel rules */
 .dropdown-ib {
