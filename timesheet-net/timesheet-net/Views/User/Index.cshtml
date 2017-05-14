@@ -39,8 +39,15 @@
                             <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu dropdown-white">
-                            <li><a href="#" data-id="@employee.EmployeeID" class="deactopt">Deaktywuj</a></li>
-                            <li><a href="#" data-id="@employee.EmployeeID" class="vacationopt">Urlop</a></li>
+                            <li><a href="#" data-id="@employee.EmployeeID" class="deactopt">
+                                    @(employee.EmployeeState.EmployeeStateName=="Niezatrudniony" ? "Aktywuj" : "Deaktywuj")
+                                </a></li>
+                            @if (employee.EmployeeState.EmployeeStateName != "Niezatrudniony")
+                            {
+                            <li><a href="#" data-id="@employee.EmployeeID" class="vacationopt">
+                                    @(employee.EmployeeState.EmployeeStateName == "Na urlopie" ? "Powrót z urlopu" : "Urlop")
+                                </a></li>
+                            }
                             <li><a href="#" data-toggle="modal" data-target="#delConfirmDialog" class="delopt" data-id="@employee.EmployeeID">Usuń</a></li>
                         </ul>
                     </div>
