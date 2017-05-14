@@ -108,6 +108,70 @@ namespace timesheet_net.Controllers
             return RedirectToAction("", "User");
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ToggleActivation(int userId)
+        {
+            if (Session["EmployeeID"] == null)
+            {
+                return RedirectToAction("", "Home");
+            }
+            CheckUserPermission();
+            using (var ctx = new TimesheetDBEntities())
+            {
+                var inactState = ctx.EmployeeState
+                    .Where(es => es.EmployeeStateName == "Niezatrudniony").First().EmployeeStateID;
+                var actState = ctx.EmployeeState.
+                    Where(es => es.EmployeeStateName == "Aktywny").First().EmployeeStateID;
+                var vacState = ctx.EmployeeState.
+                    Where(es => es.EmployeeStateName == "Na urlopie").First().EmployeeStateID;
+
+                var empl = ctx.Employees
+                    .Where(em => em.EmployeeID == userId).First();
+                if (empl.EmployeeStateID == actState ||
+                    empl.EmployeeStateID == vacState)
+                {
+                    empl.EmployeeStateID = inactState;
+                } else
+                {
+                    empl.EmployeeStateID = actState;
+                }
+                ctx.SaveChanges();
+            }
+            return RedirectToAction("", "User");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ToggleVacation(int userId)
+        {
+            if (Session["EmployeeID"] == null)
+            {
+                return RedirectToAction("", "Home");
+            }
+            CheckUserPermission();
+            using (var ctx = new TimesheetDBEntities())
+            {
+                var actState = ctx.EmployeeState.
+                    Where(es => es.EmployeeStateName == "Aktywny").First().EmployeeStateID;
+                var vacState = ctx.EmployeeState.
+                    Where(es => es.EmployeeStateName == "Na urlopie").First().EmployeeStateID;
+
+                var empl = ctx.Employees
+                    .Where(em => em.EmployeeID == userId).First();
+                if (empl.EmployeeStateID == actState)
+                {
+                    empl.EmployeeStateID = vacState;
+                }
+                else if (empl.EmployeeStateID == vacState)
+                {
+                    empl.EmployeeStateID = actState;
+                }
+                ctx.SaveChanges();
+            }
+            return RedirectToAction("", "User");
+        }
+
         private void AddEmployee(Employees empl)
         {
             using (TimesheetDBEntities ctx = new TimesheetDBEntities())

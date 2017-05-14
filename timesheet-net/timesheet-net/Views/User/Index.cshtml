@@ -24,7 +24,8 @@
     <tbody>
         @foreach (var employee in Model)
         {
-            <tr>
+            <tr class="@(employee.EmployeeState.EmployeeStateName=="Niezatrudniony" ? "employee-inactive" : "") 
+                       @(employee.EmployeeState.EmployeeStateName=="Na urlopie" ? "employee-ooo" : "")">
                 <td><input type="checkbox" /></td>
                 <td>@employee.Name @employee.Surname</td>
                 <td>@employee.EMail</td>
@@ -38,8 +39,8 @@
                             <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu dropdown-white">
-                            <li><a href="#">Deaktywuj</a></li>
-                            <li><a href="#">Urlop</a></li>
+                            <li><a href="#" data-id="@employee.EmployeeID" class="deactopt">Deaktywuj</a></li>
+                            <li><a href="#" data-id="@employee.EmployeeID" class="vacationopt">Urlop</a></li>
                             <li><a href="#" data-toggle="modal" data-target="#delConfirmDialog" class="delopt" data-id="@employee.EmployeeID">Usuń</a></li>
                         </ul>
                     </div>
@@ -91,13 +92,35 @@
     </div>
 </div>
 
+@using (Html.BeginForm("ToggleActivation", "User", FormMethod.Post, new { id = "actForm", style="display: none;" }))
+{
+    @Html.AntiForgeryToken();
+    <input type="hidden" name="userId" id="deacuser-id" />
+}
+
+@using (Html.BeginForm("ToggleVacation", "User", FormMethod.Post, new { id = "vacForm", style = "display: none;" }))
+{
+    @Html.AntiForgeryToken();
+    <input type="hidden" name="userId" id="vacuser-id" />
+}
+
 @section Scripts {
     <script>
         $(function () {
             $(".delopt").click(function () {
                 var idToDel = $(this).data('id');
                 $("#user-id").val(idToDel);
-            })
+            });
+            $(".deactopt").click(function () {
+                var idToActToggle = $(this).data('id');
+                $("#deacuser-id").val(idToActToggle);
+                $("#actForm").submit();
+            });
+            $(".vacationopt").click(function () {
+                var idToVacToggle = $(this).data('id');
+                $("#vacuser-id").val(idToVacToggle);
+                $("#vacForm").submit();
+            });
         });
     </script>    
 }
