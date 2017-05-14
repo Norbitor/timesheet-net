@@ -89,6 +89,25 @@ namespace timesheet_net.Controllers
             return View();
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Delete(int userId)
+        {
+            if (Session["EmployeeID"] == null)
+            {
+                return RedirectToAction("", "Home");
+            }
+            CheckUserPermission();
+            using (TimesheetDBEntities ctx = new TimesheetDBEntities())
+            {
+                var empl = new Employees { EmployeeID = userId };
+                ctx.Employees.Attach(empl);
+                ctx.Employees.Remove(empl);
+                ctx.SaveChanges();
+            }            
+            return RedirectToAction("", "User");
+        }
+
         private void AddEmployee(Employees empl)
         {
             using (TimesheetDBEntities ctx = new TimesheetDBEntities())
