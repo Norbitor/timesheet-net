@@ -67,16 +67,20 @@ else
                             </tr>
                         </thead>
                         <tbody>
+                            @{ int counter = 0;}
                             <!-- rows of tasks if person has them -->
-                            @if (ViewBag.tasks != null)
+                            @if (Session["tasks"] != null)
                             {
-                                foreach (var item in (List<timesheet_net.Models.Tasks>)ViewBag.tasks)
+                                foreach (var item in (List<timesheet_net.Models.Tasks>)Session["tasks"])
                                 {
                             <tr>
+                                @using (Html.BeginForm("DeleteTask", "Timesheet"))
+                                {
                                 <!-- TaskName -->
                                 <td colspan="2">
                                     <!--div class="form-group"-->
                                         @Html.Hidden("data", item.TaskID) <!-- id of the task -->
+                                        @Html.Hidden("deleteData", counter++)
                                         <input type="text" class="form-control" name="data" value="@item.TaskName" style="height:26px;font-size:12px; min-width: 80px" placeholder="Nazwa zadania" required>
                                     <!---/div-->
                                 </td>
@@ -92,7 +96,7 @@ else
                                 <td>
                                     <p class="form-control-static-ts" style="margin:0px">   
                                     <!-- http://stackoverflow.com/a/4386890 -->
-                                    @((item.MondayHours+item.ThursdayHours+item.WednesdayHours+item.ThursdayHours+item.FridayHours+item.SaturdayHours+item.SundayHours).ToString())
+                                    @((item.MondayHours + item.TuesdayHours + item.WednesdayHours + item.ThursdayHours + item.FridayHours + item.SaturdayHours + item.SundayHours).ToString())
                                     </p>
                                 </td>
                                 <!-- Look -->
@@ -101,11 +105,9 @@ else
                                     <!--input type="submit" value="Zobacz" class="btn btn-default btn-main" style="width:auto;font-size:12px; height:25px; padding-top:3px; background-color:#808080" disabled-->
                                 </td>
                                 <td>
-                                    @using (Html.BeginForm("DeleteTask", "Timesheet"))
-                                    {
-                                        <input type="submit" value="Usuń" class="btn btn-deletetask" >
-                                    }                                  
+                                       <input type="submit" value="Usuń" class="btn btn-deletetask" >                                
                                 </td>
+                                }
                             </tr>
                             <tr>
                                 <td colspan="12">
@@ -124,12 +126,12 @@ else
                                 {
                                 <td colspan="2">
                                     <!---div class="form-group"-->
-                                        <input type="text" class="form-control" style="height:26px;font-size:12px; min-width:80px" name="taskName" placeholder="Nazwa zadania" required>
+                                        <input type="text" class="form-control" style="height:26px;font-size:12px; min-width:80px" name="data" placeholder="Nazwa zadania" required>
                                     <!--/div-->
                                 </td>
                                     for (int i = 0; i < 7; i++)
                                     {
-                                        <td><input type="text" name="data" value="0,00"style="width: 3.5em" disabled></td>     
+                                        <td><input type="text" value="0,00"style="width: 3.5em" disabled></td>     
                                     }
                                 <td><p class="form-control-static-ts" style="background-color:#bbb6b6; margin:0px">0</p></td>
                                 <td>

@@ -81,10 +81,14 @@ namespace timesheet_net.Controllers
                                 ViewBag.timesheetStateName = timesheetStateName;
                             }
                             //list of tasks
-                            var tasks = ctx.Tasks.Where(x => x.TimesheetID == timesheet.TimesheetID).ToList(); ;
+                            List<Tasks> tasks = (List<Tasks>)Session["tasks"];
+                            if (tasks == null)
+                            {
+                                tasks = ctx.Tasks.Where(x => x.TimesheetID == timesheet.TimesheetID).ToList();
+                            }
                             if (tasks.Count()!=0)
                             {
-                                ViewBag.tasks = tasks;
+                                Session["tasks"] = tasks;
                                 //general hours summary
                                 decimal MH = 0;
                                 decimal TuH = 0;
@@ -124,11 +128,32 @@ namespace timesheet_net.Controllers
             return View(IDNameProject);
         }
         [HttpPost]
-        public ActionResult AddTask(string taskName)
+        public ActionResult AddTask(string data)
         {
             if (Session["EmployeeID"] != null)
             {
+                List<Tasks> tasks = (List<Tasks>)Session["tasks"];
+                if (tasks.Count!=0)
+                {
+                    //new Task
+                    Tasks newTask = new Tasks();
+                    newTask.TaskName = data;
+                    newTask.MondayHours=0.00M;
+                    newTask.TuesdayHours = 0.00M;
+                    newTask.WednesdayHours = 0.00M;
+                    newTask.ThursdayHours = 0.00M;
+                    newTask.FridayHours = 0.00M;
+                    newTask.SaturdayHours = 0.00M;
+                    newTask.SundayHours = 0.00M;
+                    newTask.Comment = "";
+                    newTask.LastEditedBy = null;
+                    newTask.LastEditDate = null;
+                    newTask.CreatedBy = (int)Session["EmployeeID"];
+                    newTask.CreationDate = DateTime.Now;
 
+                    tasks.Add(newTask);
+                    Session["tasks"] = tasks;
+                }
                 return RedirectToAction("Current", "Timesheet");
             }
             else
@@ -137,11 +162,16 @@ namespace timesheet_net.Controllers
             }
         }
         [HttpPost]
-        public ActionResult DeleteTask(string taskName)
+        public ActionResult DeleteTask(string deleteData)
         {
             if (Session["EmployeeID"] != null)
             {
-
+                if (deleteData!=null)
+                {
+                    List<Tasks> tasks = (List<Tasks>)Session["tasks"];
+                    tasks.RemoveAt(Int32.Parse(deleteData));
+                    Session["tasks"] = tasks;
+                }
                 return RedirectToAction("Current", "Timesheet");
             }
             else
@@ -162,6 +192,7 @@ namespace timesheet_net.Controllers
                 if (projectNames != null)
                 {
                     Session["projectName"] = projectNames;
+                    Session["tasks"] = null;
                 }
                 return RedirectToAction("Current", "Timesheet");
             }
