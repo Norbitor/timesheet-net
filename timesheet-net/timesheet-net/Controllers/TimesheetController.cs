@@ -86,38 +86,37 @@ namespace timesheet_net.Controllers
                             {
                                 tasks = ctx.Tasks.Where(x => x.TimesheetID == timesheet.TimesheetID).ToList();
                             }
-                            if (tasks.Count()!=0)
+
+                            Session["tasks"] = tasks;
+                            //general hours summary
+                            decimal MH = 0;
+                            decimal TuH = 0;
+                            decimal WH = 0;
+                            decimal ThH = 0;
+                            decimal FH = 0;
+                            decimal SaH = 0;
+                            decimal SuH = 0;
+                            decimal allH = 0;
+                            foreach (var item in tasks)
                             {
-                                Session["tasks"] = tasks;
-                                //general hours summary
-                                decimal MH = 0;
-                                decimal TuH = 0;
-                                decimal WH = 0;
-                                decimal ThH = 0;
-                                decimal FH = 0;
-                                decimal SaH = 0;
-                                decimal SuH = 0;
-                                decimal allH = 0;
-                                foreach (var item in tasks)
-                                {
-                                    MH += item.MondayHours;
-                                    TuH += item.TuesdayHours;
-                                    WH += item.WednesdayHours;
-                                    ThH += item.ThursdayHours;
-                                    FH += item.FridayHours;
-                                    SaH += item.SaturdayHours;
-                                    SuH += item.SundayHours;
-                                }
-                                allH = MH + TuH + WH + ThH + FH + SaH + SuH;
-                                ViewData["0"] = MH.ToString();
-                                ViewData["1"] = TuH.ToString();
-                                ViewData["2"] = WH.ToString();
-                                ViewData["3"] = ThH.ToString();
-                                ViewData["4"] = FH.ToString();
-                                ViewData["5"] = SaH.ToString();
-                                ViewData["6"] = SuH.ToString();
-                                ViewBag.allH = allH.ToString();
+                                MH += item.MondayHours;
+                                TuH += item.TuesdayHours;
+                                WH += item.WednesdayHours;
+                                ThH += item.ThursdayHours;
+                                FH += item.FridayHours;
+                                SaH += item.SaturdayHours;
+                                SuH += item.SundayHours;
                             }
+                            allH = MH + TuH + WH + ThH + FH + SaH + SuH;
+                            ViewData["0"] = MH.ToString();
+                            ViewData["1"] = TuH.ToString();
+                            ViewData["2"] = WH.ToString();
+                            ViewData["3"] = ThH.ToString();
+                            ViewData["4"] = FH.ToString();
+                            ViewData["5"] = SaH.ToString();
+                            ViewData["6"] = SuH.ToString();
+                            ViewBag.allH = allH.ToString();
+
                         }
                     }
                     return View(IDNameProject);
@@ -127,40 +126,7 @@ namespace timesheet_net.Controllers
 
             return View(IDNameProject);
         }
-        [HttpPost]
-        public ActionResult AddTask(string data)
-        {
-            if (Session["EmployeeID"] != null)
-            {
-                List<Tasks> tasks = (List<Tasks>)Session["tasks"];
-                if (tasks.Count!=0)
-                {
-                    //new Task
-                    Tasks newTask = new Tasks();
-                    newTask.TaskName = data;
-                    newTask.MondayHours=0.00M;
-                    newTask.TuesdayHours = 0.00M;
-                    newTask.WednesdayHours = 0.00M;
-                    newTask.ThursdayHours = 0.00M;
-                    newTask.FridayHours = 0.00M;
-                    newTask.SaturdayHours = 0.00M;
-                    newTask.SundayHours = 0.00M;
-                    newTask.Comment = "";
-                    newTask.LastEditedBy = null;
-                    newTask.LastEditDate = null;
-                    newTask.CreatedBy = (int)Session["EmployeeID"];
-                    newTask.CreationDate = DateTime.Now;
 
-                    tasks.Add(newTask);
-                    Session["tasks"] = tasks;
-                }
-                return RedirectToAction("Current", "Timesheet");
-            }
-            else
-            {
-                return RedirectToAction("Current", "Timesheet");
-            }
-        }
         [HttpPost]
         public ActionResult DeleteTask(string deleteData)
         {

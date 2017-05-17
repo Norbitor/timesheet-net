@@ -27,11 +27,11 @@ else
         <div class="panel panel-default" style="width:auto">
         <div class="panel-heading">Wybierz projekt, a następnie kliknij przejdź, by wyświetlić <b>Timesheet</b></div>
         <div class="panel-body">
-        @using (Html.BeginForm("ChangeTimesheet", "Timesheet"))
-        {
-            @Html.DropDownList("projectID", Model, htmlAttributes: new { @class = "form-control dropdown", @style = "width:auto; display:inline-table;" })
-            <input type="submit" value="Przejdź" class="btn btn-default btn-main" style="margin:10px 10px 10px; width:auto" />
-        }
+            @using (Html.BeginForm("ChangeTimesheet", "Timesheet"))
+            {
+                @Html.DropDownList("projectID", Model, htmlAttributes: new { @class = "form-control dropdown", @style = "width:auto; display:inline-table;" })
+                <input type="submit" value="Przejdź" class="btn btn-default btn-main" style="margin:10px 10px 10px; width:auto" />
+            }
         </div>
         </div>
         <div class="panel panel-primary">
@@ -49,11 +49,11 @@ else
             </div>
             <!--body of the timesheet-->
             <div class="panel-body" style="overflow:auto">
-                <div-- class="table-responsive">
-                    <table class="table table-hover Ttable">
+                <div class="table-responsive">
+                    <table class="table table-hover Ttable" id="tableID">
                         <thead>
                             <tr>
-                                <th colspan="2">Zadanie:</th>
+                                <th>Zadanie:</th>
                                 <th>pn.</th>
                                 <th>wt.</th>
                                 <th>śr.</th>
@@ -67,21 +67,18 @@ else
                             </tr>
                         </thead>
                         <tbody>
-                            @{ int counter = 0;}
                             <!-- rows of tasks if person has them -->
                             @if (Session["tasks"] != null)
                             {
                                 foreach (var item in (List<timesheet_net.Models.Tasks>)Session["tasks"])
                                 {
                             <tr>
-                                @using (Html.BeginForm("DeleteTask", "Timesheet"))
-                                {
+                                
                                 <!-- TaskName -->
-                                <td colspan="2">
+                                <td>
                                     <!--div class="form-group"-->
-                                        @Html.Hidden("data", item.TaskID) <!-- id of the task -->
-                                        @Html.Hidden("deleteData", counter++)
-                                        <input type="text" class="form-control" name="data" value="@item.TaskName" style="height:26px;font-size:12px; min-width: 80px" placeholder="Nazwa zadania" required>
+                                        @Html.Hidden("data", item.TaskID) <!-- id of the task -->                                     
+                                        <input type="text" class="form-control" name="data" value="@item.TaskName" style="height:26px;font-size:12px; min-width: 80px" placeholder="Nazwa zadania" required/>
                                     <!---/div-->
                                 </td>
                                 <!-- [day]Hours --><!-- http://stackoverflow.com/a/13390173 -->
@@ -107,12 +104,11 @@ else
                                 <td>
                                        <input type="submit" value="Usuń" class="btn btn-deletetask" >                                
                                 </td>
-                                }
                             </tr>
                             <tr>
-                                <td colspan="12">
+                                <td colspan="11">
                                     <div id="@item.TaskID.ToString()" class="collapse">
-                                        <div class="form-group">
+                                        <div class="form-group" style="margin:0px;">
                                             <input type="text" class="form-control" name="data" value="@item.Comment" style="height:26px;max-width:none;font-size:12px;" placeholder="Komentarz">
                                         </div>
                                     </div>
@@ -122,14 +118,14 @@ else
                             }
                             <!--addition row to add new task-->
                             <tr>
-                                @using (Html.BeginForm("AddTask", "Timesheet"))
-                                {
-                                <td colspan="2">
+                               
+                                <td>
                                     <!---div class="form-group"-->
-                                        <input type="text" class="form-control" style="height:26px;font-size:12px; min-width:80px" name="data" placeholder="Nazwa zadania" required>
+                                        @Html.Hidden("empty", 0) <!-- id of the task -->      
+                                        <input type="text" class="form-control" style="height:26px;font-size:12px; min-width:80px" id="newTaskName" placeholder="Nazwa zadania" required>
                                     <!--/div-->
                                 </td>
-                                    for (int i = 0; i < 7; i++)
+                                    @for (int i = 0; i < 7; i++)
                                     {
                                         <td><input type="text" value="0,00"style="width: 3.5em" disabled></td>     
                                     }
@@ -139,14 +135,14 @@ else
                                 <!--input type="submit" value="Zobacz" class="btn btn-default btn-main" style="width:auto;font-size:12px; height:25px; padding-top:3px; background-color:#808080" disabled-->
                                 </td>
                                 <td>    
-                                    <input type="submit" value="Dodaj" class="btn btn-addtask";>
+                                    <input type="button" value="Dodaj" class="btn btn-addtask" onclick="AddTask()">
                                 </td>
-                                }
+
                             </tr> 
                             <tr>
-                                <td colspan="12">
+                                <td colspan="11">
                                     <div id="comment" class="collapse">
-                                        <div class="form-group">
+                                        <div class="form-group" style="margin:0px;">
                                             <input type="text" class="form-control" style="height:26px;max-width:none;font-size:12px;" name="Comment" placeholder="Komentarz">
                                         </div>
                                     </div>
@@ -154,7 +150,7 @@ else
                             </tr>
                                 <!--summary row-->
                             <tr>
-                                <td colspan="2" style="text-align:right;"><b>Łącznie:</b></td>
+                                <td style="text-align:right;"><b>Łącznie:</b></td>
                                 @for (int i = 0; i < 7; i++)
                                 {
                                     <td>
@@ -167,8 +163,10 @@ else
                                 </td>
                                 <td></td>
                                 <td></td>
-                            </tr>                  
+                            </tr>
+                                
                         </tbody>
+
                     </table>
                     </div>
                 </div>
@@ -191,3 +189,61 @@ else
         </div>
     }
 }
+
+<script type="text/javascript">
+
+    var negativeIndexes = -1;
+    function AddTask() {
+        var taskValue = document.getElementById("newTaskName").value;
+        console.log(taskValue);
+        if (taskValue != "") {
+            var table = document.getElementById("tableID");
+            if (table != 0) {
+                var rowsNo = table.rows.length; //No of rows in the table
+                var newRow = table.rows[rowsNo - 3].cloneNode(true); //copy first row of the table
+                var newComment = table.rows[rowsNo - 2].cloneNode(true);
+
+                newRow.cells[0].children[0].name = "data";          //hidden
+                newRow.cells[0].children[0].id = negativeIndexes;   //hidden
+
+
+                newRow.cells[0].children[1].name = "data";          //text input
+                newRow.cells[0].children[1].setAttribute('value', taskValue);//taskValue;
+                newRow.cells[0].children[1].id = "";    //clean id
+
+                //[day]hours
+                for (var i = 1; i <= 7; i++) {
+                    newRow.cells[i].children[0].name = "data";
+                    newRow.cells[i].children[0].disabled = false;
+                }
+
+                newRow.cells[8].children[0].style.backgroundColor = ""; //together value
+                
+                newRow.cells[9].children[0].style.backgroundColor = "#2e395b"; //pencil
+                newRow.cells[9].children[0].disabled = false; //pencil
+                var target = "#C" + negativeIndexes;
+                newRow.cells[9].children[0].setAttribute('data-target', target);
+
+                newRow.cells[10].children[0].setAttribute('value', "Usuń");
+                newRow.cells[10].children[0].setAttribute('class', "btn btn-deletetask");
+                newRow.cells[10].children[0].setAttribute('onclick', "DeleteTask()");
+
+                table.insertRow(table.rows.length - 3);
+                table.rows[table.rows.length - 4].innerHTML = newRow.innerHTML;
+
+                table.insertRow(table.rows.length - 3);
+                newComment.cells[0].children[0].id = "C" + negativeIndexes;
+                newComment.cells[0].children[0].children[0].children[0].name = "data";
+
+                table.rows[table.rows.length - 4].innerHTML = newComment.innerHTML;
+
+                negativeIndexes--;
+
+                document.getElementById("newTaskName").value="";
+                //console.log("OK");
+            }
+
+        }
+    }
+</script>
+
