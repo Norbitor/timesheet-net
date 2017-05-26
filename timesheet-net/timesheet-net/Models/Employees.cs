@@ -25,7 +25,6 @@ namespace timesheet_net.Models
             this.Tasks = new HashSet<Tasks>();
             this.Tasks1 = new HashSet<Tasks>();
             this.Timesheets = new HashSet<Timesheets>();
-            this.Timesheets1 = new HashSet<Timesheets>();
         }
 
         public int EmployeeID { get; set; }
@@ -71,7 +70,5 @@ namespace timesheet_net.Models
         public virtual ICollection<Tasks> Tasks1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Timesheets> Timesheets { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Timesheets> Timesheets1 { get; set; }
     }
 }

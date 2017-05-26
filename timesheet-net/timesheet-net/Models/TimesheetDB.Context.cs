@@ -31,7 +31,6 @@ namespace timesheet_net.Models
         public virtual DbSet<ProjectMembers> ProjectMembers { get; set; }
         public virtual DbSet<Projects> Projects { get; set; }
         public virtual DbSet<ProjectStates> ProjectStates { get; set; }
-        public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
         public virtual DbSet<Tasks> Tasks { get; set; }
         public virtual DbSet<Timesheets> Timesheets { get; set; }
         public virtual DbSet<TimesheetStates> TimesheetStates { get; set; }

@@ -27,17 +27,17 @@ namespace timesheet_net.Controllers
                 {
                     foreach (var item in listOfProjectIDs)
                     {
-                        var projectNames = ctx.Projects.Where(x => x.ProjectID == item).Select(x => x.Name).FirstOrDefault();
+                        var projectNames = ctx.Projects.Where(x => x.ProjectID == item).Select(x => new { x.Name, x.ProjectID }).FirstOrDefault();
                         //if loggedIn is assigned to project...
                         if (projectNames != null)
                         {
-                            if (Session["projectName"] != null)
+                            if (Session["projectID"] != null)
                             {
-                                if (Session["projectName"].ToString() == projectNames.ToString())
+                                if (Session["projectID"].ToString() == projectNames.ProjectID.ToString())
                                 {
                                     IDNameProject.Insert(0, (new SelectListItem
                                     {
-                                        Text = projectNames.ToString(),  //Name
+                                        Text = projectNames.Name.ToString(),  //Name
                                         Value = item.ToString()          //ProjectID
                                     }));
                                 }
@@ -45,16 +45,17 @@ namespace timesheet_net.Controllers
                                 {
                                     IDNameProject.Add(new SelectListItem
                                     {
-                                        Text = projectNames.ToString(), //Name
+                                        Text = projectNames.Name.ToString(), //Name
                                         Value = item.ToString()          //ProjectID
                                     });
                                 }
                             }
                             else
                             {
+                                Session["projectID"] = item.ToString();
                                 IDNameProject.Add(new SelectListItem
                                 {
-                                    Text = projectNames.ToString(), //Name
+                                    Text = projectNames.Name.ToString(), //Name
                                     Value = item.ToString()          //ProjectID
                                 });
                             }
@@ -81,11 +82,7 @@ namespace timesheet_net.Controllers
                                 ViewBag.timesheetStateName = timesheetStateName;
                             }
                             //list of tasks
-                            List<Tasks> tasks = (List<Tasks>)Session["tasks"];
-                            if (tasks == null)
-                            {
-                                tasks = ctx.Tasks.Where(x => x.TimesheetID == timesheet.TimesheetID).ToList();
-                            }
+                            List<Tasks> tasks = ctx.Tasks.Where(x => x.TimesheetID == timesheet.TimesheetID).ToList();
 
                             Session["tasks"] = tasks;
                             //general hours summary
@@ -154,12 +151,8 @@ namespace timesheet_net.Controllers
                 //session
                 TimesheetDBEntities ctx = new TimesheetDBEntities();
                 int projectIdent = Int32.Parse(projectID);
-                var projectNames = ctx.Projects.Where(x => x.ProjectID == projectIdent).Select(x => x.Name).FirstOrDefault();
-                if (projectNames != null)
-                {
-                    Session["projectName"] = projectNames;
-                    Session["tasks"] = null;
-                }
+                Session["projectID"] = projectIdent;
+                Session["tasks"] = null;
                 return RedirectToAction("Current", "Timesheet");
             }
             else
@@ -169,13 +162,76 @@ namespace timesheet_net.Controllers
         }
 
         [HttpPost]
-        public ActionResult SaveTimesheet(string projectName)
+        public ActionResult SaveTimesheet(string []data)
         {
             //projectName is the identyfier of the project!
             //string -> int
             if (Session["EmployeeID"] != null)
             {
-                //session
+                if (Session["projectID"]!=null && data.Length%10==0)
+                {
+                    int projectID = Int32.Parse(Session["projectID"].ToString());
+                    int employeeID=Int32.Parse(Session["EmployeeID"].ToString());
+
+                    using (TimesheetDBEntities ctx = new TimesheetDBEntities())
+                    {
+                        var projectMemberID = ctx.ProjectMembers.Where(x => x.ProjectID == projectID && x.EmployeeID == employeeID).Select(x => x.ProjectMemberID).FirstOrDefault();
+                        if (projectMemberID!=null)
+                        {
+                            //where start & finish && dateTimeNow beetween
+                            var dateTimeNow = DateTime.Now.Date;
+                            var timesheetID = ctx.Timesheets.Where(x => x.ProjectMemberID == projectMemberID && dateTimeNow>=x.Start && dateTimeNow<=x.Finish).Select(x => x.TimesheetID).FirstOrDefault();
+                            if (timesheetID!=null) //timesheetID
+                            {                          
+                                int taskID = 0;
+                                Tasks task;                               
+                                for (int i = 0; i < data.Length; i += 10)
+                                {
+                                    taskID = Int32.Parse(data[i]);                                          
+                                    if (taskID == 0) //new task
+                                    {
+                                        task = new Tasks();
+
+                                        task.TimesheetID = timesheetID;
+                                        task.TaskName= data[i + 1];
+                                        task.MondayHours = Decimal.Parse(data[i + 2]);
+                                        task.TuesdayHours= Decimal.Parse(data[i + 3]);
+                                        task.WednesdayHours= Decimal.Parse(data[i + 4]);
+                                        task.ThursdayHours= Decimal.Parse(data[i + 5]);
+                                        task.FridayHours= Decimal.Parse(data[i + 6]);
+                                        task.SaturdayHours= Decimal.Parse(data[i + 7]);
+                                        task.SundayHours= Decimal.Parse(data[i + 8]);
+                                        task.Comment= data[i + 9];
+                                        task.LastEditedBy = employeeID;
+                                        task.LastEditDate = DateTime.Now;
+                                        task.CreatedBy = employeeID;
+                                        task.CreationDate= DateTime.Now;
+                                        ctx.Tasks.Add(task);
+                                    }
+                                    else //existing task
+                                    {
+                                        task = ctx.Tasks.Where(x => x.TaskID == taskID).FirstOrDefault();
+
+                                        task.TaskName = data[i + 1];
+                                        task.MondayHours = Decimal.Parse(data[i + 2]);
+                                        task.TuesdayHours = Decimal.Parse(data[i + 3]);
+                                        task.WednesdayHours = Decimal.Parse(data[i + 4]);
+                                        task.ThursdayHours = Decimal.Parse(data[i + 5]);
+                                        task.FridayHours = Decimal.Parse(data[i + 6]);
+                                        task.SaturdayHours = Decimal.Parse(data[i + 7]);
+                                        task.SundayHours = Decimal.Parse(data[i + 8]);
+                                        task.Comment = data[i + 9];
+                                        task.LastEditedBy = employeeID;
+                                        task.LastEditDate = DateTime.Now;
+
+                                        ctx.Entry(task).State = EntityState.Modified;                                 
+                                    }                                 
+                                }                       
+                            }
+                        }
+                        ctx.SaveChanges();
+                    }
+                }
                 return RedirectToAction("Current", "Timesheet");
             }
             else

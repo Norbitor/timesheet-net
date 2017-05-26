@@ -76,7 +76,7 @@ namespace timesheet_net.Controllers
             {
                 Session["EmployeeID"] = null;
                 Session["tasks"] = null;
-                Session["projectName"] = null;
+                Session["projectID"] = null;
             }
             return RedirectToAction("", "Home");
         }

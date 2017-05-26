@@ -65,16 +65,6 @@
           <Property Name="ProjectStateID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ProjectStateName" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
-        <EntityType Name="sysdiagrams">
-          <Key>
-            <PropertyRef Name="diagram_id" />
-          </Key>
-          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="principal_id" Type="int" Nullable="false" />
-          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="version" Type="int" />
-          <Property Name="definition" Type="varbinary(max)" />
-        </EntityType>
         <EntityType Name="Tasks">
           <Key>
             <PropertyRef Name="TaskID" />
@@ -82,13 +72,13 @@
           <Property Name="TaskID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="TimesheetID" Type="int" Nullable="false" />
           <Property Name="TaskName" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="MondayHours" Type="decimal" Precision="2" Scale="2" Nullable="false" />
-          <Property Name="TuesdayHours" Type="decimal" Precision="2" Scale="2" Nullable="false" />
-          <Property Name="WednesdayHours" Type="decimal" Precision="2" Scale="2" Nullable="false" />
-          <Property Name="ThursdayHours" Type="decimal" Precision="2" Scale="2" Nullable="false" />
-          <Property Name="FridayHours" Type="decimal" Precision="2" Scale="2" Nullable="false" />
-          <Property Name="SaturdayHours" Type="decimal" Precision="2" Scale="2" Nullable="false" />
-          <Property Name="SundayHours" Type="decimal" Precision="2" Scale="2" Nullable="false" />
+          <Property Name="MondayHours" Type="decimal" Precision="4" Scale="2" Nullable="false" />
+          <Property Name="TuesdayHours" Type="decimal" Precision="4" Scale="2" Nullable="false" />
+          <Property Name="WednesdayHours" Type="decimal" Precision="4" Scale="2" Nullable="false" />
+          <Property Name="ThursdayHours" Type="decimal" Precision="4" Scale="2" Nullable="false" />
+          <Property Name="FridayHours" Type="decimal" Precision="4" Scale="2" Nullable="false" />
+          <Property Name="SaturdayHours" Type="decimal" Precision="4" Scale="2" Nullable="false" />
+          <Property Name="SundayHours" Type="decimal" Precision="4" Scale="2" Nullable="false" />
           <Property Name="Comment" Type="varchar(max)" />
           <Property Name="LastEditedBy" Type="int" />
           <Property Name="LastEditDate" Type="datetime" />
@@ -292,7 +282,6 @@
           <EntitySet Name="ProjectMembers" EntityType="Self.ProjectMembers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Projects" EntityType="Self.Projects" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ProjectStates" EntityType="Self.ProjectStates" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Tasks" EntityType="Self.Tasks" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Timesheets" EntityType="Self.Timesheets" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TimesheetStates" EntityType="Self.TimesheetStates" Schema="dbo" store:Type="Tables" />
@@ -438,16 +427,6 @@
           <Property Name="ProjectStateName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="Projects" Relationship="Self.FK_Project_ProjectState" FromRole="ProjectStates" ToRole="Projects" />
         </EntityType>
-        <EntityType Name="sysdiagrams">
-          <Key>
-            <PropertyRef Name="diagram_id" />
-          </Key>
-          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="principal_id" Type="Int32" Nullable="false" />
-          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="version" Type="Int32" />
-          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
-        </EntityType>
         <EntityType Name="Tasks">
           <Key>
             <PropertyRef Name="TaskID" />
@@ -455,13 +434,13 @@
           <Property Name="TaskID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="TimesheetID" Type="Int32" Nullable="false" />
           <Property Name="TaskName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="MondayHours" Type="Decimal" Precision="2" Scale="2" Nullable="false" />
-          <Property Name="TuesdayHours" Type="Decimal" Precision="2" Scale="2" Nullable="false" />
-          <Property Name="WednesdayHours" Type="Decimal" Precision="2" Scale="2" Nullable="false" />
-          <Property Name="ThursdayHours" Type="Decimal" Precision="2" Scale="2" Nullable="false" />
-          <Property Name="FridayHours" Type="Decimal" Precision="2" Scale="2" Nullable="false" />
-          <Property Name="SaturdayHours" Type="Decimal" Precision="2" Scale="2" Nullable="false" />
-          <Property Name="SundayHours" Type="Decimal" Precision="2" Scale="2" Nullable="false" />
+          <Property Name="MondayHours" Type="Decimal" Precision="4" Scale="2" Nullable="false" />
+          <Property Name="TuesdayHours" Type="Decimal" Precision="4" Scale="2" Nullable="false" />
+          <Property Name="WednesdayHours" Type="Decimal" Precision="4" Scale="2" Nullable="false" />
+          <Property Name="ThursdayHours" Type="Decimal" Precision="4" Scale="2" Nullable="false" />
+          <Property Name="FridayHours" Type="Decimal" Precision="4" Scale="2" Nullable="false" />
+          <Property Name="SaturdayHours" Type="Decimal" Precision="4" Scale="2" Nullable="false" />
+          <Property Name="SundayHours" Type="Decimal" Precision="4" Scale="2" Nullable="false" />
           <Property Name="Comment" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="LastEditedBy" Type="Int32" />
           <Property Name="LastEditDate" Type="DateTime" Precision="3" />
@@ -673,7 +652,6 @@
           <EntitySet Name="ProjectMembers" EntityType="Self.ProjectMembers" />
           <EntitySet Name="Projects" EntityType="Self.Projects" />
           <EntitySet Name="ProjectStates" EntityType="Self.ProjectStates" />
-          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
           <EntitySet Name="Tasks" EntityType="Self.Tasks" />
           <EntitySet Name="Timesheets" EntityType="Self.Timesheets" />
           <EntitySet Name="TimesheetStates" EntityType="Self.TimesheetStates" />
@@ -803,17 +781,6 @@
               <MappingFragment StoreEntitySet="ProjectStates">
                 <ScalarProperty Name="ProjectStateID" ColumnName="ProjectStateID" />
                 <ScalarProperty Name="ProjectStateName" ColumnName="ProjectStateName" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="sysdiagrams">
-            <EntityTypeMapping TypeName="TimesheetDBModel.sysdiagrams">
-              <MappingFragment StoreEntitySet="sysdiagrams">
-                <ScalarProperty Name="name" ColumnName="name" />
-                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
-                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
-                <ScalarProperty Name="version" ColumnName="version" />
-                <ScalarProperty Name="definition" ColumnName="definition" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

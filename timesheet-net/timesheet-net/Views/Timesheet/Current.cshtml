@@ -47,6 +47,9 @@ else
                     </div>
                 </div>                     
             </div>
+             <!-- Save work -->
+            @using (Html.BeginForm("SaveTimesheet", "Timesheet"))
+            {
             <!--body of the timesheet-->
             <div class="panel-body" style="overflow:auto">
                 <div class="table-responsive">
@@ -68,10 +71,10 @@ else
                         </thead>
                         <tbody>
                             <!-- rows of tasks if person has them -->
-                            @if (Session["tasks"] != null)
-                            {
-                                foreach (var item in (List<timesheet_net.Models.Tasks>)Session["tasks"])
+                                @if (Session["tasks"] != null)
                                 {
+                                    foreach (var item in (List<timesheet_net.Models.Tasks>)Session["tasks"])
+                                    {
                             <tr>
                                 
                                 <!-- TaskName -->
@@ -114,15 +117,15 @@ else
                                     </div>
                                 </td>
                             </tr>
+                                    }
                                 }
-                            }
                             <!--addition row to add new task-->
                             <tr>
                                
                                 <td>
                                     <!---div class="form-group"-->
                                         @Html.Hidden("empty", 0) <!-- id of the task -->      
-                                        <input type="text" class="form-control" style="height:26px;font-size:12px; min-width:80px" id="newTaskName" placeholder="Nazwa zadania" required>
+                                        <input type="text" class="form-control" style="height:26px;font-size:12px; min-width:80px" id="newTaskName" placeholder="Nazwa zadania"/>
                                     <!--/div-->
                                 </td>
                                     @for (int i = 0; i < 7; i++)
@@ -163,10 +166,8 @@ else
                                 </td>
                                 <td></td>
                                 <td></td>
-                            </tr>
-                                
+                            </tr>                           
                         </tbody>
-
                     </table>
                     </div>
                 </div>
@@ -196,6 +197,7 @@ else
                     </div>
                 </div>
             </div>
+            }
         </div>
     }
 }
@@ -226,6 +228,8 @@ else
                 for (var i = 1; i <= 7; i++) {
                     newRow.cells[i].children[0].name = "data";
                     newRow.cells[i].children[0].disabled = false;
+                    newRow.cells[i].children[0].pattern = "^(0|[1-9]|1[0-9]|2[0-3])(,(25|5|75|0)0*)?$|24";
+                    newRow.cells[i].children[0].required = "";
                 }
 
                 newRow.cells[8].children[0].style.backgroundColor = ""; //together value

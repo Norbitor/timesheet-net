@@ -183,9 +183,6 @@
     <Compile Include="Models\ProjectStates.cs">
       <DependentUpon>TimesheetDB.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\sysdiagrams.cs">
-      <DependentUpon>TimesheetDB.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\Tasks.cs">
       <DependentUpon>TimesheetDB.tt</DependentUpon>
     </Compile>
