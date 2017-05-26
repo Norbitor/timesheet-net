@@ -1,8 +1,64 @@
 ﻿@model IEnumerable<timesheet_net.Models.Projects>
 @{
-    ViewBag.Title = "Przegląd projektów";
+    ViewBag.Title = "Twoje projekty";
 }
+
+@if ((int)Session["JobPosition"] != 1)
+{
+    <h2 style="color:#6f0c3b"><b>Twoje projekty</b></h2>
+
+    if (((List<string>)(ViewBag.projectOverview)).Count() == 0)
+    {
+        <div class="alert alert-danger">
+            Nie jesteś przypisany do żadnego projektu!
+        </div>
+    }
+    else
+    {
+        //information alerts
+        <div class="alert alert-info">
+            W tej sekcji masz możliwość przeglądu najważniejszych infomacji na temat projektów, do których należysz.
+        </div>
+    }
+
+    if (((List<string>)(ViewBag.projectOverview)).Count() != 0) //employee has project/s
+    {
+        <div class="table-responsive">
+            <table class="table table-hover Ttable" id="tableID">
+                <thead>
+                    <tr>
+                        <th>Nazwa projektu</th>
+                        <th>Początek</th>
+                        <th>Koniec</th>
+                        <th>Stan</th>
+                        <th>Przełożony</th>
+                        <th>Pracownicy</th>
+                        <th>Twój udział</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < ((List<string>)(ViewBag.projectOverview)).Count(); i+=7)
+                    {
+                        <tr>
+                            <td>@(((List<string>)(ViewBag.projectOverview))[i])</td>
+                            <td>@(((List<string>)(ViewBag.projectOverview))[i + 1])</td>
+                            <td>@(((List<string>)(ViewBag.projectOverview))[i + 2])</td>
+                            <td>@(((List<string>)(ViewBag.projectOverview))[i + 3])</td>
+                            <td>@(((List<string>)(ViewBag.projectOverview))[i + 4])</td>
+                            <td>@(((List<string>)(ViewBag.projectOverview))[i + 5])</td>
+                            <td>@(((List<string>)(ViewBag.projectOverview))[i + 6])</td>                           
+                        </tr>
+                    }
+                </tbody>
+            </table>
+    </div>
+    }
+}
+else
+{
+
 <h2>@ViewBag.Title</h2>
+
 <p>
     Z poziomu tego widoku możesz zarządzać projektami. Projekty nieaktywne oraz zakończone wyświetlane są zawsze
     na dole listy.
@@ -56,5 +112,6 @@
             <li><a href="#">Usuń</a></li>
         </ul>
     </div>
-    @Html.ActionLink("Nowy projekt", "New", "Project", null, new { @class = "btn btn-default btn-main", @style="width: 152px;" })
+    @Html.ActionLink("Nowy projekt", "New", "Project", null, new { @class = "btn btn-default btn-main", @style = "width: 152px;" })
 </div>
+}
