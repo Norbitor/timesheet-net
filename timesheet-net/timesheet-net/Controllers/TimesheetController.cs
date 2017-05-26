@@ -70,9 +70,10 @@ namespace timesheet_net.Controllers
                     if (projectMemberID > 0)
                     {
                         //info about the projecy
-                        var timesheet = ctx.Timesheets.Where(x => x.ProjectMemberID == projectMemberID).Select(x => new {x.TimesheetID, x.Start, x.Finish, x.TimesheetStateID }).FirstOrDefault();
+                        var timesheet = ctx.Timesheets.Where(x => x.ProjectMemberID == projectMemberID && x.TimesheetStateID == 1).Select(x => new { x.TimesheetID, x.Start, x.Finish, x.TimesheetStateID }).FirstOrDefault();
                         if (timesheet != null)
                         {
+                            Session["TimesheetID"] = timesheet.TimesheetID;
                             string timesheetStateName = ctx.TimesheetStates.Where(x => x.TimesheetStateID == timesheet.TimesheetStateID).Select(x => x.TimesheetStateName).FirstOrDefault();
                             if (timesheetStateName != null)
                             {
@@ -181,7 +182,8 @@ namespace timesheet_net.Controllers
                         {
                             //where start & finish && dateTimeNow beetween
                             var dateTimeNow = DateTime.Now.Date;
-                            var timesheetID = ctx.Timesheets.Where(x => x.ProjectMemberID == projectMemberID && dateTimeNow>=x.Start && dateTimeNow<=x.Finish).Select(x => x.TimesheetID).FirstOrDefault();
+                            int timesheetID = (int)Session["TimesheetID"];
+                            //var timesheetID = ctx.Timesheets.Where(x => x.ProjectMemberID == projectMemberID && x.TimesheetStateID == 1).Select(x => x.TimesheetID).FirstOrDefault();
                             if (timesheetID!=null) //timesheetID
                             {                          
                                 int taskID = 0;
@@ -244,6 +246,7 @@ namespace timesheet_net.Controllers
                         }
 
                         ctx.SaveChanges();
+                        TempData["SaveChanges"] = "OK";
                     }
                 }
                 return RedirectToAction("Current", "Timesheet");
@@ -260,7 +263,6 @@ namespace timesheet_net.Controllers
         {
             return View();
         }
-
 
 
     }
