@@ -35,6 +35,25 @@
     background-color: #ff312e;
 }
 
+.btn-bluealert {
+    color: #eeeeee;
+    background-color: #0094ff;
+    border-radius: 6px;
+    border-color: #cccccc;
+    font-weight: bold;
+    width: auto;
+    margin-left:6px;
+}
+
+.btn-bluealert:hover,
+.btn-bluealert:focus,
+.btn-bluelert:active,
+.btn-bluelert.active,
+.open .dropdown-toggle.btn-bluealert {
+    color: #eeeeee;
+    background-color: #25a4ff;
+}
+
 .btn-addtask {
     color: #eeeeee;
     background-color: #4aa73f;

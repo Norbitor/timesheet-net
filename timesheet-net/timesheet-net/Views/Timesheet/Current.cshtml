@@ -102,7 +102,7 @@ else
                                     <!--input type="submit" value="Zobacz" class="btn btn-default btn-main" style="width:auto;font-size:12px; height:25px; padding-top:3px; background-color:#808080" disabled-->
                                 </td>
                                 <td>
-                                       <input type="submit" value="Usuń" class="btn btn-deletetask" >                                
+                                       <input type="button" value="Usuń" class="btn btn-deletetask" onclick="DeleteTask(this)" >                                
                                 </td>
                             </tr>
                             <tr>
@@ -176,12 +176,22 @@ else
                     <div class="row">
                         <div class="col-sm-10">
                             <!--alert about saving employee work-->
-                            <div class="alert alert-danger" style="margin-bottom:0px">
+                            <div class="alert alert-danger" style="margin-bottom:10px">
                                 <strong>Uwaga!</strong> Zapisz rezultat swojej pracy, w przeciwnym wypadku zmiany zostaną utracone!
                             </div>
                         </div>
                         <div class="col-sm-2" style="text-align:center; padding: 10px;">
                             <input type="submit" value="Zapisz zmiany" class="btn btn-default btn-redalert" style="margin-right:10px"/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-10">
+                            <div class="alert alert-info" style="margin-bottom:0px">
+                                <strong>Informacja!</strong> Cofnij wprowadzone zmiany.
+                            </div>
+                        </div>
+                        <div class="col-sm-2" style="text-align:center; padding: 10px;">
+                            <input type="button" class="btn btn-default btn-bluealert" value="Cofnij zmiany" style="margin-right:10px" onclick="@("window.location.href='" + @Url.Action("Current", "Timesheet") + "'");" />
                         </div>
                     </div>
                 </div>
@@ -193,7 +203,8 @@ else
 <script type="text/javascript">
 
     var negativeIndexes = -1;
-    function AddTask() {
+    function AddTask()
+    {
         var taskValue = document.getElementById("newTaskName").value;
         console.log(taskValue);
         if (taskValue != "") {
@@ -226,7 +237,7 @@ else
 
                 newRow.cells[10].children[0].setAttribute('value', "Usuń");
                 newRow.cells[10].children[0].setAttribute('class', "btn btn-deletetask");
-                newRow.cells[10].children[0].setAttribute('onclick', "DeleteTask()");
+                newRow.cells[10].children[0].setAttribute('onclick', "DeleteTask(this)");
 
                 table.insertRow(table.rows.length - 3);
                 table.rows[table.rows.length - 4].innerHTML = newRow.innerHTML;
@@ -244,6 +255,14 @@ else
             }
 
         }
+    }
+    function DeleteTask(t)
+    {
+        var row = t.parentNode.parentNode;
+        document.getElementById("tableID").deleteRow(row.rowIndex+1);
+        document.getElementById("tableID").deleteRow(row.rowIndex);
+        console.log(row);
+        console.log("OK");
     }
 </script>
 
