@@ -170,6 +170,7 @@ namespace timesheet_net.Controllers
             {
                 if (Session["projectID"]!=null && data.Length%10==0)
                 {
+                    List<long> taskIDFromTimesheet = new List<long>();
                     int projectID = Int32.Parse(Session["projectID"].ToString());
                     int employeeID=Int32.Parse(Session["EmployeeID"].ToString());
 
@@ -184,10 +185,12 @@ namespace timesheet_net.Controllers
                             if (timesheetID!=null) //timesheetID
                             {                          
                                 int taskID = 0;
-                                Tasks task;                               
+                                Tasks task;
+                                var tasks = ctx.Tasks.Where(x => x.TimesheetID == timesheetID);
                                 for (int i = 0; i < data.Length; i += 10)
                                 {
-                                    taskID = Int32.Parse(data[i]);                                          
+                                    taskID = Int32.Parse(data[i]);
+                                    taskIDFromTimesheet.Add(taskID);
                                     if (taskID == 0) //new task
                                     {
                                         task = new Tasks();
@@ -210,7 +213,7 @@ namespace timesheet_net.Controllers
                                     }
                                     else //existing task
                                     {
-                                        task = ctx.Tasks.Where(x => x.TaskID == taskID).FirstOrDefault();
+                                        task = tasks.Where(x => x.TaskID == taskID).FirstOrDefault();//ctx.Tasks.Where(x => x.TaskID == taskID).FirstOrDefault();
 
                                         task.TaskName = data[i + 1];
                                         task.MondayHours = Decimal.Parse(data[i + 2]);
@@ -226,9 +229,20 @@ namespace timesheet_net.Controllers
 
                                         ctx.Entry(task).State = EntityState.Modified;                                 
                                     }                                 
-                                }                       
+                                }
+                                //Remove from db tasks which users has deleted
+                                //tasks -> list of tasks from DB
+                                //taskIDFromTimesheet
+                                foreach (var item in tasks)
+                                {
+                                    if (!taskIDFromTimesheet.Contains(item.TaskID))
+                                    {
+                                        ctx.Entry(item).State = EntityState.Deleted;
+                                    }
+                                }
                             }
                         }
+
                         ctx.SaveChanges();
                     }
                 }
