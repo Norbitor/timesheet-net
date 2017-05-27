@@ -77,9 +77,9 @@ namespace timesheet_net.Controllers
                 Session["EmployeeID"] = null;
                 Session["JobPosition"] = null;
                 Session["tasks"] = null;
-                Session["projectID"] = null;
-                Session["TimesheetID"] = null;
+                Session["timesheetID"] = null;
                 Session["Login"] = null;
+                Session["CurrentOrDisapproved"] = null;
             }
             return RedirectToAction("", "Home");
         }
@@ -111,14 +111,16 @@ namespace timesheet_net.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "EMail, Name, Surname, Telephone")] Employees empl)
         {
-            Regex regex = new Regex(@"^[a-zA-Z0-9._-]+@[a-zA-Z0-9-]+\.[a-zA-Z]{2,4}");
-            
+            if (Session["EmployeeID"] != null)
+            {
+                Regex regex = new Regex(@"^[a-zA-Z0-9._-]+@[a-zA-Z0-9-]+\.[a-zA-Z]{2,4}");
+
                 if (empl.EMail != null && empl.Name != null && empl.Surname != null && empl.Telephone != null)
                 {
                     if (regex.IsMatch(empl.EMail))
                     {
                         using (TimesheetDBEntities ctx = new TimesheetDBEntities())
-                     {
+                        {
                             int employeeID = (int)Session["EmployeeID"];
                             var foundEmpl = ctx.Employees.Where(x => x.EmployeeID == employeeID).FirstOrDefault();
                             string typedEmail = empl.EMail;
@@ -139,7 +141,9 @@ namespace timesheet_net.Controllers
                         }
                     }
                 }
-            return View(empl);
+                return View(empl);
+            }
+            return RedirectToAction("", "Home");
         }
 
         [HttpGet]
@@ -199,6 +203,10 @@ namespace timesheet_net.Controllers
 
                         }
                     }
+                }
+                else
+                {
+                    return RedirectToAction("", "Home");
                 }
             }
             else
