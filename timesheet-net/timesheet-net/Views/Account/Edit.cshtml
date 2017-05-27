@@ -14,49 +14,53 @@
 {
     @Html.AntiForgeryToken()
 
-    if (ViewData["Message"]!=null)
+    if (ViewData["Message"] != null)
     {
-        <div>
-            <div class="alert alert-success">
-                Dane zostały pomyślnie zmienione!
+        if (ViewData["Message"].ToString() == "OK")
+        {
+            <div>
+                <div class="alert alert-success">
+                    Hasło zostało pomyślnie zmienione!
+                </div>
             </div>
-        </div>
+        }
+        else
+        {
+            <div>
+                <div class="alert alert-danger">
+                    <strong>Błąd!</strong> @ViewData["Message"].ToString()
+                </div>
+            </div>
+        }
     }
 
     <div class="form-horizontal">
         <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.EmployeeID)
+        <!--
+        Html.ValidationSummary(true, "", new { class = "text-danger" })
+        Html.HiddenFor(model => model.EmployeeID)-->
 
         <div class="form-group">
-            @Html.LabelFor(model => model.EMail, "E-mail", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.EMail, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.EMail, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.EMail, null, "EMail", new { htmlAttributes = new { @class = "form-control", @type="email", @style = "width:300px", @placeholder = "Wprowadź e-mail", @required="" } })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Name, "Imię", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.Name, null, "Name", new { htmlAttributes = new { @class = "form-control", @style = "width:300px", @placeholder = "Wprowadź imię", @required="" } })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Surname, "Nazwisko", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Surname, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Surname, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.Surname, null, "Surname", new { htmlAttributes = new { @class = "form-control", @style = "width:300px", @placeholder = "Wprowadź nazwisko", @required = "" } })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Telephone,"Telefon", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Telephone, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Telephone, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.Telephone, null, "Telephone", new { htmlAttributes = new { @class = "form-control", @style = "width:300px", @placeholder = "Wprowadź nr telefonu", @required="" } })
             </div>
         </div>
 

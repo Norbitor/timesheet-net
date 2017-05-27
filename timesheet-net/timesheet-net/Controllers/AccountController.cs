@@ -63,9 +63,9 @@ namespace timesheet_net.Controllers
                         ctx.SaveChanges();
                     }
                 }
-                
+
             }
-            
+
             return RedirectToAction("", "Home");
         }
         [HttpPost]
@@ -113,31 +113,27 @@ namespace timesheet_net.Controllers
         {
             if (Session["EmployeeID"] != null)
             {
-                Regex regex = new Regex(@"^[a-zA-Z0-9._-]+@[a-zA-Z0-9-]+\.[a-zA-Z]{2,4}");
 
                 if (empl.EMail != null && empl.Name != null && empl.Surname != null && empl.Telephone != null)
                 {
-                    if (regex.IsMatch(empl.EMail))
+                    using (TimesheetDBEntities ctx = new TimesheetDBEntities())
                     {
-                        using (TimesheetDBEntities ctx = new TimesheetDBEntities())
+                        int employeeID = (int)Session["EmployeeID"];
+                        var foundEmpl = ctx.Employees.Where(x => x.EmployeeID == employeeID).FirstOrDefault();
+                        string typedEmail = empl.EMail;
+                        if (typedEmail == ctx.Employees.Where(x => x.EMail == typedEmail && x.EmployeeID != employeeID).Select(x => x.EMail).FirstOrDefault())
                         {
-                            int employeeID = (int)Session["EmployeeID"];
-                            var foundEmpl = ctx.Employees.Where(x => x.EmployeeID == employeeID).FirstOrDefault();
-                            string typedEmail = empl.EMail;
-                            if (typedEmail == ctx.Employees.Where(x => x.EMail == typedEmail && x.EmployeeID != employeeID).Select(x => x.EMail).FirstOrDefault())
-                            {
-                                ModelState.AddModelError("", "Podany e-mail jest już zajęty");
-                            }
-                            else
-                            {
-                                foundEmpl.Name = empl.Name;
-                                foundEmpl.Surname = empl.Surname;
-                                foundEmpl.Telephone = empl.Telephone;
-                                foundEmpl.EMail = typedEmail;
-                                ctx.Entry(foundEmpl).State = EntityState.Modified;
-                                ctx.SaveChanges();
-                                ViewData["Message"] = "OK";
-                            }
+                            ViewData["Message"] = "Podany e-mail jest już zajęty";
+                        }
+                        else
+                        {
+                            foundEmpl.Name = empl.Name;
+                            foundEmpl.Surname = empl.Surname;
+                            foundEmpl.Telephone = empl.Telephone;
+                            foundEmpl.EMail = typedEmail;
+                            ctx.Entry(foundEmpl).State = EntityState.Modified;
+                            ctx.SaveChanges();
+                            ViewData["Message"] = "OK";
                         }
                     }
                 }
@@ -189,7 +185,7 @@ namespace timesheet_net.Controllers
                                     foundEmployee.Password = hashNewPassHex;
                                     ctx.Entry(foundEmployee).State = EntityState.Modified;
                                     ctx.SaveChanges();
-                                    ViewData["Message"] = "OK";                         
+                                    ViewData["Message"] = "OK";
                                 }
                                 else
                                 {
@@ -200,7 +196,7 @@ namespace timesheet_net.Controllers
                             else
                             {
                                 ViewData["Message"] = "Podane stare hasło jest nieprawidłowe!";
-                               //ModelState.AddModelError("", "Podane stare hasło jest nieprawidłowe!");
+                                //ModelState.AddModelError("", "Podane stare hasło jest nieprawidłowe!");
                             }
 
                         }
