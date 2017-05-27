@@ -6,12 +6,12 @@
     //dropdown menu
     <div class="panel panel-default" style="width:auto">
         <div class="panel-heading">Wybierz projekt, a następnie kliknij przejdź, by wyświetlić <b>Timesheet</b></div>
-        <div class="panel-body">
+        <div class="panel-body" style="overflow:auto">
             @using (Html.BeginForm("ChangeTimesheet", "Timesheet"))
-                {
-                @Html.DropDownList("timesheetID", Model, htmlAttributes: new { @class = "form-control dropdown", @style = "width:auto; display:inline-table;" })
+            {
+                @Html.DropDownList("timesheetID", Model, htmlAttributes: new { @class = "form-control dropdown", @style = "width:auto; display:inline-table; margin-right: 10px;" })
                 <input type="submit" value="Przejdź" class="btn btn-default btn-main" style="margin:10px 10px 10px; width:auto" />
-            }
+            }        
         </div>
     </div>
         <div class="panel panel-primary">
@@ -35,6 +35,16 @@
                     <div class="table-responsive">
                         <table class="table table-hover Ttable" id="tableID">
                             <thead>
+                                @if (ViewBag.timesheetComment != null)
+                                {
+                                <tr>
+                                    <td colspan="12">
+                                        <div class="alert alert-warning">
+                                            <strong>Komentarz!</strong> @ViewBag.timesheetComment
+                                        </div>
+                                    </td>
+                                </tr>
+                                }
                                 <tr>
                                     <th>Zadanie:</th>
                                     <th>pn.</th>

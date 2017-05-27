@@ -266,7 +266,7 @@ namespace timesheet_net.Controllers
                     //if (projectMemberID > 0)
                     //{
                     //info about the projecy
-                    var timesheet = ctx.Timesheets.Where(x => x.TimesheetID == selectedTimesheetID).Select(x => new { x.TimesheetID, x.Start, x.Finish, x.TimesheetStateID }).FirstOrDefault();
+                    var timesheet = ctx.Timesheets.Where(x => x.TimesheetID == selectedTimesheetID).Select(x => new { x.TimesheetID, x.Start, x.Finish, x.TimesheetStateID , x.Comment}).FirstOrDefault();
                     //var timesheet = ctx.Timesheets.Where(x => x.ProjectMemberID == projectMemberID && x.TimesheetStateID == 1).Select(x => new { x.TimesheetID, x.Start, x.Finish, x.TimesheetStateID }).FirstOrDefault();
                     if (timesheet != null)
                     {
@@ -278,6 +278,11 @@ namespace timesheet_net.Controllers
                             ViewBag.timesheetStart = timesheet.Start.ToString("yyyy-MM-dd");
                             ViewBag.timesheetFinish = timesheet.Finish.Date.ToString("yyyy-MM-dd");
                             ViewBag.timesheetStateName = timesheetStateName;
+                            if (timesheet.TimesheetStateID == 1) { ViewBag.timesheetComment = null; }
+                            else if (timesheet.TimesheetStateID == 5)
+                            {
+                                ViewBag.timesheetComment = timesheet.Comment == "" ? "Nie podano powodu odrzucenia" : timesheet.Comment;
+                            }
                         }
                         //list of tasks
                         List<Tasks> tasks = ctx.Tasks.Where(x => x.TimesheetID == timesheet.TimesheetID).ToList();
