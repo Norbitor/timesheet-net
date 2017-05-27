@@ -189,16 +189,18 @@ namespace timesheet_net.Controllers
                                     foundEmployee.Password = hashNewPassHex;
                                     ctx.Entry(foundEmployee).State = EntityState.Modified;
                                     ctx.SaveChanges();
-                                    ViewData["Message"] = "OK";
+                                    ViewData["Message"] = "OK";                         
                                 }
                                 else
                                 {
-                                    ModelState.AddModelError("", "Podane hasła nie zgadzają się!");
+                                    ViewData["Message"] = "Podane hasła nie zgadzają się!";
+                                    //ModelState.AddModelError("", "Podane hasła nie zgadzają się!");
                                 }
                             }
                             else
                             {
-                                ModelState.AddModelError("", "Podane stare hasło jest nieprawidłowe!");
+                                ViewData["Message"] = "Podane stare hasło jest nieprawidłowe!";
+                               //ModelState.AddModelError("", "Podane stare hasło jest nieprawidłowe!");
                             }
 
                         }
@@ -211,8 +213,8 @@ namespace timesheet_net.Controllers
             }
             else
             {
-                ModelState.AddModelError("", "Przynajmniej jedno z wymaganych pól jest nieuzupełnione!");
-                
+                ViewData["Message"] = "Przynajmniej jedno z wymaganych pól jest nieuzupełnione!";
+                //ModelState.AddModelError("", "Przynajmniej jedno z wymaganych pól jest nieuzupełnione!");
             }
             return View();
         }

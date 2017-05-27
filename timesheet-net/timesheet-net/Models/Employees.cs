@@ -32,8 +32,7 @@ namespace timesheet_net.Models
         [Required(ErrorMessage = "To pole jest wymagane!")]
         [RegularExpression(@"^[a-zA-Z0-9._-]+@[a-zA-Z0-9-]+\.[a-zA-Z]{2,4}", ErrorMessage = "Podaj poprawny adres e-mail!")]
         public string EMail { get; set; }
-
-        [Required(ErrorMessage = "To pole jest wymagane!")]
+        [Required(ErrorMessage = "To pole jest wymagane!")]   
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
