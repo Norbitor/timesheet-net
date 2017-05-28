@@ -24,6 +24,7 @@ namespace timesheet_net.Controllers
         }
 
         [HttpPost]
+        [OutputCache(NoStore = true, Duration = 0)]
         public ActionResult DeleteTask(string deleteData)
         {
             if (Session["EmployeeID"] != null)
@@ -43,6 +44,7 @@ namespace timesheet_net.Controllers
         }
 
         [HttpPost]
+        [OutputCache(NoStore = true, Duration = 0)]
         public ActionResult ChangeTimesheet(string timesheetID)
         {
             if (Session["EmployeeID"] != null)
@@ -68,6 +70,7 @@ namespace timesheet_net.Controllers
         }
 
         [HttpPost]
+        [OutputCache(NoStore = true, Duration = 0)]
         public ActionResult SaveTimesheet(string[] data)
         {
             //projectName is the identyfier of the project!

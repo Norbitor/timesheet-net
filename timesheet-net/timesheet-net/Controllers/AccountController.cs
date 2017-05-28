@@ -16,6 +16,7 @@ namespace timesheet_net.Controllers
         int incorrectPasswordNo = 10; //counter of incorrect login attempts
 
         [HttpPost]
+        [OutputCache(NoStore = true, Duration = 0)]
         public ActionResult Login(string email, string passwd)
         {
             using (TimesheetDBEntities ctx = new TimesheetDBEntities())
@@ -84,6 +85,7 @@ namespace timesheet_net.Controllers
             return RedirectToAction("", "Home");
         }
 
+
         [HttpGet]
         public ActionResult Edit()
         {
@@ -108,6 +110,7 @@ namespace timesheet_net.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [OutputCache(NoStore = true, Duration = 0)]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "EMail, Name, Surname, Telephone")] Employees empl)
         {
@@ -156,6 +159,7 @@ namespace timesheet_net.Controllers
         }
 
         [HttpPost]
+        [OutputCache(NoStore = true, Duration = 0)]
         [ValidateAntiForgeryToken]
         public ActionResult ChangePassword(string[] pass) //table of passwords
         {
