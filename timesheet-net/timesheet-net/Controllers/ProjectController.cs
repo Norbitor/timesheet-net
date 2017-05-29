@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using timesheet_net.Models;
+using timesheet_net.Utils.Security;
 
 namespace timesheet_net.Controllers
 {
@@ -91,8 +92,34 @@ namespace timesheet_net.Controllers
             {
                 return RedirectToAction("", "Home");
             }
+
             PopulateSuperiorsList();
             return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult New([Bind(Include = "Name, SuperiorID, Start, Finish")]Projects project)
+        {
+            if (Session["EmployeeID"] == null)
+            {
+                return RedirectToAction("", "Home");
+            }
+            var permutil = new PermissionUtil();
+            if (permutil.IsAdministrator((int)Session["JobPosition"]))
+            {
+                using (var ctx = new TimesheetDBEntities())
+                {
+                    project.CreatedBy = (int)Session["EmployeeID"];
+                    project.CreationDate = DateTime.Now;
+                    project.ProjectStateID = 1; // TODO: Change this magic value
+                    ctx.Projects.Add(project);
+                    ctx.SaveChanges();
+                }
+                return RedirectToAction("Overview", "Project");
+            }
+
+            return RedirectToAction("Overview", "Project");
         }
 
         private void PopulateSuperiorsList(object selectedEmployee = null)
