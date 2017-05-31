@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Globalization;
 using System.Linq;
 using System.Web;
@@ -92,9 +93,13 @@ namespace timesheet_net.Controllers
             {
                 return RedirectToAction("", "Home");
             }
-
-            PopulateSuperiorsList();
-            return View();
+            var permutil = new PermissionUtil();
+            if (permutil.IsAdministrator((int)Session["JobPosition"]))
+            {
+                PopulateSuperiorsList();
+                return View();
+            }
+            return RedirectToAction("Overview", "Project");
         }
 
         [HttpPost]
@@ -119,6 +124,62 @@ namespace timesheet_net.Controllers
                 return RedirectToAction("Overview", "Project");
             }
 
+            return RedirectToAction("Overview", "Project");
+        }
+
+        [HttpGet]
+        public ActionResult Edit(int id)
+        {
+            if (Session["EmployeeID"] == null)
+            {
+                return RedirectToAction("", "Home");
+            }
+            var permutil = new PermissionUtil();
+            if (permutil.IsAdministrator((int)Session["JobPosition"]))
+            {
+                using (var ctx = new TimesheetDBEntities())
+                {
+                    var proj = ctx.Projects.Find(id);
+                    if (proj == null)
+                    {
+                        return HttpNotFound("Projekt o podanym ID nie istnieje!");
+                    }
+                    PopulateSuperiorsList(proj.SuperiorID.ToString());
+                    return View(proj);
+                }
+            }
+            return RedirectToAction("Overview", "Project");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit([Bind(Include = "ProjectID, Name, SuperiorID, Start, Finish")]Projects project)
+        {
+            if (Session["EmployeeID"] == null)
+            {
+                return RedirectToAction("", "Home");
+            }
+            var permutil = new PermissionUtil();
+            if (permutil.IsAdministrator((int)Session["JobPosition"]))
+            {
+                using (var ctx = new TimesheetDBEntities())
+                {
+                    var projToEdit = ctx.Projects.Find(project.ProjectID);
+                    if (projToEdit == null)
+                    {
+                        return HttpNotFound("Projekt o podanym ID nie istnieje!");
+                    }
+
+                    projToEdit.Name = project.Name;
+                    projToEdit.SuperiorID = project.SuperiorID;
+                    projToEdit.Start = project.Start;
+                    projToEdit.Finish = project.Finish;
+
+                    ctx.Entry(projToEdit).State = EntityState.Modified;
+                    ctx.SaveChanges();
+                    return RedirectToAction("Overview", "Project");
+                }
+            }
             return RedirectToAction("Overview", "Project");
         }
 

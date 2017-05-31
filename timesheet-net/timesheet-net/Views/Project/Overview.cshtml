@@ -83,7 +83,7 @@ else
                 <td>@project.Employees.Name @project.Employees.Surname</td>
                 <td>@project.ProjectStates.ProjectStateName</td>
                 <td>
-                    <input type="button" class="btn btn-primary" value="Edytuj" />
+                    @Html.ActionLink("Edytuj", "Edit", "Project", new { id = project.ProjectID}, new { @class = "btn btn-primary" })
                     <div class="dropdown dropdown-ib">
                         <button class="btn btn-danger dropdown-toggle" type="button" data-toggle="dropdown">
                             Operacje
