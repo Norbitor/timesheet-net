@@ -183,6 +183,66 @@ namespace timesheet_net.Controllers
             return RedirectToAction("Overview", "Project");
         }
 
+        [HttpGet]
+        public ActionResult Close(int id)
+        {
+            if (Session["EmployeeID"] == null)
+            {
+                return RedirectToAction("", "Home");
+            }
+            var permutil = new PermissionUtil();
+            if (permutil.IsAdministrator((int)Session["JobPosition"]))
+            {
+                using (var ctx = new TimesheetDBEntities())
+                {
+                    var projToEdit = ctx.Projects.Find(id);
+                    if (projToEdit == null)
+                    {
+                        return HttpNotFound("Projekt o podanym ID nie istnieje!");
+                    }
+
+                    projToEdit.LastEditDate = DateTime.Now;
+                    projToEdit.LastEditedBy = (int)Session["EmployeeID"];
+                    projToEdit.ProjectStateID = 3;
+                    ctx.Entry(projToEdit).State = EntityState.Modified;
+                    ctx.SaveChanges();
+
+                    return RedirectToAction("Overview", "Project");
+                }
+            }
+            return RedirectToAction("Overview", "Project");
+        }
+
+        [HttpGet]
+        public ActionResult Open(int id)
+        {
+            if (Session["EmployeeID"] == null)
+            {
+                return RedirectToAction("", "Home");
+            }
+            var permutil = new PermissionUtil();
+            if (permutil.IsAdministrator((int)Session["JobPosition"]))
+            {
+                using (var ctx = new TimesheetDBEntities())
+                {
+                    var projToEdit = ctx.Projects.Find(id);
+                    if (projToEdit == null)
+                    {
+                        return HttpNotFound("Projekt o podanym ID nie istnieje!");
+                    }
+
+                    projToEdit.LastEditDate = DateTime.Now;
+                    projToEdit.LastEditedBy = (int)Session["EmployeeID"];
+                    projToEdit.ProjectStateID = 2;
+                    ctx.Entry(projToEdit).State = EntityState.Modified;
+                    ctx.SaveChanges();
+
+                    return RedirectToAction("Overview", "Project");
+                }
+            }
+            return RedirectToAction("Overview", "Project");
+        }
+
         private void PopulateSuperiorsList(object selectedEmployee = null)
         {
             var ctx = new TimesheetDBEntities();

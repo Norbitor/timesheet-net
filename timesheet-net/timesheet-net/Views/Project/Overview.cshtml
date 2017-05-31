@@ -90,7 +90,15 @@ else
                             <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu dropdown-white">
-                            <li><a href="#">Zakończ</a></li>
+                            <li>
+                                @if (project.ProjectStateID == 1 || project.ProjectStateID == 3)
+                                {
+                                    @Html.ActionLink("Otwórz", "Open", "Project", new { id = project.ProjectID }, null)
+                                } else
+                                {
+                                    @Html.ActionLink("Zakończ", "Close", "Project", new { id = project.ProjectID }, null)
+                                }
+                            </li>
                             <li><a href="#">Usuń</a></li>
                         </ul>
                     </div>
