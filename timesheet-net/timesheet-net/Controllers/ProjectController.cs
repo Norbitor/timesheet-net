@@ -113,6 +113,12 @@ namespace timesheet_net.Controllers
             var permutil = new PermissionUtil();
             if (permutil.IsAdministrator((int)Session["JobPosition"]))
             {
+                if (project.Finish != null && project.Start > project.Finish)
+                {
+                    ModelState.AddModelError("Start", "Data rozpoczęcia jest późniejsza niż data zakończenia projektu.");
+                    PopulateSuperiorsList();
+                    return View();
+                }
                 using (var ctx = new TimesheetDBEntities())
                 {
                     project.CreatedBy = (int)Session["EmployeeID"];
@@ -174,6 +180,13 @@ namespace timesheet_net.Controllers
                     projToEdit.SuperiorID = project.SuperiorID;
                     projToEdit.Start = project.Start;
                     projToEdit.Finish = project.Finish;
+
+                    if (project.Finish != null && project.Start > project.Finish)
+                    {
+                        ModelState.AddModelError("Start", "Data rozpoczęcia jest późniejsza niż data zakończenia projektu.");
+                        PopulateSuperiorsList();
+                        return View(projToEdit);
+                    }
 
                     ctx.Entry(projToEdit).State = EntityState.Modified;
                     ctx.SaveChanges();

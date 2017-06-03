@@ -52,13 +52,22 @@
 
     <script>
         $(function () {
+            var today = new Date();
             $('#start-datepicker').datetimepicker({
                 locale: 'pl',
-                format: 'YYYY-MM-DD'
+                format: 'YYYY-MM-DD',
+                defaultDate: today
             });
             $('#finish-datepicker').datetimepicker({
                 locale: 'pl',
                 format: 'YYYY-MM-DD'
+            });
+            $('#finish-datepicker').data("DateTimePicker").minDate(today);
+            $("#start-datepicker").on("dp.change", function (e) {
+                $('#finish-datepicker').data("DateTimePicker").minDate(e.date);
+            });
+            $("#finish-datepicker").on("dp.change", function (e) {
+                $('#start-datepicker').data("DateTimePicker").maxDate(e.date);
             });
         });
     </script>
