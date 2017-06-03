@@ -247,8 +247,13 @@ namespace timesheet_net.Controllers
         {
             var ctx = new TimesheetDBEntities();
             var employees = from j in ctx.Employees
-                            select j;
-            ViewBag.SuperiorID = new SelectList(employees, "EmployeeID", "Surname", selectedEmployee);
+                            where j.EmployeeStateID == 1 || j.EmployeeStateID == 2
+                            select new
+                            {
+                                EmployeeID = j.EmployeeID,
+                                Employee = j.Name + " " + j.Surname + " (" + j.EMail + ")"
+                            };
+            ViewBag.SuperiorID = new SelectList(employees, "EmployeeID", "Employee", selectedEmployee);
         }
     }
 }
