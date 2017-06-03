@@ -176,6 +176,28 @@ namespace timesheet_net.Controllers
             return RedirectToAction("", "User");
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Unlock(int userId)
+        {
+            if (Session["EmployeeID"] == null)
+            {
+                return RedirectToAction("", "Home");
+            }
+            CheckUserPermission();
+            using (var ctx = new TimesheetDBEntities())
+            {
+                var empl = ctx.Employees.Find(userId);
+                if (empl != null)
+                {
+                    empl.LoginNo = 0;
+                    ctx.Entry(empl).State = EntityState.Modified;
+                    ctx.SaveChanges();
+                }
+            }
+            return RedirectToAction("", "User");
+        }
+
         private bool AddEmployee(Employees empl)
         {
             using (TimesheetDBEntities ctx = new TimesheetDBEntities())

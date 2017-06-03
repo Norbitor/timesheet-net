@@ -204,6 +204,11 @@
     color: #bbb;
 }
 
+.employee-locked {
+    color: red;
+    font-weight: 700;
+}
+
 .project-closed {
     color: #bbb;
 }

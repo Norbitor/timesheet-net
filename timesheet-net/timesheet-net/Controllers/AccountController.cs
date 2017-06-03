@@ -13,7 +13,7 @@ namespace timesheet_net.Controllers
 {
     public class AccountController : Controller
     {
-        int incorrectPasswordNo = 10; //counter of incorrect login attempts
+        public const int incorrectPasswordNo = 10; //counter of incorrect login attempts
 
         [HttpPost]
         [OutputCache(NoStore = true, Duration = 0)]

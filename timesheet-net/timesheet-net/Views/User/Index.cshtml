@@ -7,7 +7,8 @@
 <p>
     Z poziomu tego widoku możesz zarządzać pracownikami w systemie. Pracownicy przebywający na urlopie
     oznaczeni są kolorem szarym. Nieaktywni &ndash; oznaczeni są poprzez przekreślenie, wyszarzenie oraz
-    znajdują się zawsze na końcu listy.
+    znajdują się zawsze na końcu listy. Kolorem czerwonym oznaczono użytkowników, których konta zostały
+    zablokowane ze względu na zbyt dużą liczbę nieudanych logowań.
 </p>
 
 <table class="table va-middle-table">
@@ -25,7 +26,8 @@
         @foreach (var employee in Model)
         {
             <tr class="@(employee.EmployeeState.EmployeeStateName=="Niezatrudniony" ? "employee-inactive" : "") 
-                       @(employee.EmployeeState.EmployeeStateName=="Na urlopie" ? "employee-ooo" : "")">
+                       @(employee.EmployeeState.EmployeeStateName=="Na urlopie" ? "employee-ooo" : "")
+                       @(employee.LoginNo == timesheet_net.Controllers.AccountController.incorrectPasswordNo ? "employee-locked" : "")">
                 <td><input type="checkbox" /></td>
                 <td>@employee.Name @employee.Surname</td>
                 <td>@employee.EMail</td>
@@ -47,6 +49,9 @@
                             <li><a href="#" data-id="@employee.EmployeeID" class="vacationopt">
                                     @(employee.EmployeeState.EmployeeStateName == "Na urlopie" ? "Powrót z urlopu" : "Urlop")
                                 </a></li>
+                                if (employee.LoginNo == timesheet_net.Controllers.AccountController.incorrectPasswordNo) { 
+                                    <li><a href="#" data-id="@employee.EmployeeID" class="unlockopt">Odblokuj</a></li>
+                                }
                             }
                             <li><a href="#" data-toggle="modal" data-target="#delConfirmDialog" class="delopt" data-id="@employee.EmployeeID">Usuń</a></li>
                         </ul>
@@ -111,6 +116,12 @@
     <input type="hidden" name="userId" id="vacuser-id" />
 }
 
+@using (Html.BeginForm("Unlock", "User", FormMethod.Post, new { id = "unlockForm", style = "diplay:none;" }))
+{
+    @Html.AntiForgeryToken();
+    <input type="hidden" name="userId" id="unlockuser-id" />
+}
+
 @section Scripts {
     <script>
         $(function () {
@@ -127,6 +138,11 @@
                 var idToVacToggle = $(this).data('id');
                 $("#vacuser-id").val(idToVacToggle);
                 $("#vacForm").submit();
+            });
+            $(".unlockopt").click(function () {
+                var idToUnlock = $(this).data('id');
+                $("#unlockuser-id").val(idToUnlock);
+                $("#unlockForm").submit();
             });
         });
     </script>    
