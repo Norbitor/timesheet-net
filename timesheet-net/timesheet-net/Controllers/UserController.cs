@@ -47,9 +47,11 @@ namespace timesheet_net.Controllers
             CheckUserPermission();
             if (empl.EMail != null && empl.Name != null && empl.Surname != null && empl.Telephone != null)
             {
-                AddEmployee(empl);
-                return RedirectToAction("", "User");
+                if (AddEmployee(empl))
+                    return RedirectToAction("", "User");
+                ModelState.AddModelError("EMail", "Użytkownik o takim adresie e-mail już istnieje w systemie.");
             }
+            PopulateJobPositionsList();
             return View();
         }
 
@@ -83,9 +85,11 @@ namespace timesheet_net.Controllers
             CheckUserPermission();
             if (empl.EMail != null && empl.Name != null && empl.Surname != null && empl.Telephone != null)
             {
-                AlterEmployee(empl);
-                return RedirectToAction("", "User");
+                if(AlterEmployee(empl))
+                    return RedirectToAction("", "User");
+                ModelState.AddModelError("EMail", "Użytkownik o podanym adresie e-mail już istnieje w systemie.");
             }
+            PopulateJobPositionsList();
             return View();
         }
 
@@ -172,35 +176,43 @@ namespace timesheet_net.Controllers
             return RedirectToAction("", "User");
         }
 
-        private void AddEmployee(Employees empl)
+        private bool AddEmployee(Employees empl)
         {
             using (TimesheetDBEntities ctx = new TimesheetDBEntities())
             {
-                var hasher = new Sha256PasswordUtil();
-                empl.Password = hasher.hash(empl.Password);
-                empl.EmployeeStateID = 1;
-                ctx.Employees.Add(empl);
-                ctx.SaveChanges();
+                if (ctx.Employees.Where(em => em.EMail == empl.EMail).Count() == 0) { 
+                    var hasher = new Sha256PasswordUtil();
+                    empl.Password = hasher.hash(empl.Password);
+                    empl.EmployeeStateID = 1;
+                    ctx.Employees.Add(empl);
+                    ctx.SaveChanges();
+                    return true;
+                }
+                return false;
             }
         }
 
-        private void AlterEmployee(Employees empl)
+        private bool AlterEmployee(Employees empl)
         {
             using (TimesheetDBEntities ctx = new TimesheetDBEntities())
             {
-                var hasher = new Sha256PasswordUtil();
-                var r = ctx.Employees.FirstOrDefault(e => e.EmployeeID == empl.EmployeeID);
-                r.EMail = empl.EMail;
-                r.Name = empl.Name;
-                r.Surname = empl.Surname;
-                r.Telephone = empl.Telephone;
-                r.JobPositionID = empl.JobPositionID;
-                if (empl.Password != null)
-                {
-                    r.Password = hasher.hash(empl.Password);
+                if (ctx.Employees.Where(em => em.EmployeeID != empl.EmployeeID && em.EMail == empl.EMail).Count() == 0) { 
+                    var hasher = new Sha256PasswordUtil();
+                    var r = ctx.Employees.FirstOrDefault(e => e.EmployeeID == empl.EmployeeID);
+                    r.EMail = empl.EMail;
+                    r.Name = empl.Name;
+                    r.Surname = empl.Surname;
+                    r.Telephone = empl.Telephone;
+                    r.JobPositionID = empl.JobPositionID;
+                    if (empl.Password != null)
+                    {
+                        r.Password = hasher.hash(empl.Password);
+                    }
+                    ctx.Entry(r).State = EntityState.Modified;
+                    ctx.SaveChanges();
+                    return true;
                 }
-                ctx.Entry(r).State = EntityState.Modified;
-                ctx.SaveChanges();
+                return false;
             }
         }
 

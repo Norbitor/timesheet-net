@@ -42,12 +42,12 @@
     </div>
     <div class="form-group">
         <label class="control-label" for="JobPositionID">Stanowisko:</label>
-        @Html.DropDownList("JobPositionID", String.Empty)
+        @Html.DropDownList("JobPositionID", null, String.Empty, new { @class = "form-control" })
         @Html.ValidationMessageFor(model => model.JobPositionID, "", new { @class = "text-danger" })
     </div>
 
     <button type="submit" class="btn btn-default btn-main" style="width: 100px;">Dodaj</button>
-    @Html.ActionLink("Anuluj", "Overview", "User", null, new { @class = "btn btn-bold", @style = "width: 100px;" })
+    @Html.ActionLink("Anuluj", "", "User", null, new { @class = "btn btn-bold", @style = "width: 100px;" })
 }
 
 @section Scripts {
