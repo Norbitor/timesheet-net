@@ -133,7 +133,7 @@ namespace timesheet_net.Controllers
                             foundEmpl.Name = empl.Name;
                             foundEmpl.Surname = empl.Surname;
                             foundEmpl.Telephone = empl.Telephone;
-                            foundEmpl.EMail = typedEmail;
+                            foundEmpl.EMail = empl.EMail;
                             ctx.Entry(foundEmpl).State = EntityState.Modified;
                             ctx.SaveChanges();
                             ViewData["Message"] = "OK";
