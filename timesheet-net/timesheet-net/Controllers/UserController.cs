@@ -13,15 +13,17 @@ namespace timesheet_net.Controllers
 {
     public class UserController : Controller
     {
+        TimesheetDBEntities ctx = new TimesheetDBEntities();
+
         public ActionResult Index()
         {
             if (Session["EmployeeID"] == null)
             {
+                Session["PleaseLogin"] = true;
                 return RedirectToAction("", "Home");
             }
             CheckUserPermission();
-            var entities = new TimesheetDBEntities();
-            return View(entities.Employees.OrderBy(e => e.EmployeeStateID).ToList());
+            return View(ctx.Employees.OrderBy(e => e.EmployeeStateID).ToList());
         }
 
         [HttpGet]
@@ -29,6 +31,7 @@ namespace timesheet_net.Controllers
         {
             if (Session["EmployeeID"] == null)
             {
+                Session["PleaseLogin"] = true;
                 return RedirectToAction("", "Home");
             }
             CheckUserPermission();
@@ -42,6 +45,7 @@ namespace timesheet_net.Controllers
         {
             if (Session["EmployeeID"] == null)
             {
+                Session["PleaseLogin"] = true;
                 return RedirectToAction("", "Home");
             }
             CheckUserPermission();
@@ -60,18 +64,16 @@ namespace timesheet_net.Controllers
         {
             if (Session["EmployeeID"] == null)
             {
+                Session["PleaseLogin"] = true;
                 return RedirectToAction("", "Home");
             }
             CheckUserPermission();
-            using (TimesheetDBEntities ctx = new TimesheetDBEntities())
-            {
-                var employee = (from empl in ctx.Employees
-                               where empl.EmployeeID == id
-                               select empl).FirstOrDefault();
-                PopulateJobPositionsList(employee.JobPositionID);
-                employee.Password = "";
-                return View(employee);
-            }
+            var employee = (from empl in ctx.Employees
+                            where empl.EmployeeID == id
+                            select empl).FirstOrDefault();
+            PopulateJobPositionsList(employee.JobPositionID);
+            employee.Password = "";
+            return View(employee);
         }
 
         [HttpPost]
@@ -80,6 +82,7 @@ namespace timesheet_net.Controllers
         {
             if (Session["EmployeeID"] == null)
             {
+                Session["PleaseLogin"] = true;
                 return RedirectToAction("", "Home");
             }
             CheckUserPermission();
@@ -99,16 +102,14 @@ namespace timesheet_net.Controllers
         {
             if (Session["EmployeeID"] == null)
             {
+                Session["PleaseLogin"] = true;
                 return RedirectToAction("", "Home");
             }
             CheckUserPermission();
-            using (TimesheetDBEntities ctx = new TimesheetDBEntities())
-            {
-                var empl = new Employees { EmployeeID = userId };
-                ctx.Employees.Attach(empl);
-                ctx.Employees.Remove(empl);
-                ctx.SaveChanges();
-            }            
+            var empl = new Employees { EmployeeID = userId };
+            ctx.Employees.Attach(empl);
+            ctx.Employees.Remove(empl);
+            ctx.SaveChanges();      
             return RedirectToAction("", "User");
         }
 
@@ -118,30 +119,28 @@ namespace timesheet_net.Controllers
         {
             if (Session["EmployeeID"] == null)
             {
+                Session["PleaseLogin"] = true;
                 return RedirectToAction("", "Home");
             }
             CheckUserPermission();
-            using (var ctx = new TimesheetDBEntities())
-            {
-                var inactState = ctx.EmployeeState
-                    .Where(es => es.EmployeeStateName == "Niezatrudniony").First().EmployeeStateID;
-                var actState = ctx.EmployeeState.
-                    Where(es => es.EmployeeStateName == "Aktywny").First().EmployeeStateID;
-                var vacState = ctx.EmployeeState.
-                    Where(es => es.EmployeeStateName == "Na urlopie").First().EmployeeStateID;
+            var inactState = ctx.EmployeeState
+                .Where(es => es.EmployeeStateName == "Niezatrudniony").First().EmployeeStateID;
+            var actState = ctx.EmployeeState.
+                Where(es => es.EmployeeStateName == "Aktywny").First().EmployeeStateID;
+            var vacState = ctx.EmployeeState.
+                Where(es => es.EmployeeStateName == "Na urlopie").First().EmployeeStateID;
 
-                var empl = ctx.Employees
-                    .Where(em => em.EmployeeID == userId).First();
-                if (empl.EmployeeStateID == actState ||
-                    empl.EmployeeStateID == vacState)
-                {
-                    empl.EmployeeStateID = inactState;
-                } else
-                {
-                    empl.EmployeeStateID = actState;
-                }
-                ctx.SaveChanges();
+            var empl = ctx.Employees
+                .Where(em => em.EmployeeID == userId).First();
+            if (empl.EmployeeStateID == actState ||
+                empl.EmployeeStateID == vacState)
+            {
+                empl.EmployeeStateID = inactState;
+            } else
+            {
+                empl.EmployeeStateID = actState;
             }
+            ctx.SaveChanges();
             return RedirectToAction("", "User");
         }
 
@@ -151,28 +150,26 @@ namespace timesheet_net.Controllers
         {
             if (Session["EmployeeID"] == null)
             {
+                Session["PleaseLogin"] = true;
                 return RedirectToAction("", "Home");
             }
             CheckUserPermission();
-            using (var ctx = new TimesheetDBEntities())
-            {
-                var actState = ctx.EmployeeState.
-                    Where(es => es.EmployeeStateName == "Aktywny").First().EmployeeStateID;
-                var vacState = ctx.EmployeeState.
-                    Where(es => es.EmployeeStateName == "Na urlopie").First().EmployeeStateID;
+            var actState = ctx.EmployeeState.
+                Where(es => es.EmployeeStateName == "Aktywny").First().EmployeeStateID;
+            var vacState = ctx.EmployeeState.
+                Where(es => es.EmployeeStateName == "Na urlopie").First().EmployeeStateID;
 
-                var empl = ctx.Employees
-                    .Where(em => em.EmployeeID == userId).First();
-                if (empl.EmployeeStateID == actState)
-                {
-                    empl.EmployeeStateID = vacState;
-                }
-                else if (empl.EmployeeStateID == vacState)
-                {
-                    empl.EmployeeStateID = actState;
-                }
-                ctx.SaveChanges();
+            var empl = ctx.Employees
+                .Where(em => em.EmployeeID == userId).First();
+            if (empl.EmployeeStateID == actState)
+            {
+                empl.EmployeeStateID = vacState;
             }
+            else if (empl.EmployeeStateID == vacState)
+            {
+                empl.EmployeeStateID = actState;
+            }
+            ctx.SaveChanges();
             return RedirectToAction("", "User");
         }
 
@@ -182,60 +179,52 @@ namespace timesheet_net.Controllers
         {
             if (Session["EmployeeID"] == null)
             {
+                Session["PleaseLogin"] = true;
                 return RedirectToAction("", "Home");
             }
             CheckUserPermission();
-            using (var ctx = new TimesheetDBEntities())
+            var empl = ctx.Employees.Find(userId);
+            if (empl != null)
             {
-                var empl = ctx.Employees.Find(userId);
-                if (empl != null)
-                {
-                    empl.LoginNo = 0;
-                    ctx.Entry(empl).State = EntityState.Modified;
-                    ctx.SaveChanges();
-                }
+                empl.LoginNo = 0;
+                ctx.Entry(empl).State = EntityState.Modified;
+                ctx.SaveChanges();
             }
             return RedirectToAction("", "User");
         }
 
         private bool AddEmployee(Employees empl)
         {
-            using (TimesheetDBEntities ctx = new TimesheetDBEntities())
-            {
-                if (ctx.Employees.Where(em => em.EMail == empl.EMail).Count() == 0) { 
-                    var hasher = new Sha256PasswordUtil();
-                    empl.Password = hasher.hash(empl.Password);
-                    empl.EmployeeStateID = 1;
-                    ctx.Employees.Add(empl);
-                    ctx.SaveChanges();
-                    return true;
-                }
-                return false;
+            if (ctx.Employees.Where(em => em.EMail == empl.EMail).Count() == 0) { 
+                var hasher = new Sha256PasswordUtil();
+                empl.Password = hasher.hash(empl.Password);
+                empl.EmployeeStateID = 1;
+                ctx.Employees.Add(empl);
+                ctx.SaveChanges();
+                return true;
             }
+            return false;
         }
 
         private bool AlterEmployee(Employees empl)
         {
-            using (TimesheetDBEntities ctx = new TimesheetDBEntities())
-            {
-                if (ctx.Employees.Where(em => em.EmployeeID != empl.EmployeeID && em.EMail == empl.EMail).Count() == 0) { 
-                    var hasher = new Sha256PasswordUtil();
-                    var r = ctx.Employees.FirstOrDefault(e => e.EmployeeID == empl.EmployeeID);
-                    r.EMail = empl.EMail;
-                    r.Name = empl.Name;
-                    r.Surname = empl.Surname;
-                    r.Telephone = empl.Telephone;
-                    r.JobPositionID = empl.JobPositionID;
-                    if (empl.Password != null)
-                    {
-                        r.Password = hasher.hash(empl.Password);
-                    }
-                    ctx.Entry(r).State = EntityState.Modified;
-                    ctx.SaveChanges();
-                    return true;
+            if (ctx.Employees.Where(em => em.EmployeeID != empl.EmployeeID && em.EMail == empl.EMail).Count() == 0) { 
+                var hasher = new Sha256PasswordUtil();
+                var r = ctx.Employees.FirstOrDefault(e => e.EmployeeID == empl.EmployeeID);
+                r.EMail = empl.EMail;
+                r.Name = empl.Name;
+                r.Surname = empl.Surname;
+                r.Telephone = empl.Telephone;
+                r.JobPositionID = empl.JobPositionID;
+                if (empl.Password != null)
+                {
+                    r.Password = hasher.hash(empl.Password);
                 }
-                return false;
+                ctx.Entry(r).State = EntityState.Modified;
+                ctx.SaveChanges();
+                return true;
             }
+            return false;
         }
 
         private void CheckUserPermission()
@@ -249,11 +238,19 @@ namespace timesheet_net.Controllers
 
         private void PopulateJobPositionsList(object selectedJobPosition = null)
         {
-            var ctx = new TimesheetDBEntities();
             var jobPositions = from j in ctx.JobPositions
                                orderby j.JobPositionName
                                select j;
             ViewBag.JobPositionID = new SelectList(jobPositions, "JobPositionID", "JobPositionName", selectedJobPosition);
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                ctx.Dispose();
+            }
+            base.Dispose(disposing);
         }
     }
 }

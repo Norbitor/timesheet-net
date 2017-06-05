@@ -40,6 +40,7 @@ namespace timesheet_net.Controllers
                                 Session["NameSurname"] = empl.Name.ToString() + " " + empl.Surname.ToString();
                                 empl.LastLogin = DateTime.Now;
                                 empl.LoginNo = 0; // 0 the counter
+                                Session["PleaseLogin"] = null;
                                 Session["Login"] = null;
                             }
                             else

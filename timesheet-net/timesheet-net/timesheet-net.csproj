@@ -294,6 +294,7 @@
     <Content Include="Views\User\New.cshtml" />
     <Content Include="Views\Timesheet\_Timesheet.cshtml" />
     <Content Include="Views\Project\Edit.cshtml" />
+    <Content Include="Views\Report\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -13,6 +13,15 @@
             Proszę skontaktować sią z administratorem systemu.
         </div>
 }
+
+@if (Session["PleaseLogin"] != null)
+{
+    <div class="alert alert-danger alert-dismissable fade in" style="top:10px">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        Do pracy z aplikacją wymagane jest zalogowanie się. Proszę skorzystać z formularza logowania celem zalogowania.
+    </div>
+}
+
 <div class="container">
    
     <div class="row;">
