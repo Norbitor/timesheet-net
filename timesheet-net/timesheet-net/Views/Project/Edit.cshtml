@@ -6,48 +6,88 @@
 <h2>@ViewBag.Title</h2>
 <div class="row">
     <div class="col-md-4">
-        @using (Html.BeginForm())
-        {
-            @Html.AntiForgeryToken()
-            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-            @Html.HiddenFor(model => model.ProjectID)
-            <div class="form-group">
-                @Html.LabelFor(model => model.Name, "Nazwa projektu:")
-                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">Dane projektu</h3>
             </div>
-            <div class="form-group">
-                <label class="control-label" for="JobPositionID">Szef projektu:</label>
-                @Html.DropDownList("SuperiorID", null, String.Empty, new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.SuperiorID, "", new { @class = "text-danger" })
-            </div>
-            <div class="form-group">
-                @Html.LabelFor(model => model.Start, "Data rozpoczęcia:")
-                <div class="input-group date" id="start-datepicker">
+            <div class="panel-body">
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    @Html.HiddenFor(model => model.ProjectID)
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Name, "Nazwa projektu:")
+                        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" for="JobPositionID">Szef projektu:</label>
+                        @Html.DropDownList("SuperiorID", null, String.Empty, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.SuperiorID, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Start, "Data rozpoczęcia:")
+                        <div class="input-group date" id="start-datepicker">
 
-                    @Html.EditorFor(model => model.Start, new { htmlAttributes = new { @class = "form-control",
-                                    @Value = Model.Start.ToString("yyyy-MM-dd") } })
-                    <span class="input-group-addon">
-                        <span class="glyphicon glyphicon-calendar"></span>
-                    </span>
-                </div>
-                @Html.ValidationMessageFor(model => model.Start, "", new { @class = "text-danger" })
-            </div>
-            <div class="form-group">
-                @Html.LabelFor(model => model.Finish, "Data zakończenia:")
-                <div class="input-group date" id="finish-datepicker">
-                    @Html.EditorFor(model => model.Finish, new { htmlAttributes = new { @class = "form-control",
-                                    @Value = (Model.Finish.HasValue ? Model.Finish.Value.ToString("yyyy-MM-dd") : string.Empty) } })
-                    <span class="input-group-addon">
-                        <span class="glyphicon glyphicon-calendar"></span>
-                    </span>
-                </div>
-                @Html.ValidationMessageFor(model => model.Finish, "", new { @class = "text-danger" })
-            </div>
+                            @Html.EditorFor(model => model.Start, new
+                            {
+                                htmlAttributes = new
+                                {
+                                    @class = "form-control",
+                                    @Value = Model.Start.ToString("yyyy-MM-dd")
+                                }
+                            })
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                        </div>
+                        @Html.ValidationMessageFor(model => model.Start, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Finish, "Data zakończenia:")
+                        <div class="input-group date" id="finish-datepicker">
+                            @Html.EditorFor(model => model.Finish, new
+                            {
+                                htmlAttributes = new
+                                {
+                                    @class = "form-control",
+                                    @Value = (Model.Finish.HasValue ? Model.Finish.Value.ToString("yyyy-MM-dd") : string.Empty)
+                                }
+                            })
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                        </div>
+                        @Html.ValidationMessageFor(model => model.Finish, "", new { @class = "text-danger" })
+                    </div>
 
-            <button type="submit" class="btn btn-default btn-main">Zapisz</button>
-            @Html.ActionLink("Anuluj", "Overview", "Project", null, new { @class = "btn btn-bold", @style = "width: 100px;" })
-        }
+                    <button type="submit" class="btn btn-default btn-main">Zapisz</button>
+                    @Html.ActionLink("Anuluj", "Overview", "Project", null, new { @class = "btn btn-bold", @style = "width: 100px;" })
+                }
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">Przypisani pracownicy</h3>
+            </div>
+            <div class="panel-body">
+                <label for="userToAdd">Dodaj pracownika:</label>
+                <div class="dropdown">
+                    <input type="text" class="form-control dropdown-toggle" id="userToAdd" data-toggle="dropdown" />
+                    <ul class="dropdown-menu" id="userList" style="width: 328px;">
+                        <!-- AJAX content here -->
+                    </ul>
+                </div>
+                <br />
+                <label for="assignedEmpl">Przypisani pracownicy:</label>
+                <ul id="assignedEmpls">
+                    <!-- AJAX content -->
+                </ul>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -56,6 +96,28 @@
 
     <script>
         $(function () {
+            $.ajax({
+                url: '/Ajax/GetAssignedEmplotyeesToProject',
+                type: 'post',
+                data: { projID: @Model.ProjectID }
+            }).done(function (response) {
+                $("#userList li").remove();
+                $.each(response, function (index, value) {
+                    $("#assignedEmpls").append('<li>' + value.NameAndSurname + '</li>');
+                })
+            });
+
+            $.ajax({
+                url: '/Ajax/GetEmployeeList',
+                type: 'post',
+                
+            }).done(function (response) {
+                $("#userList li").remove();
+                $.each(response, function (index, value) {
+                    $("#userList").append('<li><a href="#">' + value.NameAndSurname + '</a></li>');
+                })
+            });
+
             $('#start-datepicker').datetimepicker({
                 locale: 'pl',
                 format: 'YYYY-MM-DD'
@@ -70,6 +132,23 @@
             $("#finish-datepicker").on("dp.change", function (e) {
                 $('#start-datepicker').data("DateTimePicker").maxDate(e.date);
             });
+        });
+
+        $("#userToAdd").bind("input", function () {
+            delayTimer = setTimeout(function () {
+                $.ajax({
+                    url: '/Ajax/GetEmployeeList',
+                    type: 'post',
+                    data: {
+                        'pattern': $("#userToAdd").val()
+                    }
+                }).done(function (response) {
+                    $("#userList li").remove();
+                    $.each(response, function (index, value) {
+                        $("#userList").append('<li><a href="#">' + value.NameAndSurname + '</a></li>');
+                    })
+                });
+            }, 300);
         });
     </script>
 }
