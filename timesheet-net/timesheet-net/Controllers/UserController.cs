@@ -4,6 +4,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
 using timesheet_net.Models;
@@ -51,9 +52,18 @@ namespace timesheet_net.Controllers
             CheckUserPermission();
             if (empl.EMail != null && empl.Name != null && empl.Surname != null && empl.Telephone != null)
             {
-                if (AddEmployee(empl))
-                    return RedirectToAction("", "User");
-                ModelState.AddModelError("EMail", "Użytkownik o takim adresie e-mail już istnieje w systemie.");
+                var result = AddEmployee(empl);
+                switch (result)
+                {
+                    case OperationStatus.OK:
+                        return RedirectToAction("", "User");
+                    case OperationStatus.DUPLICATE_EMAIL:
+                        ModelState.AddModelError("EMail", "Użytkownik o takim adresie e-mail już istnieje w systemie.");
+                        break;
+                    case OperationStatus.PASSWORD_REQ_NOT_MET:
+                        ModelState.AddModelError("Password", "Hasło nie spełnia wymagań co do złożoności");
+                        break;
+                }
             }
             PopulateJobPositionsList();
             return View();
@@ -88,9 +98,18 @@ namespace timesheet_net.Controllers
             CheckUserPermission();
             if (empl.EMail != null && empl.Name != null && empl.Surname != null && empl.Telephone != null)
             {
-                if(AlterEmployee(empl))
-                    return RedirectToAction("", "User");
-                ModelState.AddModelError("EMail", "Użytkownik o podanym adresie e-mail już istnieje w systemie.");
+                var result = AlterEmployee(empl);
+                switch (result)
+                {
+                    case OperationStatus.OK:
+                        return RedirectToAction("", "User");
+                    case OperationStatus.DUPLICATE_EMAIL:
+                        ModelState.AddModelError("EMail", "Użytkownik o takim adresie e-mail już istnieje w systemie.");
+                        break;
+                    case OperationStatus.PASSWORD_REQ_NOT_MET:
+                        ModelState.AddModelError("Password", "Hasło nie spełnia wymagań co do złożoności");
+                        break;
+                }
             }
             PopulateJobPositionsList();
             return View();
@@ -193,22 +212,31 @@ namespace timesheet_net.Controllers
             return RedirectToAction("", "User");
         }
 
-        private bool AddEmployee(Employees empl)
+        private OperationStatus AddEmployee(Employees empl)
         {
             if (ctx.Employees.Where(em => em.EMail == empl.EMail).Count() == 0) { 
+                if (!Regex.IsMatch(empl.Password, "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{8,}$"))
+                {
+                    return OperationStatus.PASSWORD_REQ_NOT_MET;
+                }
                 var hasher = new Sha256PasswordUtil();
                 empl.Password = hasher.hash(empl.Password);
                 empl.EmployeeStateID = 1;
                 ctx.Employees.Add(empl);
                 ctx.SaveChanges();
-                return true;
+                return OperationStatus.OK;
             }
-            return false;
+            return OperationStatus.DUPLICATE_EMAIL;
         }
 
-        private bool AlterEmployee(Employees empl)
+        private OperationStatus AlterEmployee(Employees empl)
         {
-            if (ctx.Employees.Where(em => em.EmployeeID != empl.EmployeeID && em.EMail == empl.EMail).Count() == 0) { 
+            if (ctx.Employees.Where(em => em.EmployeeID != empl.EmployeeID && em.EMail == empl.EMail).Count() == 0) {
+                if (empl.Password != null && 
+                    !Regex.IsMatch(empl.Password, "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{8,}$"))
+                {
+                    return OperationStatus.PASSWORD_REQ_NOT_MET;
+                }
                 var hasher = new Sha256PasswordUtil();
                 var r = ctx.Employees.FirstOrDefault(e => e.EmployeeID == empl.EmployeeID);
                 r.EMail = empl.EMail;
@@ -222,9 +250,9 @@ namespace timesheet_net.Controllers
                 }
                 ctx.Entry(r).State = EntityState.Modified;
                 ctx.SaveChanges();
-                return true;
+                return OperationStatus.OK;
             }
-            return false;
+            return OperationStatus.DUPLICATE_EMAIL;
         }
 
         private void CheckUserPermission()
@@ -251,6 +279,14 @@ namespace timesheet_net.Controllers
                 ctx.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        enum OperationStatus
+        {
+            OK,
+            DUPLICATE_EMAIL,
+            PASSWORD_REQ_NOT_MET,
+            DB_ERROR
         }
     }
 }
