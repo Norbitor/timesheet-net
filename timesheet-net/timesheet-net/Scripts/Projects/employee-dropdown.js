@@ -17,3 +17,14 @@ function getEmployeeList(needle) {
         }
     });
 }
+
+function assignEmployeeToProject(projId, emplId) {
+    return $.ajax({
+        url: '/Ajax/AssignEmployeeToProject',
+        type: 'post',
+        data: {
+            projID: projId,
+            emplID: emplId
+        }
+    });
+}

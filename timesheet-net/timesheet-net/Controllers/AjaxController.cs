@@ -47,6 +47,29 @@ namespace timesheet_net.Controllers
             return Json(result);
         }
 
+        [HttpPost]
+        public JsonResult AssignEmployeeToProject(int projID, int emplID)
+        {
+            var projectMember = new ProjectMembers();
+            projectMember.EmployeeID = emplID;
+            projectMember.ProjectID = projID;
+
+            projectMember = ctx.ProjectMembers.Add(projectMember);
+            int recordsWritten = ctx.SaveChanges();
+            if (recordsWritten != 0)
+            {
+                return Json(new
+                {
+                    Error = 0
+                });
+            }
+
+            return Json(new
+            {
+                Error = 1
+            });
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
