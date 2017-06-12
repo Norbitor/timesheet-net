@@ -4,7 +4,8 @@
             $("#assignedEmpls li").remove();
             $.each(response, function (index, value) {
                 $("#assignedEmpls").append('<li>' + value.NameAndSurname +
-                    '<div class="delete-me">X</div></li>');
+                    '<div class="delete-me" onclick="deleteEmployeeFromProject(' +
+                        pageProjID + ',' + value.EmployeeID + ');">X</div></li>');
             });
         });
 
@@ -43,7 +44,29 @@ function addEmployeeToProject(projId, emplId)
                 .done(function (response) {
                     $("#assignedEmpls li").remove();
                     $.each(response, function (index, value) {
-                        $("#assignedEmpls").append('<li>' + value.NameAndSurname + '</li>');
+                        $("#assignedEmpls").append('<li>' + value.NameAndSurname +
+                            '<div class="delete-me" onclick="deleteEmployeeFromProject(' +
+                            pageProjID + ',' + value.EmployeeID + ');">X</div></li>');
+                    });
+                });
+            }
+        });
+}
+
+function deleteEmployeeFromProject(projId, emplId)
+{
+    unassignEmployeeFromProject(projId, emplId)
+        .done(function (response) {
+            if (response.Error === 1) {
+                console.log("Error");
+            } else {
+                getAssignedEmployeesToProject(pageProjID)
+                .done(function (response) {
+                    $("#assignedEmpls li").remove();
+                    $.each(response, function (index, value) {
+                        $("#assignedEmpls").append('<li>' + value.NameAndSurname +
+                            '<div class="delete-me" onclick="deleteEmployeeFromProject(' +
+                            pageProjID + ',' + value.EmployeeID + ');">X</div></li>');
                     });
                 });
             }

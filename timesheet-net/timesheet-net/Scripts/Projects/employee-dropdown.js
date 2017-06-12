@@ -28,3 +28,14 @@ function assignEmployeeToProject(projId, emplId) {
         }
     });
 }
+
+function unassignEmployeeFromProject(projId, emplId) {
+    return $.ajax({
+        url: '/Ajax/UnassignEmployeeFromProject',
+        type: 'post',
+        data: {
+            projID: projId,
+            emplID: emplId
+        }
+    });
+}

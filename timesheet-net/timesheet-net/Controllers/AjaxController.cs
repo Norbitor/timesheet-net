@@ -70,6 +70,31 @@ namespace timesheet_net.Controllers
             });
         }
 
+        [HttpPost]
+        public JsonResult UnassignEmployeeFromProject(int projID, int emplID)
+        {
+            var projectMember = (from pm in ctx.ProjectMembers
+                                where pm.ProjectID == projID &&
+                                      pm.EmployeeID == emplID
+                                select pm).FirstOrDefault();
+
+            ctx.ProjectMembers.Remove(projectMember);
+
+            int result = ctx.SaveChanges();
+            if (result != 0)
+            {
+                return Json(new
+                {
+                    Error = 0
+                });
+            }
+
+            return Json(new
+            {
+                Error = 1
+            });
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
