@@ -37,9 +37,7 @@ function addEmployeeToProject(projId, emplId)
 {
     assignEmployeeToProject(projId, emplId)
         .done(function (response) {
-            if (response.Error === 1) {
-                console.log("Error");
-            } else {
+            if (response.Error === 0) {
                 getAssignedEmployeesToProject(pageProjID)
                 .done(function (response) {
                     $("#assignedEmpls li").remove();
