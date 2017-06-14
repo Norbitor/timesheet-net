@@ -63,7 +63,7 @@
                     </div>
 
                     <button type="submit" class="btn btn-default btn-main">Zapisz</button>
-                    @Html.ActionLink("Anuluj", "Overview", "Project", null, new { @class = "btn btn-bold", @style = "width: 100px;" })
+                    
                 }
             </div>
         </div>
@@ -90,7 +90,42 @@
             </div>
         </div>
     </div>
+    <div class="col-md-4">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">Status projektu</h3>
+            </div>
+            <div class="panel-body">
+                @using (Html.BeginForm("SetState", "Project", new { id = Model.ProjectID }))
+                {
+                    @Html.AntiForgeryToken()
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.ProjectStateID, "Status projektu")
+                        @Html.DropDownList("ProjectStateID", null, new { @class = "form-control" })
+                    </div>
+                    <button type="submit" class="btn btn-default btn-main">Zapisz</button>
+                }
+            </div>
+        </div>
+        <div class="panel panel-danger">
+            <div class="panel-heading">
+                <h3 class="panel-title">Usuwanie</h3>
+            </div>
+            <div class="panel-body">
+                @using (Html.BeginForm("Delete", "Project", new { id = Model.ProjectID }))
+                {
+                    @Html.AntiForgeryToken()
+                    <p>Z poziomu tego panelu możesz usunąć wybrany projekt. Jest to operacja kaskadowa i nie odwracalna!</p>
+                    <button type="submit" class="btn btn-danger">Usuń</button>
+                }
+               
+                
+            </div>
+        </div>
+    </div>
 </div>
+
+@Html.ActionLink("Powrót do listy", "Overview", "Project", null, new { @class = "btn btn-bold", @style = "width: 150px;" })
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

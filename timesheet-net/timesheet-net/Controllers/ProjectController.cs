@@ -150,6 +150,7 @@ namespace timesheet_net.Controllers
                 {
                     return HttpNotFound("Projekt o podanym ID nie istnieje!");
                 }
+                PopulateProjectStatesList(proj.ProjectStateID.ToString());
                 PopulateSuperiorsList(proj.SuperiorID.ToString());
                 return View(proj);
             }
@@ -249,6 +250,41 @@ namespace timesheet_net.Controllers
             return RedirectToAction("Overview", "Project");
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult SetState(int id, int ProjectStateID)
+        {
+            if (Session["EmployeeID"] == null)
+            {
+                Session["PleaseLogin"] = true;
+                return RedirectToAction("", "Home");
+            }
+            var permutil = new PermissionUtil();
+            if (permutil.IsAdministrator((int)Session["JobPosition"]))
+            {
+                var projToEdit = ctx.Projects.Find(id);
+                if (projToEdit == null)
+                {
+                    return HttpNotFound("Projekt o podanym ID nie istnieje!");
+                }
+
+                projToEdit.LastEditDate = DateTime.Now;
+                projToEdit.LastEditedBy = (int)Session["EmployeeID"];
+                projToEdit.ProjectStateID = ProjectStateID;
+
+                if (ProjectStateID == 3)
+                {
+                    projToEdit.Finish = DateTime.Now;
+                }
+
+                ctx.Entry(projToEdit).State = EntityState.Modified;
+                ctx.SaveChanges();
+
+                return RedirectToAction("Overview", "Project");
+            }
+            return RedirectToAction("Overview", "Project");
+        }
+
         private void PopulateSuperiorsList(object selectedEmployee = null)
         {
             var ctx = new TimesheetDBEntities();
@@ -260,6 +296,14 @@ namespace timesheet_net.Controllers
                                 Employee = j.Name + " " + j.Surname + " (" + j.EMail + ")"
                             };
             ViewBag.SuperiorID = new SelectList(employees, "EmployeeID", "Employee", selectedEmployee);
+        }
+
+        private void PopulateProjectStatesList(object selectedState = null)
+        {
+            var ctx = new TimesheetDBEntities();
+            var projectStates = from j in ctx.ProjectStates
+                                select j;
+            ViewBag.ProjectStateID = new SelectList(projectStates, "ProjectStateID", "ProjectStateName", selectedState);
         }
 
         protected override void Dispose(bool disposing)
