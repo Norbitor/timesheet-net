@@ -209,6 +209,10 @@
     font-weight: 700;
 }
 
+.project-new {
+    color: #0a9f01;
+}
+
 .project-closed {
     color: #bbb;
 }

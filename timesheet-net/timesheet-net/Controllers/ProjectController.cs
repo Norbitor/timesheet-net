@@ -27,7 +27,7 @@ namespace timesheet_net.Controllers
                 if ((int)Session["JobPosition"] == 1)
                 {
                     var entities = new TimesheetDBEntities();
-                    return View(entities.Projects.ToList());
+                    return View(entities.Projects.OrderBy(p => p.ProjectStateID).ToList());
                 }
                 else
                 {
