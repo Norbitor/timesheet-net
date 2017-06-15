@@ -115,7 +115,9 @@
                 @using (Html.BeginForm("Delete", "Project", new { id = Model.ProjectID }))
                 {
                     @Html.AntiForgeryToken()
-                    <p>Z poziomu tego panelu możesz usunąć wybrany projekt. Jest to operacja kaskadowa i nie odwracalna!</p>
+                    <p>Z poziomu tego panelu możesz usunąć wybrany projekt. Operacja ta spowoduje także
+                       usunięcie wszystkich Timesheetów oraz przypisań do projektów.<br />
+                       <strong>Uwaga!</strong> Operacja ta jest nieodwracalna.</p>
                     <button type="submit" class="btn btn-danger">Usuń</button>
                 }
                

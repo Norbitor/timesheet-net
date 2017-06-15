@@ -285,6 +285,26 @@ namespace timesheet_net.Controllers
             return RedirectToAction("Overview", "Project");
         }
 
+        [HttpPost]
+        public ActionResult Delete(int id)
+        {
+            if (Session["EmployeeID"] == null)
+            {
+                Session["PleaseLogin"] = true;
+                return RedirectToAction("", "Home");
+            }
+            var permutil = new PermissionUtil();
+            if (permutil.IsAdministrator((int)Session["JobPosition"]))
+            {
+                Projects proj = new Projects { ProjectID = id };
+                ctx.Projects.Attach(proj);
+                ctx.Projects.Remove(proj);
+                ctx.SaveChanges();
+                return RedirectToAction("Overview", "Project");
+            }
+            return RedirectToAction("Overview", "Project");
+        }
+
         private void PopulateSuperiorsList(object selectedEmployee = null)
         {
             var ctx = new TimesheetDBEntities();
