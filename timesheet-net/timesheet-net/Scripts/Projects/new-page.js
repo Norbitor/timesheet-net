@@ -28,6 +28,13 @@ $(function () {
     $("#finish-datepicker").on("dp.change", function (e) {
         $('#start-datepicker').data("DateTimePicker").maxDate(e.date);
     });
+
+    $('#newProjectForm').submit(function (eventObj) {
+        for (var i = 0; i < assignedEmployeesList.length; i++) {
+            $('#newProjectForm').append('<input type="hidden" name="ProjectMembers[]" value="' + assignedEmployeesList[i].emplId + '" />');
+        }        
+        return true;
+    });
 });
 
 $("#userToAdd").bind("input", function () {

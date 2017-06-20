@@ -11,7 +11,7 @@
                 <h3 class="panel-title">Dane projektu</h3>
             </div>
             <div class="panel-body">
-                @using (Html.BeginForm())
+                @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "newProjectForm" }))
                 {
                     @Html.AntiForgeryToken()
                     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
@@ -45,7 +45,7 @@
                         </div>
                         @Html.ValidationMessageFor(model => model.Finish, "", new { @class = "text-danger" })
                     </div>
-
+                    
                     <button type="submit" class="btn btn-default btn-main">Dodaj</button>
                 }
             </div>

@@ -105,7 +105,7 @@ namespace timesheet_net.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult New([Bind(Include = "Name, SuperiorID, Start, Finish")]Projects project)
+        public ActionResult New([Bind(Include = "Name, SuperiorID, Start, Finish, ProjectMembers")]AddProjectViewModel project)
         {
             if (Session["EmployeeID"] == null)
             {
@@ -121,14 +121,29 @@ namespace timesheet_net.Controllers
                     PopulateSuperiorsList();
                     return View();
                 }
-               
-                project.CreatedBy = (int)Session["EmployeeID"];
-                project.CreationDate = DateTime.Now;
-                project.ProjectStateID = 1; // TODO: Change this magic value
-                
-                ctx.Projects.Add(project);
+
+                var projectToAdd = new Projects();
+                projectToAdd.Name = project.Name;
+                projectToAdd.SuperiorID = project.SuperiorID;
+                projectToAdd.Start = project.Start;
+                projectToAdd.Finish = project.Finish;
+                projectToAdd.CreatedBy = (int)Session["EmployeeID"];
+                projectToAdd.CreationDate = DateTime.Now;
+                projectToAdd.ProjectStateID = 1; // TODO: Change this magic value
+                ctx.Projects.Add(projectToAdd);
                 ctx.SaveChanges();
-                
+
+                foreach (var emplID in project.ProjectMembers)
+                {
+                    var pm = new ProjectMembers()
+                    {
+                        ProjectID = projectToAdd.ProjectID,
+                        EmployeeID = emplID
+                    };
+
+                    ctx.ProjectMembers.Add(pm);
+                }
+                ctx.SaveChanges();
                 return RedirectToAction("Overview", "Project");
             }
             return RedirectToAction("Overview", "Project");

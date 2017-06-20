@@ -166,6 +166,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\AddProjectViewModel.cs" />
     <Compile Include="Models\Employees.cs">
       <DependentUpon>TimesheetDB.tt</DependentUpon>
     </Compile>
@@ -265,6 +266,7 @@
     <Content Include="Scripts\Projects\datepicker-setup.js" />
     <Content Include="Scripts\Projects\edit-page.js" />
     <Content Include="Scripts\Projects\employee-dropdown.js" />
+    <Content Include="Scripts\Projects\new-page.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />
