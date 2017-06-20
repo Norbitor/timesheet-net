@@ -78,7 +78,7 @@ else
         @foreach (var project in Model)
         {
             <tr class="@(project.ProjectStates.ProjectStateName == "Nowy" ? "project-new" : "") 
-                       @(project.ProjectStates.ProjectStateName == "Zakonczony" ? "project-closed" : "")">
+                       @(project.ProjectStates.ProjectStateName == "Zakończony" ? "project-closed" : "")">
                 <td><input type="checkbox" /></td>
                 <td>@project.Name</td>
                 <td>@project.Employees.Name @project.Employees.Surname</td>
