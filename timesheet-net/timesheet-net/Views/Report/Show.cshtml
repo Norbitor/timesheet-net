@@ -1,4 +1,4 @@
-﻿
+﻿@model IEnumerable<timesheet_net.Models.ShowReportViewModel>
 @{
     ViewBag.Title = "Raport tygodniowy";
 }
@@ -24,97 +24,43 @@
         <th>Suma</th>
         <th>Komentarz</th>
     </tr>
-    <tr class="report-proj-discriminant">
-        <td colspan="10">Projekt 1</td>
-    </tr>
-    <tr>
-        <td>Zadanie 1</td>
-        <td>3</td>
-        <td>2</td>
-        <td></td>
-        <td>4</td>
-        <td>1</td>
-        <td></td>
-        <td></td>
-        <td class="report-proj-sum">10</td>
-        <td>Funkcjonalność skończona</td>
-    </tr>
-    <tr>
-        <td>Zadanie 2</td>
-        <td>2</td>
-        <td></td>
-        <td>3</td>
-        <td>2</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td class="report-proj-sum">7</td>
-        <td>JIRA: PROJ1-123</td>
-    </tr>
-    <tr>
-        <td>Zadanie 3</td>
-        <td></td>
-        <td>4</td>
-        <td>2</td>
-        <td></td>
-        <td>5</td>
-        <td></td>
-        <td></td>
-        <td class="report-proj-sum">11</td>
-        <td></td>
-    </tr>
-    <tr class="report-proj-discriminant">
-        <td colspan="10">Projekt 2</td>
-    </tr>
-    <tr>
-        <td>Zadanie A</td>
-        <td>3</td>
-        <td></td>
-        <td>1,5</td>
-        <td>2</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td class="report-proj-sum">6,5</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>Zadanie B</td>
-        <td></td>
-        <td></td>
-        <td>1,5</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td class="report-proj-sum">1,5</td>
-        <td>Skonfigurowano serwer DB</td>
-    </tr>
-    <tr class="report-proj-discriminant">
-        <td colspan="10">Projekt 3</td>
-    </tr>
-    <tr>
-        <td>Zadanie I</td>
-        <td></td>
-        <td>2</td>
-        <td></td>
-        <td></td>
-        <td>2</td>
-        <td></td>
-        <td></td>
-        <td class="report-proj-sum">4</td>
-        <td>Zakończony research technologii</td>
-    </tr>
+    @foreach (var m in Model)
+    {
+        <tr class="report-proj-discriminant">
+            <td colspan="10">@m.ProjectName</td>
+        </tr>
+        foreach (var t in m.Tasks)
+        {
+            <tr>
+                <td>@t.TaskName</td>
+                <td>@t.MondayHours</td>
+                <td>@t.TuesdayHours</td>
+                <td>@t.WednesdayHours</td>
+                <td>@t.ThursdayHours</td>
+                <td>@t.FridayHours</td>
+                <td>@t.SaturdayHours</td>
+                <td>@t.SundayHours</td>
+                <td class="report-proj-sum">
+                    @(t.MondayHours + t.TuesdayHours + t.WednesdayHours + t.ThursdayHours +
+                      t.FridayHours + t.SaturdayHours + t.SundayHours)
+                </td>
+                <td>@t.Comment</td>
+            </tr>
+        }
+    }
     <tr class="report-proj-sum">
         <td>Suma</td>
-        <td>8</td>
-        <td>8</td>
-        <td>8</td>
-        <td>8</td>
-        <td>8</td>
-        <td></td>
-        <td></td>
-        <td>40</td>
+        <td>@(Model.Sum(m => m.MondaySum))</td>
+        <td>@(Model.Sum(m => m.TuesdaySum))</td>
+        <td>@(Model.Sum(m => m.WednesdaySum))</td>
+        <td>@(Model.Sum(m => m.ThursdaySum))</td>
+        <td>@(Model.Sum(m => m.FridaySum))</td>
+        <td>@(Model.Sum(m => m.SaturdaySum))</td>
+        <td>@(Model.Sum(m => m.SundaySum))</td>
+        <td>
+            @(Model.Sum(m => m.MondaySum) + Model.Sum(m => m.TuesdaySum) + Model.Sum(m => m.WednesdaySum) +
+              Model.Sum(m => m.ThursdaySum) + Model.Sum(m => m.FridaySum) + Model.Sum(m => m.SaturdaySum) + Model.Sum(m => m.SundaySum))
+        </td>
         <td></td>
     </tr>
 </table>
