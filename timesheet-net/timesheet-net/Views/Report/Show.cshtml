@@ -4,12 +4,32 @@
 }
 
 <h2>@ViewBag.Title za okres @ViewBag.StartDate &ndash; @ViewBag.FinishDate</h2>
-<div class="alert alert-info" role="alert">Raport został wysłany i czeka na akceptację szefów poszczególnych projektów.</div>
-<div class="alert alert-success" role="alert">Timesheet został zaakceptowany!</div>
-<div class="alert alert-danger" role="alert">
-    Raport został odrzucony przez: Anna Elżbieta Nowaki, Powód: "Brakuje informacji o wybranej technologii".
-    Proszę poprawić wskazane błędy w arkuszu i wysłać go ponownie do zaakceptowania.
-</div>
+@if (Model.Any(m => m.TimesheetState.TimesheetStateName == "Wypełniony"))
+{
+    <div class="alert alert-info" role="alert">Raport został wysłany i czeka na akceptację szefów poszczególnych projektów.</div>
+}
+@if (Model.All(m => m.TimesheetState.TimesheetStateName == "Zaakceptowany"))
+{
+    <div class="alert alert-success" role="alert">Timesheet został zaakceptowany!</div>
+}
+@if (Model.Any(m => m.TimesheetState.TimesheetStateName == "Odrzucony"))
+{
+    <div class="alert alert-danger" role="alert">
+        Raport został odrzucony przez:
+        <ul>
+        @foreach(var mod in Model)
+        {
+            if(mod.TimesheetState.TimesheetStateName == "Odrzucony")
+            {
+                <li>(@mod.Projects.Employees.Name @mod.Projects.Employees.Surname), powód:
+                     @mod.Comment</li>
+            }
+        }
+        </ul>
+        Proszę poprawić wskazane błędy w arkuszu i wysłać go ponownie do zaakceptowania.
+    </div>
+}
+
 <h3>Podsumowanie</h3>
 <table class="table">
     <tr>
