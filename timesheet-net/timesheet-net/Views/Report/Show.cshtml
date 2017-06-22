@@ -3,7 +3,7 @@
     ViewBag.Title = "Raport tygodniowy";
 }
 
-<h2>@ViewBag.Title za okres 10.04.2017 &ndash; 16.04.2017</h2>
+<h2>@ViewBag.Title za okres @ViewBag.StartDate &ndash; @ViewBag.FinishDate</h2>
 <div class="alert alert-info" role="alert">Raport został wysłany i czeka na akceptację szefów poszczególnych projektów.</div>
 <div class="alert alert-success" role="alert">Timesheet został zaakceptowany!</div>
 <div class="alert alert-danger" role="alert">
@@ -27,7 +27,7 @@
     @foreach (var m in Model)
     {
         <tr class="report-proj-discriminant">
-            <td colspan="10">@m.ProjectName</td>
+            <td colspan="10">@m.Projects.Name</td>
         </tr>
         foreach (var t in m.Tasks)
         {
@@ -73,22 +73,13 @@
         <th>Status</th>
         <th>Komentarz</th>
     </tr>
-    <tr>
-        <td>Projekt 1</td>
-        <td>Jan Kowalski</td>
-        <td>Oczekujący</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>Projekt 2</td>
-        <td>Karol Szary</td>
-        <td class="success">Zaakceptowany</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>Projekt 3</td>
-        <td>Anna Elżbieta Nowak</td>
-        <td class="danger">Odrzucony</td>
-        <td>Brakuje informacji o wybranej technologii</td>
-    </tr>
+    @foreach(var m in Model)
+    {
+        <tr>
+            <td>@m.Projects.Name</td>
+            <td>@m.Projects.Employees.Name @m.Projects.Employees.Surname</td>
+            <td>@m.TimesheetState.TimesheetStateName</td>
+            <td>@m.Comment</td>
+        </tr>
+    }
 </table>

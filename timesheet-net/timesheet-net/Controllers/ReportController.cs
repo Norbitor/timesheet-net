@@ -18,10 +18,15 @@ namespace timesheet_net.Controllers
                 Session["PleaseLogin"] = true;
                 return RedirectToAction("", "Home");
             }
+
+            int uid = (int)Session["EmployeeID"];
+
+            
+
             return View();
         }
 
-        public ActionResult Show()
+        public ActionResult Show(string startDate)
         {
             if (Session["EmployeeID"] == null)
             {
@@ -30,18 +35,21 @@ namespace timesheet_net.Controllers
             }
 
             int uid = (int)Session["EmployeeID"];
+            DateTime start = DateTime.Parse(startDate);
+            DateTime finish = start.AddDays(7);
 
             var timesheets = (from t in ctx.Timesheets
                               join p in ctx.Projects on t.ProjectMembers.ProjectID equals p.ProjectID
-                              where t.ProjectMembers.EmployeeID == uid
+                              where t.ProjectMembers.EmployeeID == uid &&
+                                    t.Start >= start && t.Finish <= finish
                               select new ShowReportViewModel
                               {
-                                  ProjectName = p.Name,
+                                  Projects = p,
                                   TimesheetID = t.TimesheetID,
                                   Start = t.Start,
                                   Finish = t.Finish,
                                   ProjectMemberID = t.ProjectMemberID,
-                                  TimesheetStateID = t.TimesheetStateID,
+                                  TimesheetState = t.TimesheetStates,
                                   Comment = t.Comment,
                                   Tasks = t.Tasks,
                                   MondaySum = t.Tasks.Sum(task => (decimal?)task.MondayHours) ?? 0,
@@ -53,7 +61,13 @@ namespace timesheet_net.Controllers
                                   SundaySum = t.Tasks.Sum(task => (decimal?)task.SundayHours) ?? 0
                               }).ToList();
 
-            
+            if (timesheets == null)
+            {
+                return HttpNotFound("Nie znaleziono Timesheeta spelniajacego kryteria");
+            }
+
+            ViewBag.StartDate = start;
+            ViewBag.FinishDate = finish;
 
             return View(timesheets);
         }
