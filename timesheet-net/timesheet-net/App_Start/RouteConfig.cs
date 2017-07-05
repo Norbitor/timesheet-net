@@ -14,6 +14,12 @@ namespace timesheet_net
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(
+                name: "ShowReportRoute",
+                url: "Report/Show/{startDate}",
+                defaults: new { controller = "Report", action = "Show", startDate = UrlParameter.Optional }
+            );
+
+            routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }

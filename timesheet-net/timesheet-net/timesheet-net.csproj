@@ -156,70 +156,100 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\AjaxController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Employees.cs">
-      <DependentUpon>TimesheetDB.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EmployeeState.cs">
-      <DependentUpon>TimesheetDB.tt</DependentUpon>
-    </Compile>
+    <Compile Include="Controllers\ProjectController.cs" />
+    <Compile Include="Controllers\ReportController.cs" />
+    <Compile Include="Controllers\TimesheetController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="JobPositions.cs">
+    <Compile Include="Models\AddProjectViewModel.cs" />
+    <Compile Include="Models\Employees.cs">
       <DependentUpon>TimesheetDB.tt</DependentUpon>
     </Compile>
-    <Compile Include="ProjectMembers.cs">
+    <Compile Include="Models\EmployeeState.cs">
       <DependentUpon>TimesheetDB.tt</DependentUpon>
     </Compile>
-    <Compile Include="Projects.cs">
+    <Compile Include="Models\JobPositions.cs">
       <DependentUpon>TimesheetDB.tt</DependentUpon>
     </Compile>
-    <Compile Include="ProjectStates.cs">
+    <Compile Include="Models\ProjectMembers.cs">
       <DependentUpon>TimesheetDB.tt</DependentUpon>
     </Compile>
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="sysdiagrams.cs">
+    <Compile Include="Models\Projects.cs">
       <DependentUpon>TimesheetDB.tt</DependentUpon>
     </Compile>
-    <Compile Include="Tasks.cs">
+    <Compile Include="Models\ProjectStates.cs">
       <DependentUpon>TimesheetDB.tt</DependentUpon>
     </Compile>
-    <Compile Include="TimesheetDB.Context.cs">
+    <Compile Include="Models\ShowReportViewModel.cs" />
+    <Compile Include="Models\Tasks.cs">
+      <DependentUpon>TimesheetDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TimesheetDB.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>TimesheetDB.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="TimesheetDB.cs">
+    <Compile Include="Models\TimesheetDB.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>TimesheetDB.tt</DependentUpon>
     </Compile>
-    <Compile Include="TimesheetDB.Designer.cs">
+    <Compile Include="Models\TimesheetDB.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>TimesheetDB.edmx</DependentUpon>
     </Compile>
-    <Compile Include="Timesheets.cs">
+    <Compile Include="Models\Timesheets.cs">
       <DependentUpon>TimesheetDB.tt</DependentUpon>
     </Compile>
-    <Compile Include="TimesheetStates.cs">
+    <Compile Include="Models\TimesheetStates.cs">
       <DependentUpon>TimesheetDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utils\Security\PermissionUtil.cs" />
+    <Compile Include="Utils\Security\Sha256PasswordUtil.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\bootstrap-controls.css" />
+    <Content Include="Content\bootstrap-datetimepicker.css" />
+    <Content Include="Content\bootstrap-datetimepicker.min.css" />
+    <Content Include="Content\bootstrap-tagsinput.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Models\TimesheetDB.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>TimesheetDB.edmx</DependentUpon>
+      <LastGenOutput>TimesheetDB.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\TimesheetDB.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>TimesheetDB.edmx</DependentUpon>
+      <LastGenOutput>TimesheetDB.cs</LastGenOutput>
+    </Content>
     <Content Include="Pics\clocktimesheet.png" />
+    <Content Include="Scripts\bootstrap-datetimepicker.js" />
+    <Content Include="Scripts\bootstrap-datetimepicker.min.js" />
+    <Content Include="Scripts\bootstrap-tagsinput.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <EntityDeploy Include="Models\TimesheetDB.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>TimesheetDB.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\TimesheetDB.edmx.diagram">
+      <DependentUpon>TimesheetDB.edmx</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
@@ -230,19 +260,17 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\moment-with-locales.js" />
+    <Content Include="Scripts\moment-with-locales.min.js" />
+    <Content Include="Scripts\moment.js" />
+    <Content Include="Scripts\moment.min.js" />
+    <Content Include="Scripts\Projects\datepicker-setup.js" />
+    <Content Include="Scripts\Projects\edit-page.js" />
+    <Content Include="Scripts\Projects\employee-dropdown.js" />
+    <Content Include="Scripts\Projects\new-page.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />
-    <Content Include="TimesheetDB.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>TimesheetDB.edmx</DependentUpon>
-      <LastGenOutput>TimesheetDB.Context.cs</LastGenOutput>
-    </Content>
-    <Content Include="TimesheetDB.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>TimesheetDB.edmx</DependentUpon>
-      <LastGenOutput>TimesheetDB.cs</LastGenOutput>
-    </Content>
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -260,20 +288,23 @@
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Views\Account\Login.cshtml" />
-    <EntityDeploy Include="TimesheetDB.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>TimesheetDB.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="TimesheetDB.edmx.diagram">
-      <DependentUpon>TimesheetDB.edmx</DependentUpon>
-    </Content>
     <Content Include="Views\Account\Edit.cshtml" />
     <Content Include="Views\Account\ChangePassword.cshtml" />
+    <Content Include="Views\Project\New.cshtml" />
+    <Content Include="Views\Report\Show.cshtml" />
+    <Content Include="Views\Report\Review.cshtml" />
+    <Content Include="Views\Timesheet\Current.cshtml" />
+    <Content Include="Views\Timesheet\Disapproved.cshtml" />
+    <Content Include="Views\Project\Overview.cshtml" />
+    <Content Include="Views\User\Edit.cshtml" />
+    <Content Include="Views\User\Index.cshtml" />
+    <Content Include="Views\User\New.cshtml" />
+    <Content Include="Views\Timesheet\_Timesheet.cshtml" />
+    <Content Include="Views\Project\Edit.cshtml" />
+    <Content Include="Views\Report\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

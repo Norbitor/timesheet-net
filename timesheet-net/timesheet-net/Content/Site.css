@@ -20,5 +20,16 @@
 input,
 select,
 textarea {
-    max-width: 280px;
+    max-width: 400px;
+}
+
+div.delete-me {
+    float: right;
+    cursor: pointer;
+    color: red;
+}
+
+ul#assignedEmpls {
+    list-style-type: none;
+    padding-left: 15px;
 }

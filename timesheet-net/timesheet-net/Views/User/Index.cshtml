@@ -1,0 +1,149 @@
+﻿@model IEnumerable<timesheet_net.Models.Employees>
+@{ 
+    ViewBag.Title = "Lista użytkowników";
+}
+<h2>@ViewBag.Title</h2>
+<hr/>
+<p>
+    Z poziomu tego widoku możesz zarządzać pracownikami w systemie. Pracownicy przebywający na urlopie
+    oznaczeni są kolorem szarym. Nieaktywni &ndash; oznaczeni są poprzez przekreślenie, wyszarzenie oraz
+    znajdują się zawsze na końcu listy. Kolorem czerwonym oznaczono użytkowników, których konta zostały
+    zablokowane ze względu na zbyt dużą liczbę nieudanych logowań.
+</p>
+
+<table class="table va-middle-table">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Użytkownik</th>
+            <th>E-mail</th>
+            <th>Telefon</th>
+            <th>Pozycja</th>
+            <th>Operacje</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var employee in Model)
+        {
+            <tr class="@(employee.EmployeeState.EmployeeStateName=="Niezatrudniony" ? "employee-inactive" : "") 
+                       @(employee.EmployeeState.EmployeeStateName=="Na urlopie" ? "employee-ooo" : "")
+                       @(employee.LoginNo == timesheet_net.Controllers.AccountController.incorrectPasswordNo ? "employee-locked" : "")">
+                <td><input type="checkbox" /></td>
+                <td>@employee.Name @employee.Surname</td>
+                <td>@employee.EMail</td>
+                <td>@employee.Telephone</td>
+                <td>@employee.JobPositions.JobPositionName</td>
+                <td>
+                    @Html.ActionLink("Edytuj", "Edit", "User", new { id = @employee.EmployeeID }, new { @class = "btn btn-primary" })
+                    <div class="dropdown dropdown-ib">
+                        <button class="btn btn-danger dropdown-toggle" type="button" data-toggle="dropdown">
+                            Operacje
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-white">
+                            <li><a href="#" data-id="@employee.EmployeeID" class="deactopt">
+                                    @(employee.EmployeeState.EmployeeStateName=="Niezatrudniony" ? "Aktywuj" : "Deaktywuj")
+                                </a></li>
+                            @if (employee.EmployeeState.EmployeeStateName != "Niezatrudniony")
+                            {
+                            <li><a href="#" data-id="@employee.EmployeeID" class="vacationopt">
+                                    @(employee.EmployeeState.EmployeeStateName == "Na urlopie" ? "Powrót z urlopu" : "Urlop")
+                                </a></li>
+                                if (employee.LoginNo == timesheet_net.Controllers.AccountController.incorrectPasswordNo) { 
+                                    <li><a href="#" data-id="@employee.EmployeeID" class="unlockopt">Odblokuj</a></li>
+                                }
+                            }
+                            <li><a href="#" data-toggle="modal" data-target="#delConfirmDialog" class="delopt" data-id="@employee.EmployeeID">Usuń</a></li>
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div>
+    <div class="dropdown dropdown-ib">
+        <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"
+                style="width: 152px; color: #000; background-color: #fafafa; font-weight: normal;">
+            Operacja grupowa
+            <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu dropdown-white" style="width: 152px;">
+            <li><a href="#">Deaktywuj/Aktywuj</a></li>
+            <li><a href="#">Urlop</a></li>
+            <li><a href="#">Usuń</a></li>
+        </ul>
+    </div>
+    @Html.ActionLink("Dodaj użytkownika", "New", "User", null, new { @class = "btn btn-default btn-main", @style="width: 152px;" })
+</div>
+
+<!-- Modal HTML -->
+<div id="delConfirmDialog" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Potwierdzenie</h4>
+            </div>
+            <div class="modal-body">
+                <p>Czy na pewno chcesz usunąć tego użytkownika?</p>
+                <p class="text-warning" style="color:#808080"><small>Operacja ta jest nieodwracalna, ale nie powiedzie się, gdy użytkownik wypełnił
+                    choć jednego Timesheeta.</small></p>
+            </div>
+            <div class="modal-footer">
+                @using (Html.BeginForm("Delete", "User", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken();
+                    <input type="hidden" name="userId" id="user-id" />
+                    <input type="submit" value="Usuń" class="btn btn-danger" style="width: 100px" />
+                    <button type="button" class="btn btn-default" data-dismiss="modal" style="width: 100px">Anuluj</button>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@using (Html.BeginForm("ToggleActivation", "User", FormMethod.Post, new { id = "actForm", style="display: none;" }))
+{
+    @Html.AntiForgeryToken();
+    <input type="hidden" name="userId" id="deacuser-id" />
+}
+
+@using (Html.BeginForm("ToggleVacation", "User", FormMethod.Post, new { id = "vacForm", style = "display: none;" }))
+{
+    @Html.AntiForgeryToken();
+    <input type="hidden" name="userId" id="vacuser-id" />
+}
+
+@using (Html.BeginForm("Unlock", "User", FormMethod.Post, new { id = "unlockForm", style = "diplay:none;" }))
+{
+    @Html.AntiForgeryToken();
+    <input type="hidden" name="userId" id="unlockuser-id" />
+}
+
+@section Scripts {
+    <script>
+        $(function () {
+            $(".delopt").click(function () {
+                var idToDel = $(this).data('id');
+                $("#user-id").val(idToDel);
+            });
+            $(".deactopt").click(function () {
+                var idToActToggle = $(this).data('id');
+                $("#deacuser-id").val(idToActToggle);
+                $("#actForm").submit();
+            });
+            $(".vacationopt").click(function () {
+                var idToVacToggle = $(this).data('id');
+                $("#vacuser-id").val(idToVacToggle);
+                $("#vacForm").submit();
+            });
+            $(".unlockopt").click(function () {
+                var idToUnlock = $(this).data('id');
+                $("#unlockuser-id").val(idToUnlock);
+                $("#unlockForm").submit();
+            });
+        });
+    </script>    
+}

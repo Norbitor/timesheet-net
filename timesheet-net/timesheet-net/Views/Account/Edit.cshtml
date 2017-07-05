@@ -1,55 +1,92 @@
-﻿@model timesheet_net.Employees
+﻿@model timesheet_net.Models.Employees
 
 @{
-    ViewBag.Title = "Edycja danych";
+    ViewBag.Title = "Edytowanie danych";
 }
 
-<h2 style="color:#460525"><b>Edytuj wybrane dane</b></h2>
+<h2 style="color:#6f0c3b"><b>Edycja danych osobowych</b></h2>
+<div class="alert alert-info">
+    W tej sekcji możesz edytować dane osobowe. Pamiętaj, by uzupełnić wszystkie pola.
+</div>
+ 
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
+    if (ViewData["Message"] != null)
+    {
+        if (ViewData["Message"].ToString() == "OK")
+        {
+            <div>
+                <div class="alert alert-success">
+                    Dane zostały pomyślnie zmienione!
+                </div>
+            </div>
+        }
+        else
+        {
+            <div>
+                <div class="alert alert-danger">
+                    <strong>Błąd!</strong> @ViewData["Message"].ToString()
+                </div>
+            </div>
+        }
+    }
+
     <div class="form-horizontal">
         <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.EmployeeID)
+        <!--
+        Html.ValidationSummary(true, "", new { class = "text-danger" })
+        Html.HiddenFor(model => model.EmployeeID)-->
 
         <div class="form-group">
-            @Html.LabelFor(model => model.EMail, "E-Mail", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.EMail, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.EMail, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.EMail, null, "EMail", new { htmlAttributes = new { @class = "form-control", @type="email", @style = "width:300px", @placeholder = "Wprowadź e-mail", @required="" } })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Name, "Imię", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.Name, null, "Name", new { htmlAttributes = new { @class = "form-control", @style = "width:300px", @placeholder = "Wprowadź imię", @required="" } })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Surname, "Nazwisko", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Surname, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Surname, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.Surname, null, "Surname", new { htmlAttributes = new { @class = "form-control", @style = "width:300px", @placeholder = "Wprowadź nazwisko", @required = "" } })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Telephone,"Telefon", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Telephone, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Telephone, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.Telephone, null, "Telephone", new { htmlAttributes = new { @class = "form-control", @style = "width:300px", @placeholder = "Wprowadź nr telefonu", @required="" } })
             </div>
         </div>
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <a href="#myModal" role="button" class="btn btn-default" data-toggle="modal" data-backdrop="static">Edytuj</a>
+                <a href="#myModal" role="button" class="btn btn-default btn-main" style="width:100px" data-toggle="modal" data-backdrop="static">Edytuj</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal HTML -->
+    <div id="myModal" class="modal fade">
+        <div class="modal-dialog" style="width:300px">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Potwierdzenie</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Czy na pewno chcesz zmienić dane?</p>
+                    <p class="text-warning" style="color:#808080"><small>Jeśli zamkniesz, zmiany będą utracone.</small></p>
+                </div>
+                <div class="modal-footer">
+                        <button type="button" class="btn btn-default btn-main" data-dismiss="modal" style="width:80px; background-color:#43b0ff">Zamknij</button>
+                        <input type="submit" value="Zmień" class="btn btn-default btn-main" style="width:80px;" />
+                </div>
             </div>
         </div>
     </div>
@@ -59,22 +96,3 @@
     @Html.ActionLink("Powrót do strony głównej", "Index", "Home")
 </div>
 
-<!-- Modal HTML -->
-<div id="myModal" class="modal fade">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">Potwierdzenie</h4>
-            </div>
-            <div class="modal-body">
-                <p>Czy na pewno chcesz zmienić dane?</p>
-                <p class="text-warning" style="color:#808080"><small>Jeśli zamkniesz, zmiany będą utracone.</small></p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal" style="width:100px">Zamknij</button>
-                <input type="submit" value="Zmień" class="btn btn-default" style="width:100px"/>
-            </div>
-        </div>
-    </div>
-</div>

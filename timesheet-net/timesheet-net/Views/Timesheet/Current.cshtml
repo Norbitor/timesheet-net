@@ -1,0 +1,27 @@
+﻿@model List<SelectListItem>
+
+@{
+    ViewBag.Title = "Timesheety aktualne";
+}
+
+<h2 style="color:#6f0c3b"><b>Timesheety aktualne</b></h2>
+
+@if (Model.Count() == 0)
+{
+    <div class="alert alert-danger">
+        Nie jesteś przypisany do żadnego projektu! Nie masz możliwości edycji swojego timesheetu.
+    </div>
+}
+else
+{
+    //information alerts
+    <div class="alert alert-info">
+        W tej sekcji możesz edytować swój timesheet. Wybierz projekt do którego jesteś przypisany,
+        a następnie pracuj nad zdefiniowanymi wcześniej zadaniami lub dodaj nowe.
+        <b>Godziny</b> muszą być zaokrąglone do <b>0.25</b>.
+</div>
+
+
+    Html.RenderPartial("_Timesheet");
+
+}

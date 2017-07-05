@@ -1,0 +1,24 @@
+﻿@model List<SelectListItem>
+
+@{
+    ViewBag.Title = "Timesheety odrzucone";
+}
+
+<h2 style="color:#6f0c3b"><b>Timesheety odrzucone</b></h2>
+
+@if (Model.Count() == 0)
+{
+    <div class="alert alert-danger">
+        Nie masz timesheetów odrzuconych!
+    </div>
+}
+else
+{
+    //information alerts
+    <div class="alert alert-info">
+        W tej sekcji możesz edytować timsheet odrzucony. Wybierz projekt do którego jesteś przypisany,
+        a następnie nanieś poprawki na timesheet.
+    </div>
+
+    Html.RenderPartial("_Timesheet");
+}

@@ -1,0 +1,233 @@
+﻿/* purple button */
+.btn-main {
+    color: #eeeeee;
+    background-color: #67002c;
+    border-radius: 6px;
+    border-color: #cccccc;
+    font-weight: bold;
+    width:160px;
+}
+.btn-main:hover,
+.btn-main:focus,
+.btn-main:active,
+.btn-main.active,
+.open .dropdown-toggle.btn-main {
+    color: #eeeeee;
+    background-color: #8f023e;
+}
+
+.btn-redalert {
+    color: #eeeeee;
+    background-color: #e92626;
+    border-radius: 6px;
+    border-color: #cccccc;
+    font-weight: bold;
+    width: auto;
+    margin-left:6px;
+}
+
+.btn-redalert:hover,
+.btn-redalert:focus,
+.btn-redalert:active,
+.btn-redalert.active,
+.open .dropdown-toggle.btn-redalert {
+    color: #eeeeee;
+    background-color: #ff312e;
+}
+
+.btn-bluealert {
+    color: #eeeeee;
+    background-color: #0094ff;
+    border-radius: 6px;
+    border-color: #cccccc;
+    font-weight: bold;
+    width: auto;
+    margin-left:6px;
+}
+
+.btn-bluealert:hover,
+.btn-bluealert:focus,
+.btn-bluelert:active,
+.btn-bluelert.active,
+.open .dropdown-toggle.btn-bluealert {
+    color: #eeeeee;
+    background-color: #25a4ff;
+}
+
+.btn-addtask {
+    color: #eeeeee;
+    background-color: #4aa73f;
+    border-radius: 6px;
+    border-color: #cccccc;
+    font-weight: bold;
+    margin-left: 6px;
+    width:auto; 
+    height:26px; 
+    padding:4px 12px; 
+    font-size:12px
+}
+
+.btn-addtask:hover,
+.btn-addtask:focus,
+.btn-addtask:active,
+.btn-addtask.active,
+.open .dropdown-toggle.btn-addtask {
+    color: #eeeeee;
+    background-color: #58c64b;
+}
+
+.btn-deletetask {
+    color: #eeeeee;
+    background-color: #e92626;
+    border-radius: 6px;
+    border-color: #cccccc;
+    font-weight: bold;
+    margin-left: 6px;
+    width: auto;
+    height: 26px;
+    padding: 4px 12px;
+    font-size: 12px
+}
+
+.btn-deletetask:hover,
+.btn-deletetask:focus,
+.btn-deletetask:active,
+.btn-deletetask.active,
+.open .dropdown-toggle.btn-redalert {
+    color: #eeeeee;
+    background-color: #ff312e;
+}
+/* white bold button */
+.btn-bold {
+    font-weight: bold;
+    color: black;
+    border: 1px solid #ccc;
+}
+.btn-bold:hover {
+    background-color: #18020f;
+    color: #fff;
+}
+/* beige label */
+.label-main {
+    background: #ad9e63;
+    display: inline-block;
+    padding: 8px .3em .3em 8px;
+    font-size: 14px;
+    vertical-align: baseline;
+    border-radius: .25em;
+    width: 160px;
+    height: 34px;
+    margin-bottom: 0;
+}
+/* drop-down menu */
+.dropdown-menu-main {
+    min-width: 100px;
+    background-color: #ad9e63; /* fourth argument is opacity */
+    border: 1px solid rgba(0, 0, 0, 0.5);
+    /*width:125px;*/
+}
+.dropdown-menu-main > li > a {
+    color: #000000;
+    opacity: 0.9;
+    text-align: left;
+}
+.dropdown-menu-main > li > a:hover,
+.dropdown-menu-main > li > a:focus {
+    background-color: #3c0425; /* Strip color after hovering */
+}
+/* login panel */
+#login-dp {
+    min-width: 250px;
+    padding: 14px 14px 0;
+    overflow: hidden;
+    background-color: rgba(255,255,255,.8);
+}
+
+#login-dp .form-group {
+    margin-bottom: 10px;
+}
+
+
+@media(max-width:768px) {
+    #login-dp {
+    background-color: inherit;
+    color: #fff;
+}
+
+#login-dp .bottom {
+    background-color: inherit;
+    border-top: 0 none;
+}
+}
+
+/* form-control-static */
+.form-control-static-ts {
+    color: #ffffff;
+    background-color: #0094ff;
+    text-align: center;
+    width: 63px;
+    height: 24px;
+    margin-top: 0px;
+    padding-top: 2px;
+    vertical-align: central;
+}
+
+.Ttable thead > tr > th, 
+.Ttable tbody > tr > td
+{
+    padding: 8px;
+    line-height: 1.428571429;
+    vertical-align: middle;
+    border-top: 1px solid #dddddd;
+}
+
+/* Administration panel rules */
+.dropdown-ib {
+    display: inline-block;
+}
+
+.dropdown-white {
+    background-color: white;
+    margin-top: 0;
+}
+
+.dropdown-white > li > a:hover,
+.dropdown-white > li > a:focus {
+    background-color: #3c0425;
+}
+
+.va-middle-table td {
+    vertical-align: middle !important;
+}
+
+.employee-ooo {
+    color: #bbb;
+}
+
+.employee-locked {
+    color: red;
+    font-weight: 700;
+}
+
+.project-new {
+    color: #0a9f01;
+}
+
+.project-closed {
+    color: #bbb;
+}
+
+.employee-inactive {
+    text-decoration: line-through;
+    color: #bbb;
+}
+
+.report-proj-discriminant {
+    text-align: center;
+    font-weight: 700;
+    background-color: #fafafa;
+}
+
+.report-proj-sum {
+    font-weight: bold;
+}

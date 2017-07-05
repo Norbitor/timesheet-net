@@ -6,57 +6,69 @@ using System.Web.Mvc;
 using System.Security.Cryptography;
 using System.Text;
 using System.Data.Entity;
+using timesheet_net.Models;
+using System.Text.RegularExpressions;
 
 namespace timesheet_net.Controllers
 {
     public class AccountController : Controller
     {
-        [HttpGet]
-        public ActionResult Login()
-        {
-            if (Session["EmployeeID"] == null)
-            {
-                return View();
-            }
-            else
-            {
-                return RedirectToAction("", "Home");
-            }
-        }
+        public const int incorrectPasswordNo = 10; //counter of incorrect login attempts
 
         [HttpPost]
-        public ActionResult Login(Employees employee)
+        [OutputCache(NoStore = true, Duration = 0)]
+        public ActionResult Login(string email, string passwd)
         {
             using (TimesheetDBEntities ctx = new TimesheetDBEntities())
             {
-                byte[] pass = Encoding.Default.GetBytes(employee.Password); //employee pass in bytes
+                byte[] pass = Encoding.Default.GetBytes(passwd); //employee pass in bytes
                 using (var sha256 = SHA256.Create())
                 {
                     byte[] hashPass = sha256.ComputeHash(pass); //256-bits employee pass
                     string hashPassHex = BitConverter.ToString(hashPass).Replace("-", string.Empty); //64 chars hash pass
 
                     //get login and pass from DB
-                    var empl = ctx.Employees.Where(e => e.EMail == employee.EMail && e.Password == hashPassHex).FirstOrDefault();
-
-
-                    if (empl != null) //user typed proper data
+                    var empl = ctx.Employees.Where(e => e.EMail == email).FirstOrDefault();
+                    if (empl != null)
                     {
-                        Session["EmployeeID"] = empl.EmployeeID;
-                        Session["JobPosition"] = empl.JobPositionID;
-                        Session["NameSurname"] = empl.Name.ToString() + " " + empl.Surname.ToString();
-                        empl.LastLogin = DateTime.Now;
+                        if (empl.Password == hashPassHex) //user typed proper data
+                        {
+                            if (empl.LoginNo < incorrectPasswordNo)
+                            {
+                                Session["EmployeeID"] = empl.EmployeeID;
+                                Session["JobPosition"] = empl.JobPositionID;
+                                Session["NameSurname"] = empl.Name.ToString() + " " + empl.Surname.ToString();
+                                empl.LastLogin = DateTime.Now;
+                                empl.LoginNo = 0; // 0 the counter
+                                Session["PleaseLogin"] = null;
+                                Session["Login"] = null;
+                            }
+                            else
+                            {
+                                Session["Login"] = "Blocked";
+                                return RedirectToAction("", "Home");
+                            }
+                        }
+                        else //user typed incorrect password
+                        {
+                            if (empl.LoginNo < incorrectPasswordNo)
+                            {
+                                empl.LoginNo += 1;//add one because of failed login attempt
+                            }
+                            else
+                            {
+                                Session["Login"] = "Blocked";
+                                return RedirectToAction("", "Home");
+                            }
+                        }
                         ctx.Entry(empl).State = EntityState.Modified;
                         ctx.SaveChanges();
-                        return RedirectToAction("", "Home");
-                    }
-                    else
-                    {
-                        ModelState.AddModelError("", "Dane logowania są błędne!");
                     }
                 }
+
             }
 
-            return View();
+            return RedirectToAction("", "Home");
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -65,9 +77,15 @@ namespace timesheet_net.Controllers
             if (Session["EmployeeID"] != null)
             {
                 Session["EmployeeID"] = null;
+                Session["JobPosition"] = null;
+                Session["tasks"] = null;
+                Session["timesheetID"] = null;
+                Session["Login"] = null;
+                Session["CurrentOrDisapproved"] = null;
             }
             return RedirectToAction("", "Home");
         }
+
 
         [HttpGet]
         public ActionResult Edit()
@@ -93,28 +111,39 @@ namespace timesheet_net.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [OutputCache(NoStore = true, Duration = 0)]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "EmployeeID, EMail, Password, Name, Surname, Telephone, JobPositionID, LastLogin, EmployeeState")] Employees empl)
+        public ActionResult Edit([Bind(Include = "EMail, Name, Surname, Telephone")] Employees empl)
         {
-            if (empl.EMail!=null && empl.Name != null && empl.Surname != null && empl.Telephone != null)
+            if (Session["EmployeeID"] != null)
             {
-                using (TimesheetDBEntities ctx = new TimesheetDBEntities())
+
+                if (empl.EMail != null && empl.Name != null && empl.Surname != null && empl.Telephone != null)
                 {
-                    int employeeID = (int)Session["EmployeeID"];
-                    var foundEmpl = ctx.Employees.Where(x => x.EmployeeID == employeeID).FirstOrDefault();
-                    string typedEmail = foundEmpl.EMail;
-                    if (typedEmail == ctx.Employees.Where(x => x.EMail == typedEmail && x.EmployeeID!=employeeID).Select(x => x.EMail).FirstOrDefault())
+                    using (TimesheetDBEntities ctx = new TimesheetDBEntities())
                     {
-                        foundEmpl.Name = empl.Name;
-                        foundEmpl.Surname = empl.Surname;
-                        foundEmpl.Telephone = empl.Telephone;
-                        ctx.Entry(foundEmpl).State = EntityState.Modified;
-                        ctx.SaveChanges();
-                        return RedirectToAction("Index", "Home");
+                        int employeeID = (int)Session["EmployeeID"];
+                        var foundEmpl = ctx.Employees.Where(x => x.EmployeeID == employeeID).FirstOrDefault();
+                        string typedEmail = empl.EMail;
+                        if (typedEmail == ctx.Employees.Where(x => x.EMail == typedEmail && x.EmployeeID != employeeID).Select(x => x.EMail).FirstOrDefault())
+                        {
+                            ViewData["Message"] = "Podany e-mail jest już zajęty";
+                        }
+                        else
+                        {
+                            foundEmpl.Name = empl.Name;
+                            foundEmpl.Surname = empl.Surname;
+                            foundEmpl.Telephone = empl.Telephone;
+                            foundEmpl.EMail = empl.EMail;
+                            ctx.Entry(foundEmpl).State = EntityState.Modified;
+                            ctx.SaveChanges();
+                            ViewData["Message"] = "OK";
+                        }
                     }
                 }
+                return View(empl);
             }
-            return View(empl);
+            return RedirectToAction("", "Home");
         }
 
         [HttpGet]
@@ -131,6 +160,7 @@ namespace timesheet_net.Controllers
         }
 
         [HttpPost]
+        [OutputCache(NoStore = true, Duration = 0)]
         [ValidateAntiForgeryToken]
         public ActionResult ChangePassword(string[] pass) //table of passwords
         {
@@ -160,30 +190,34 @@ namespace timesheet_net.Controllers
                                     foundEmployee.Password = hashNewPassHex;
                                     ctx.Entry(foundEmployee).State = EntityState.Modified;
                                     ctx.SaveChanges();
+                                    ViewData["Message"] = "OK";
                                 }
                                 else
                                 {
-                                    ModelState.AddModelError("", "Podane hasła nie zgadzają się!");
-                                    return View();
+                                    ViewData["Message"] = "Podane hasła nie zgadzają się!";
+                                    //ModelState.AddModelError("", "Podane hasła nie zgadzają się!");
                                 }
                             }
                             else
                             {
-                                ModelState.AddModelError("", "Podane stare hasło jest nieprawidłowe!");
-                                return View();
+                                ViewData["Message"] = "Podane stare hasło jest nieprawidłowe!";
+                                //ModelState.AddModelError("", "Podane stare hasło jest nieprawidłowe!");
                             }
 
                         }
                     }
                 }
+                else
+                {
+                    return RedirectToAction("", "Home");
+                }
             }
             else
             {
-                ModelState.AddModelError("", "Przynajmniej jedno z wymaganych pól jest nieuzupełnione!");
-                return View();
+                ViewData["Message"] = "Przynajmniej jedno z wymaganych pól jest nieuzupełnione!";
+                //ModelState.AddModelError("", "Przynajmniej jedno z wymaganych pól jest nieuzupełnione!");
             }
-                return RedirectToAction("", "Home");
-            
+            return View();
         }
     }
 }

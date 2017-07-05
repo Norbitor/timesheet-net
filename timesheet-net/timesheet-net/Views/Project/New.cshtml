@@ -1,0 +1,86 @@
+﻿@model timesheet_net.Models.Projects
+@{
+    ViewBag.Title = "Nowy Projekt";
+}
+
+<h2>@ViewBag.Title</h2>
+<div class="row">
+    <div class="col-md-4">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">Dane projektu</h3>
+            </div>
+            <div class="panel-body">
+                @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "newProjectForm" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Name, "Nazwa projektu:")
+                        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" for="JobPositionID">Szef projektu:</label>
+                        @Html.DropDownList("SuperiorID", null, String.Empty, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.SuperiorID, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Start, "Data rozpoczęcia:")
+                        <div class="input-group date" id="start-datepicker">
+                            @Html.EditorFor(model => model.Start, new { htmlAttributes = new { @class = "form-control" } })
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                        </div>
+                        @Html.ValidationMessageFor(model => model.Start, "", new { @class = "text-danger " })
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Finish, "Data zakończenia:")
+                        <div class="input-group date" id="finish-datepicker">
+                            @Html.EditorFor(model => model.Finish, new { htmlAttributes = new { @class = "form-control" } })
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                        </div>
+                        @Html.ValidationMessageFor(model => model.Finish, "", new { @class = "text-danger" })
+                    </div>
+                    
+                    <button type="submit" class="btn btn-default btn-main">Dodaj</button>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">Przypisani pracownicy</h3>
+            </div>
+            <div class="panel-body">
+                <label for="userToAdd">Dodaj pracownika:</label>
+                <div class="dropdown">
+                    <input type="text" class="form-control dropdown-toggle" id="userToAdd" data-toggle="dropdown" />
+                    <ul class="dropdown-menu" id="userList" style="width: 328px;">
+                        <!-- AJAX employee list -->
+                    </ul>
+                </div>
+                <br />
+                <label for="assignedEmpl">Przypisani pracownicy:</label>
+
+                <ul id="assignedEmpls">
+                    <!-- AJAX assigned employees  -->
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+@Html.ActionLink("Anuluj", "Overview", "Project", null, new { @class = "btn btn-bold", @style = "width: 100px;" })
+
+@section Scripts {
+
+@Scripts.Render("~/bundles/jqueryval")
+
+<script src="~/Scripts/Projects/employee-dropdown.js"></script>
+<script src="~/Scripts/Projects/new-page.js"></script>
+}

@@ -7,23 +7,23 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace timesheet_net
+namespace timesheet_net.Models
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class ProjectStates
+    public partial class EmployeeState
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public ProjectStates()
+        public EmployeeState()
         {
-            this.Projects = new HashSet<Projects>();
+            this.Employees = new HashSet<Employees>();
         }
     
-        public int ProjectStateID { get; set; }
-        public string ProjectStateName { get; set; }
+        public byte EmployeeStateID { get; set; }
+        public string EmployeeStateName { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Projects> Projects { get; set; }
+        public virtual ICollection<Employees> Employees { get; set; }
     }
 }

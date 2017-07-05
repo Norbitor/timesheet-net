@@ -17,7 +17,8 @@
           <Property Name="Telephone" Type="varchar" MaxLength="15" Nullable="false" />
           <Property Name="JobPositionID" Type="int" Nullable="false" />
           <Property Name="LastLogin" Type="datetime" />
-          <Property Name="EmployeeState" Type="tinyint" Nullable="false" />
+          <Property Name="LoginNo" Type="tinyint" Nullable="false" />
+          <Property Name="EmployeeStateID" Type="tinyint" Nullable="false" />
         </EntityType>
         <EntityType Name="EmployeeState">
           <Key>
@@ -50,7 +51,7 @@
           <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Start" Type="date" Nullable="false" />
           <Property Name="Finish" Type="date" />
-          <Property Name="ProjectState" Type="int" Nullable="false" />
+          <Property Name="ProjectStateID" Type="int" Nullable="false" />
           <Property Name="SuperiorID" Type="int" Nullable="false" />
           <Property Name="LastEditedBy" Type="int" />
           <Property Name="LastEditDate" Type="datetime" />
@@ -64,16 +65,6 @@
           <Property Name="ProjectStateID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ProjectStateName" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
-        <EntityType Name="sysdiagrams">
-          <Key>
-            <PropertyRef Name="diagram_id" />
-          </Key>
-          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="principal_id" Type="int" Nullable="false" />
-          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="version" Type="int" />
-          <Property Name="definition" Type="varbinary(max)" />
-        </EntityType>
         <EntityType Name="Tasks">
           <Key>
             <PropertyRef Name="TaskID" />
@@ -81,13 +72,13 @@
           <Property Name="TaskID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="TimesheetID" Type="int" Nullable="false" />
           <Property Name="TaskName" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="MondayHours" Type="decimal" Precision="2" Scale="2" Nullable="false" />
-          <Property Name="TuesdayHours" Type="decimal" Precision="2" Scale="2" Nullable="false" />
-          <Property Name="WednesdayHours" Type="decimal" Precision="2" Scale="2" Nullable="false" />
-          <Property Name="ThursdayHours" Type="decimal" Precision="2" Scale="2" Nullable="false" />
-          <Property Name="FridayHours" Type="decimal" Precision="2" Scale="2" Nullable="false" />
-          <Property Name="SaturdayHours" Type="decimal" Precision="2" Scale="2" Nullable="false" />
-          <Property Name="SundayHours" Type="decimal" Precision="2" Scale="2" Nullable="false" />
+          <Property Name="MondayHours" Type="decimal" Precision="4" Scale="2" Nullable="false" />
+          <Property Name="TuesdayHours" Type="decimal" Precision="4" Scale="2" Nullable="false" />
+          <Property Name="WednesdayHours" Type="decimal" Precision="4" Scale="2" Nullable="false" />
+          <Property Name="ThursdayHours" Type="decimal" Precision="4" Scale="2" Nullable="false" />
+          <Property Name="FridayHours" Type="decimal" Precision="4" Scale="2" Nullable="false" />
+          <Property Name="SaturdayHours" Type="decimal" Precision="4" Scale="2" Nullable="false" />
+          <Property Name="SundayHours" Type="decimal" Precision="4" Scale="2" Nullable="false" />
           <Property Name="Comment" Type="varchar(max)" />
           <Property Name="LastEditedBy" Type="int" />
           <Property Name="LastEditDate" Type="datetime" />
@@ -102,12 +93,10 @@
           <Property Name="Start" Type="date" Nullable="false" />
           <Property Name="Finish" Type="date" Nullable="false" />
           <Property Name="ProjectMemberID" Type="int" Nullable="false" />
-          <Property Name="TimesheetState" Type="int" Nullable="false" />
+          <Property Name="TimesheetStateID" Type="int" Nullable="false" />
           <Property Name="LastEditedBy" Type="int" />
           <Property Name="LastEditDate" Type="datetime" />
           <Property Name="Comment" Type="varchar(max)" />
-          <Property Name="CreatedBy" Type="int" Nullable="false" />
-          <Property Name="CreationDate" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="TimesheetStates">
           <Key>
@@ -124,7 +113,7 @@
               <PropertyRef Name="EmployeeStateID" />
             </Principal>
             <Dependent Role="Employees">
-              <PropertyRef Name="EmployeeState" />
+              <PropertyRef Name="EmployeeStateID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -148,7 +137,7 @@
               <PropertyRef Name="ProjectStateID" />
             </Principal>
             <Dependent Role="Projects">
-              <PropertyRef Name="ProjectState" />
+              <PropertyRef Name="ProjectStateID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -270,7 +259,7 @@
               <PropertyRef Name="TimesheetStateID" />
             </Principal>
             <Dependent Role="Timesheets">
-              <PropertyRef Name="TimesheetState" />
+              <PropertyRef Name="TimesheetStateID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -286,18 +275,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Timesheets_Employees1">
-          <End Role="Employees" Type="Self.Employees" Multiplicity="1" />
-          <End Role="Timesheets" Type="Self.Timesheets" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Employees">
-              <PropertyRef Name="EmployeeID" />
-            </Principal>
-            <Dependent Role="Timesheets">
-              <PropertyRef Name="CreatedBy" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityContainer Name="TimesheetDBModelStoreContainer">
           <EntitySet Name="Employees" EntityType="Self.Employees" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EmployeeState" EntityType="Self.EmployeeState" Schema="dbo" store:Type="Tables" />
@@ -305,7 +282,6 @@
           <EntitySet Name="ProjectMembers" EntityType="Self.ProjectMembers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Projects" EntityType="Self.Projects" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ProjectStates" EntityType="Self.ProjectStates" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Tasks" EntityType="Self.Tasks" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Timesheets" EntityType="Self.Timesheets" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TimesheetStates" EntityType="Self.TimesheetStates" Schema="dbo" store:Type="Tables" />
@@ -365,10 +341,6 @@
             <End Role="Employees" EntitySet="Employees" />
             <End Role="Timesheets" EntitySet="Timesheets" />
           </AssociationSet>
-          <AssociationSet Name="FK_Timesheets_Employees1" Association="Self.FK_Timesheets_Employees1">
-            <End Role="Employees" EntitySet="Employees" />
-            <End Role="Timesheets" EntitySet="Timesheets" />
-          </AssociationSet>
         </EntityContainer>
       </Schema>
     </edmx:StorageModels>
@@ -387,8 +359,9 @@
           <Property Name="Telephone" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="JobPositionID" Type="Int32" Nullable="false" />
           <Property Name="LastLogin" Type="DateTime" Precision="3" />
-          <Property Name="EmployeeState" Type="Byte" Nullable="false" />
-          <NavigationProperty Name="EmployeeState1" Relationship="Self.FK_Employees_EmployeeState" FromRole="Employees" ToRole="EmployeeState" />
+          <Property Name="LoginNo" Type="Byte" Nullable="false" />
+          <Property Name="EmployeeStateID" Type="Byte" Nullable="false" />
+          <NavigationProperty Name="EmployeeState" Relationship="Self.FK_Employees_EmployeeState" FromRole="Employees" ToRole="EmployeeState" />
           <NavigationProperty Name="JobPositions" Relationship="Self.FK_Employees_JobPositions" FromRole="Employees" ToRole="JobPositions" />
           <NavigationProperty Name="ProjectMembers" Relationship="Self.FK_ProjectMembers_Employees" FromRole="Employees" ToRole="ProjectMembers" />
           <NavigationProperty Name="Projects" Relationship="Self.FK_Projects_Employees" FromRole="Employees" ToRole="Projects" />
@@ -397,7 +370,6 @@
           <NavigationProperty Name="Tasks" Relationship="Self.FK_Tasks_Employees" FromRole="Employees" ToRole="Tasks" />
           <NavigationProperty Name="Tasks1" Relationship="Self.FK_Tasks_Employees1" FromRole="Employees" ToRole="Tasks" />
           <NavigationProperty Name="Timesheets" Relationship="Self.FK_Timesheets_Employees" FromRole="Employees" ToRole="Timesheets" />
-          <NavigationProperty Name="Timesheets1" Relationship="Self.FK_Timesheets_Employees1" FromRole="Employees" ToRole="Timesheets" />
         </EntityType>
         <EntityType Name="EmployeeState">
           <Key>
@@ -435,7 +407,7 @@
           <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Start" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="Finish" Type="DateTime" Precision="0" />
-          <Property Name="ProjectState" Type="Int32" Nullable="false" />
+          <Property Name="ProjectStateID" Type="Int32" Nullable="false" />
           <Property Name="SuperiorID" Type="Int32" Nullable="false" />
           <Property Name="LastEditedBy" Type="Int32" />
           <Property Name="LastEditDate" Type="DateTime" Precision="3" />
@@ -455,16 +427,6 @@
           <Property Name="ProjectStateName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="Projects" Relationship="Self.FK_Project_ProjectState" FromRole="ProjectStates" ToRole="Projects" />
         </EntityType>
-        <EntityType Name="sysdiagrams">
-          <Key>
-            <PropertyRef Name="diagram_id" />
-          </Key>
-          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="principal_id" Type="Int32" Nullable="false" />
-          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="version" Type="Int32" />
-          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
-        </EntityType>
         <EntityType Name="Tasks">
           <Key>
             <PropertyRef Name="TaskID" />
@@ -472,13 +434,13 @@
           <Property Name="TaskID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="TimesheetID" Type="Int32" Nullable="false" />
           <Property Name="TaskName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="MondayHours" Type="Decimal" Precision="2" Scale="2" Nullable="false" />
-          <Property Name="TuesdayHours" Type="Decimal" Precision="2" Scale="2" Nullable="false" />
-          <Property Name="WednesdayHours" Type="Decimal" Precision="2" Scale="2" Nullable="false" />
-          <Property Name="ThursdayHours" Type="Decimal" Precision="2" Scale="2" Nullable="false" />
-          <Property Name="FridayHours" Type="Decimal" Precision="2" Scale="2" Nullable="false" />
-          <Property Name="SaturdayHours" Type="Decimal" Precision="2" Scale="2" Nullable="false" />
-          <Property Name="SundayHours" Type="Decimal" Precision="2" Scale="2" Nullable="false" />
+          <Property Name="MondayHours" Type="Decimal" Precision="4" Scale="2" Nullable="false" />
+          <Property Name="TuesdayHours" Type="Decimal" Precision="4" Scale="2" Nullable="false" />
+          <Property Name="WednesdayHours" Type="Decimal" Precision="4" Scale="2" Nullable="false" />
+          <Property Name="ThursdayHours" Type="Decimal" Precision="4" Scale="2" Nullable="false" />
+          <Property Name="FridayHours" Type="Decimal" Precision="4" Scale="2" Nullable="false" />
+          <Property Name="SaturdayHours" Type="Decimal" Precision="4" Scale="2" Nullable="false" />
+          <Property Name="SundayHours" Type="Decimal" Precision="4" Scale="2" Nullable="false" />
           <Property Name="Comment" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="LastEditedBy" Type="Int32" />
           <Property Name="LastEditDate" Type="DateTime" Precision="3" />
@@ -496,14 +458,11 @@
           <Property Name="Start" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="Finish" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="ProjectMemberID" Type="Int32" Nullable="false" />
-          <Property Name="TimesheetState" Type="Int32" Nullable="false" />
+          <Property Name="TimesheetStateID" Type="Int32" Nullable="false" />
           <Property Name="LastEditedBy" Type="Int32" />
           <Property Name="LastEditDate" Type="DateTime" Precision="3" />
           <Property Name="Comment" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="CreatedBy" Type="Int32" Nullable="false" />
-          <Property Name="CreationDate" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="Employees" Relationship="Self.FK_Timesheets_Employees" FromRole="Timesheets" ToRole="Employees" />
-          <NavigationProperty Name="Employees1" Relationship="Self.FK_Timesheets_Employees1" FromRole="Timesheets" ToRole="Employees" />
           <NavigationProperty Name="ProjectMembers" Relationship="Self.FK_Timesheet_ProjectMember" FromRole="Timesheets" ToRole="ProjectMembers" />
           <NavigationProperty Name="Tasks" Relationship="Self.FK_Tasks_Timesheets" FromRole="Timesheets" ToRole="Tasks" />
           <NavigationProperty Name="TimesheetStates" Relationship="Self.FK_Timesheet_TimesheetState" FromRole="Timesheets" ToRole="TimesheetStates" />
@@ -524,7 +483,7 @@
               <PropertyRef Name="EmployeeStateID" />
             </Principal>
             <Dependent Role="Employees">
-              <PropertyRef Name="EmployeeState" />
+              <PropertyRef Name="EmployeeStateID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -624,18 +583,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Timesheets_Employees1">
-          <End Role="Employees" Type="Self.Employees" Multiplicity="1" />
-          <End Role="Timesheets" Type="Self.Timesheets" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Employees">
-              <PropertyRef Name="EmployeeID" />
-            </Principal>
-            <Dependent Role="Timesheets">
-              <PropertyRef Name="CreatedBy" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_ProjectMember_Project">
           <End Role="Projects" Type="Self.Projects" Multiplicity="1" />
           <End Role="ProjectMembers" Type="Self.ProjectMembers" Multiplicity="*" />
@@ -668,7 +615,7 @@
               <PropertyRef Name="ProjectStateID" />
             </Principal>
             <Dependent Role="Projects">
-              <PropertyRef Name="ProjectState" />
+              <PropertyRef Name="ProjectStateID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -694,7 +641,7 @@
               <PropertyRef Name="TimesheetStateID" />
             </Principal>
             <Dependent Role="Timesheets">
-              <PropertyRef Name="TimesheetState" />
+              <PropertyRef Name="TimesheetStateID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -705,7 +652,6 @@
           <EntitySet Name="ProjectMembers" EntityType="Self.ProjectMembers" />
           <EntitySet Name="Projects" EntityType="Self.Projects" />
           <EntitySet Name="ProjectStates" EntityType="Self.ProjectStates" />
-          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
           <EntitySet Name="Tasks" EntityType="Self.Tasks" />
           <EntitySet Name="Timesheets" EntityType="Self.Timesheets" />
           <EntitySet Name="TimesheetStates" EntityType="Self.TimesheetStates" />
@@ -742,10 +688,6 @@
             <End Role="Tasks" EntitySet="Tasks" />
           </AssociationSet>
           <AssociationSet Name="FK_Timesheets_Employees" Association="Self.FK_Timesheets_Employees">
-            <End Role="Employees" EntitySet="Employees" />
-            <End Role="Timesheets" EntitySet="Timesheets" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Timesheets_Employees1" Association="Self.FK_Timesheets_Employees1">
             <End Role="Employees" EntitySet="Employees" />
             <End Role="Timesheets" EntitySet="Timesheets" />
           </AssociationSet>
@@ -787,7 +729,8 @@
                 <ScalarProperty Name="Telephone" ColumnName="Telephone" />
                 <ScalarProperty Name="JobPositionID" ColumnName="JobPositionID" />
                 <ScalarProperty Name="LastLogin" ColumnName="LastLogin" />
-                <ScalarProperty Name="EmployeeState" ColumnName="EmployeeState" />
+                <ScalarProperty Name="LoginNo" ColumnName="LoginNo" />
+                <ScalarProperty Name="EmployeeStateID" ColumnName="EmployeeStateID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -824,7 +767,7 @@
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Start" ColumnName="Start" />
                 <ScalarProperty Name="Finish" ColumnName="Finish" />
-                <ScalarProperty Name="ProjectState" ColumnName="ProjectState" />
+                <ScalarProperty Name="ProjectStateID" ColumnName="ProjectStateID" />
                 <ScalarProperty Name="SuperiorID" ColumnName="SuperiorID" />
                 <ScalarProperty Name="LastEditedBy" ColumnName="LastEditedBy" />
                 <ScalarProperty Name="LastEditDate" ColumnName="LastEditDate" />
@@ -838,17 +781,6 @@
               <MappingFragment StoreEntitySet="ProjectStates">
                 <ScalarProperty Name="ProjectStateID" ColumnName="ProjectStateID" />
                 <ScalarProperty Name="ProjectStateName" ColumnName="ProjectStateName" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="sysdiagrams">
-            <EntityTypeMapping TypeName="TimesheetDBModel.sysdiagrams">
-              <MappingFragment StoreEntitySet="sysdiagrams">
-                <ScalarProperty Name="name" ColumnName="name" />
-                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
-                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
-                <ScalarProperty Name="version" ColumnName="version" />
-                <ScalarProperty Name="definition" ColumnName="definition" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -880,12 +812,10 @@
                 <ScalarProperty Name="Start" ColumnName="Start" />
                 <ScalarProperty Name="Finish" ColumnName="Finish" />
                 <ScalarProperty Name="ProjectMemberID" ColumnName="ProjectMemberID" />
-                <ScalarProperty Name="TimesheetState" ColumnName="TimesheetState" />
+                <ScalarProperty Name="TimesheetStateID" ColumnName="TimesheetStateID" />
                 <ScalarProperty Name="LastEditedBy" ColumnName="LastEditedBy" />
                 <ScalarProperty Name="LastEditDate" ColumnName="LastEditDate" />
                 <ScalarProperty Name="Comment" ColumnName="Comment" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

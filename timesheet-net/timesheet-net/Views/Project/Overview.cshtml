@@ -1,0 +1,168 @@
+﻿@model IEnumerable<timesheet_net.Models.Projects>
+@{
+    ViewBag.Title = "Twoje projekty";
+}
+
+@if ((int)Session["JobPosition"] != 1)
+{
+    <h2 style="color:#6f0c3b"><b>Twoje projekty</b></h2>
+
+    if (((List<string>)(ViewBag.projectOverview)).Count() == 0)
+    {
+        <div class="alert alert-danger">
+            Nie jesteś przypisany do żadnego projektu!
+        </div>
+    }
+    else
+    {
+        //information alerts
+        <div class="alert alert-info">
+            W tej sekcji możesz przeglądać najważniejsze infomacje na temat projektów, do których należysz.
+        </div>
+    }
+
+    if (((List<string>)(ViewBag.projectOverview)).Count() != 0) //employee has project/s
+    {
+        <div class="table-responsive">
+            <table class="table table-hover Ttable" id="tableID">
+                <thead>
+                    <tr>
+                        <th>Nazwa projektu</th>
+                        <th>Początek</th>
+                        <th>Koniec</th>
+                        <th>Stan</th>
+                        <th>Przełożony</th>
+                        <th>Pracownicy</th>
+                        <th>Twój udział</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < ((List<string>)(ViewBag.projectOverview)).Count(); i+=7)
+                    {
+                        <tr>
+                            <td>@(((List<string>)(ViewBag.projectOverview))[i])</td>
+                            <td>@(((List<string>)(ViewBag.projectOverview))[i + 1])</td>
+                            <td>@(((List<string>)(ViewBag.projectOverview))[i + 2])</td>
+                            <td>@(((List<string>)(ViewBag.projectOverview))[i + 3])</td>
+                            <td>@(((List<string>)(ViewBag.projectOverview))[i + 4])</td>
+                            <td>@(((List<string>)(ViewBag.projectOverview))[i + 5])</td>
+                            <td>@(((List<string>)(ViewBag.projectOverview))[i + 6])</td>                           
+                        </tr>
+                    }
+                </tbody>
+            </table>
+    </div>
+    }
+}
+else
+{
+
+<h2>@ViewBag.Title</h2>
+
+<p>
+    Z poziomu tego widoku możesz zarządzać projektami. Projekty nieaktywne oraz zakończone wyświetlane są zawsze
+    na dole listy.
+</p>
+
+<table class="table va-middle-table">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Nazwa projektu</th>
+            <th>Szef projektu</th>
+            <th>Status</th>
+            <th>Operacje</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var project in Model)
+        {
+            <tr class="@(project.ProjectStates.ProjectStateName == "Nowy" ? "project-new" : "") 
+                       @(project.ProjectStates.ProjectStateName == "Zakończony" ? "project-closed" : "")">
+                <td><input type="checkbox" /></td>
+                <td>@project.Name</td>
+                <td>@project.Employees.Name @project.Employees.Surname</td>
+                <td>@project.ProjectStates.ProjectStateName</td>
+                <td>
+                    @Html.ActionLink("Edytuj", "Edit", "Project", new { id = project.ProjectID}, new { @class = "btn btn-primary" })
+                    <div class="dropdown dropdown-ib">
+                        <button class="btn btn-danger dropdown-toggle" type="button" data-toggle="dropdown">
+                            Operacje
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-white">
+                            <li>
+                                @if (project.ProjectStateID == 1 || project.ProjectStateID == 3)
+                                {
+                                    @Html.ActionLink("Otwórz", "Open", "Project", new { id = project.ProjectID }, null)
+                                } else
+                                {
+                                    @Html.ActionLink("Zakończ", "Close", "Project", new { id = project.ProjectID }, null)
+                                }
+                            </li>
+                            <li><a href="#" data-toggle="modal" data-target="#delConfirmDialog" class="delopt" data-id="@project.ProjectID">Usuń</a></li>
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div>
+    <div class="dropdown dropdown-ib">
+        <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"
+                style="width: 152px; color: #000; background-color: #fafafa; font-weight: normal;">
+            Operacja grupowa
+            <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu dropdown-white" style="width: 152px;">
+            <li><a href="#">Zakończ/Wznów</a></li>
+            <li><a href="#">Usuń</a></li>
+        </ul>
+    </div>
+    @Html.ActionLink("Nowy projekt", "New", "Project", null, new { @class = "btn btn-default btn-main", @style = "width: 152px;" })
+</div>
+
+
+<!-- Modal HTML -->
+<div id="delConfirmDialog" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Potwierdzenie</h4>
+            </div>
+            <div class="modal-body">
+                <p>Czy na pewno chcesz usunąć ten projekt?</p>
+                <p class="text-warning" style="color:#808080">
+                    <small>
+                        Operacja ta spowoduje także usunięcie wszystkich Timesheetów oraz przypisań do projektów.
+                        Uwaga! Operacja ta jest nieodwracalna.
+                    </small>
+                </p>
+            </div>
+            <div class="modal-footer">
+                @using (Html.BeginForm("Delete", "Project", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken();
+                    <input type="hidden" name="id" id="project-id" />
+                    <input type="submit" value="Usuń" class="btn btn-danger" style="width: 100px" />
+                    <button type="button" class="btn btn-default" data-dismiss="modal" style="width: 100px">Anuluj</button>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(function () {
+            $(".delopt").click(function () {
+                var idToDel = $(this).data('id');
+                $("#project-id").val(idToDel);
+            });
+        });
+    </script>
+}
+}

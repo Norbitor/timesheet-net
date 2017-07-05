@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace timesheet_net
+namespace timesheet_net.Models
 {
     using System;
     using System.Collections.Generic;
@@ -25,16 +25,13 @@ namespace timesheet_net
             this.Tasks = new HashSet<Tasks>();
             this.Tasks1 = new HashSet<Tasks>();
             this.Timesheets = new HashSet<Timesheets>();
-            this.Timesheets1 = new HashSet<Timesheets>();
         }
-    
+
         public int EmployeeID { get; set; }
 
         [Required(ErrorMessage = "To pole jest wymagane!")]
-        [RegularExpression(@"^[a-zA-Z0-9._-]+@[a-zA-Z0-9-]+\.[a-zA-Z]{2,4}", ErrorMessage = "Podaj poprawny adres e-mail!")]
         public string EMail { get; set; }
-
-        [Required(ErrorMessage = "To pole jest wymagane!")]
+        [Required(ErrorMessage = "To pole jest wymagane!")]   
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
@@ -50,13 +47,12 @@ namespace timesheet_net
 
         [Required(ErrorMessage = "To pole jest wymagane!")]
         public int JobPositionID { get; set; }
-
         public Nullable<System.DateTime> LastLogin { get; set; }
-
+        public byte LoginNo { get; set; }
         [Required(ErrorMessage = "To pole jest wymagane!")]
-        public byte EmployeeState { get; set; }
-    
-        public virtual EmployeeState EmployeeState1 { get; set; }
+        public byte EmployeeStateID { get; set; }
+
+        public virtual EmployeeState EmployeeState { get; set; }
         public virtual JobPositions JobPositions { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ProjectMembers> ProjectMembers { get; set; }
@@ -72,7 +68,5 @@ namespace timesheet_net
         public virtual ICollection<Tasks> Tasks1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Timesheets> Timesheets { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Timesheets> Timesheets1 { get; set; }
     }
 }
